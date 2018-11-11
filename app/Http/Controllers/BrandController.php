@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Brand;
-use App\Category;
-use App\Product;
+use App\Group;
 use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
     public function index()
     {
+        return "dddd";
         // return view('brands.index');
-        $x = Category::all();
+        $x = Group::all();
         return $x;
     }
     

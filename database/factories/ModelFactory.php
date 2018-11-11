@@ -2,27 +2,23 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\Brand::class, function (Faker $faker) {
-    return [
-        'title' => $faker->name
-    ];
-});
-
-$factory->define(App\Category::class, function (Faker $faker) {
-    return [
+$factory->define(App\Group::class, function (Faker $faker) {
+    return [               
         'title' => $faker->name,
+        'code' => $faker->ean13,
         'desc' => $faker->text 
     ];
 });
 
-$factory->define(App\Product::class, function (Faker $faker) {
-    $categories = App\Category::all();
+$factory->define(App\Material::class, function (Faker $faker) {
+    $groups = App\Group::all();
     return [
         'title' => $faker->name,
+        'code' => $faker->ean13,
         'desc' => $faker->text,
-        'ext' => $faker->randomElement(['jpg', 'bmp', 'png', 'gif']),
-        'cat_id' => $faker->randomElement($categories)
-        // 'cat_id' => null
+        'aspect_unit' => $faker->randomElement(['cm', 'in']),
+        'weight_unit' => $faker->randomElement(['kg', 'g']),
+        'group_id' => $faker->randomElement($groups)
     ];
 });
 
