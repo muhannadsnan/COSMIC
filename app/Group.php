@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Group extends _Model
 {
-    public function _parent()
-    {
-        return $this->belongsToMany(Group::class, 'parent_id')->withTimestamps(); // ->withPivot('table')
+    public function _parents()
+    { 
+        return $this->belongsToMany(Group::class, 'group_group', 'child_id', 'parent_id', 'id', 'id');
     }
 
     public function _children()
     {
-        return $this->hasMany(Group::class, 'parent_id');
+        return $this->belongsToMany(Group::class, 'group_group', 'parent_id', 'child_id', 'id', 'id');
     }
 
     public function _materials()
