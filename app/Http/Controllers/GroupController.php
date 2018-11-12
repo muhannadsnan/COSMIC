@@ -42,6 +42,19 @@ class GroupController extends Controller
         $group->save();
         // $material = new Material(['name' => 'Vacation']);
         // $gr->_materials()->save($material);
+        //// $gr->_materials()->attach([3,4]); // or detach()
+        //// $gr->_materials()->detach(Material::find(3)); 
+        ////                  ->saveMany($categories)
+        ////                  ->count()
+
+        // in m:m relationship, we sync the data between the two entities
+        //// $gr->_materials()->sync([7, 12, 52, 77]);
+        ////                  ->attach([
+        //                          3 => ['description' => 'Because San Juan is a tropical island']
+        //                      ]);
+        //                    ->updateExistingPivot(3, 
+        //                          ['description' => 'Sun, beaches and rum!']
+        //                      );
         return $group;
     }
     

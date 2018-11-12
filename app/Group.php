@@ -8,7 +8,7 @@ class Group extends _Model
 {
     public function _parent()
     {
-        return $this->belongsToMany(Group::class, 'parent_id')->withTimestamps();
+        return $this->belongsToMany(Group::class, 'parent_id')->withTimestamps(); // ->withPivot('table')
     }
 
     public function _children()
