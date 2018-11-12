@@ -15,7 +15,6 @@ class CreateMaterialsTable extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('group_id');
             $table->unsignedInteger('currency_id')->nullable();
             $table->string('title');
             $table->text('desc');
@@ -36,10 +35,6 @@ class CreateMaterialsTable extends Migration
             $table->string('weight_unit')->nullable();
             $table->integer('last_purchase')->default(0);
             $table->timestamps();
-
-            $table->foreign('group_id')
-                    ->references('id')
-                    ->on('groups'); // can not delete a group containing materials
         });
     }
 

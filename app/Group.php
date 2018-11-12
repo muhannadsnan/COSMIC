@@ -18,6 +18,6 @@ class Group extends _Model
 
     public function _materials()
     {
-        return $this->hasMany(Material::class, 'group_id');
+        return $this->belongsToMany(Material::class, 'group_material', 'group_id', 'material_id');
     }
 }

@@ -32,7 +32,7 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         // return Group::with('_materials')->where('id', '=', 4)->get();
-        // return $group->_materials;
+        return $group->_materials;
         // return $group->_parents;
         return $group->_children;
     }

@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Material extends _Model
 {
-    public function _group()
+    public function _groups()
     {
-        return $this->belongsTo(Group::class, 'group_id');
+        return $this->belongsToMany(Group::class, 'group_material', 'material_id', 'group_id');
     }
 }

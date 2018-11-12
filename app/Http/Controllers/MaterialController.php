@@ -31,9 +31,8 @@ class MaterialController extends Controller
     }
     
     public function show(Material $material)
-    {
-        $material->_group;
-        return $material;
+    { 
+        return $material->_groups;
     }
     
     public function edit(Material $material)

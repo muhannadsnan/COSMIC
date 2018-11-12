@@ -11,14 +11,12 @@ $factory->define(App\Group::class, function (Faker $faker) {
 });
 
 $factory->define(App\Material::class, function (Faker $faker) {
-    $groups = App\Group::all();
     return [
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
         'dimention_unit' => $faker->randomElement(['cm', 'in']),
         'weight_unit' => $faker->randomElement(['kg', 'g']),
-        'group_id' => $faker->randomElement($groups)
     ];
 });
 
