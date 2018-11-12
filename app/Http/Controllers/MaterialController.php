@@ -32,7 +32,9 @@ class MaterialController extends Controller
     
     public function show(Material $material)
     { 
-        return $material->_groups;
+        // return $material->_groups;
+        return $material->_parents;
+        return $material->_children;
     }
     
     public function edit(Material $material)
