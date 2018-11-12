@@ -15,7 +15,13 @@ class GroupController extends Controller
     
     public function create()
     {
-        //
+        $group = new Group([
+            'title' => 't1',
+            'desc' => 'd1',
+            'code' => 'c1',
+        ]);
+        $group->save();
+        return $group;
     }
     
     public function store(Request $request)
@@ -32,7 +38,11 @@ class GroupController extends Controller
     
     public function edit(Group $group)
     {
-        //
+        $group->title = 'Zula Kulas III';
+        $group->save();
+        // $material = new Material(['name' => 'Vacation']);
+        // $gr->_materials()->save($material);
+        return $group;
     }
     
     public function update(Request $request, Group $group)
@@ -42,6 +52,6 @@ class GroupController extends Controller
     
     public function destroy(Group $group)
     {
-        //
+        return $group->delete();
     }
 }

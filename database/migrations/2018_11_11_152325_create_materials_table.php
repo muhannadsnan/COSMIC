@@ -28,7 +28,7 @@ class CreateMaterialsTable extends Migration
             $table->integer('length')->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
-            $table->string('aspect_unit')->nullable();
+            $table->string('dimention_unit')->nullable();
             $table->integer('VAT')->default(0); //percent
             $table->integer('total_weight')->nullable();
             $table->integer('net_weight')->nullable();

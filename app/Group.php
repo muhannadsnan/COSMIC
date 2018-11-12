@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+class Group extends _Model
 {
     public function _parent()
     {
-        return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class, 'parent_id')->withTimestamps();
     }
 
     public function _children()
@@ -18,7 +18,6 @@ class Group extends Model
 
     public function _materials()
     {
-        // return $this->hasMany('App/Material', 'group_id');
         return $this->hasMany(Material::class, 'group_id');
     }
 }

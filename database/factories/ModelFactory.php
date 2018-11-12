@@ -16,7 +16,7 @@ $factory->define(App\Material::class, function (Faker $faker) {
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
-        'aspect_unit' => $faker->randomElement(['cm', 'in']),
+        'dimention_unit' => $faker->randomElement(['cm', 'in']),
         'weight_unit' => $faker->randomElement(['kg', 'g']),
         'group_id' => $faker->randomElement($groups)
     ];

@@ -15,7 +15,14 @@ class MaterialController extends Controller
     
     public function create()
     {
-        //
+        $material = new Material([
+            'title' => 't1',
+            'desc' => 'd1',
+            'code' => 'c1',
+            'group_id' => '1',
+        ]);
+        $material->save();
+        return $material;
     }
     
     public function store(Request $request)
@@ -31,7 +38,9 @@ class MaterialController extends Controller
     
     public function edit(Material $material)
     {
-        //
+        $material->title = 'T1';
+        $material->save();
+        return $material;
     }
     
     public function update(Request $request, Material $material)
