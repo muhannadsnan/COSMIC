@@ -14,14 +14,14 @@ class MatGuideController extends Controller
     
     public function create()
     {
-        $mGuide = new MatGuide([
+        $matGuide = new MatGuide([
             'title' => 't1',
             'desc' => 'd1',
             'code' => 'c1',
             'group_id' => '1',
         ]);
-        $mGuide->save();
-        return $mGuide;
+        $matGuide->save();
+        return $matGuide;
     }
     
     public function store(Request $request)
@@ -29,25 +29,26 @@ class MatGuideController extends Controller
         //
     }
     
-    public function show(MatGuide $mGuide)
+    public function show(MatGuide $matGuide)
     {
-        return $mGuide->_materials;
-        return $mGuide;
+        return $matGuide;
+        return $matGuide->_groups;
+        return $matGuide->_materials;
     }
     
-    public function edit(MatGuide $mGuide)
+    public function edit(MatGuide $matGuide)
     {
-        $mGuide->title = 'T1';
-        $mGuide->save();
-        return $mGuide;
+        $matGuide->title = 'T1';
+        $matGuide->save();
+        return $matGuide;
     }
     
-    public function update(Request $request, MatGuide $mGuide)
+    public function update(Request $request, MatGuide $matGuide)
     {
         //
     }
     
-    public function destroy(MatGuide $mGuide)
+    public function destroy(MatGuide $matGuide)
     {
         //
     }

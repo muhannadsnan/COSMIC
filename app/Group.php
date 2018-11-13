@@ -20,4 +20,9 @@ class Group extends _Model
     {
         return $this->belongsToMany(Material::class, 'group_material', 'group_id', 'material_id');
     }
+
+    public function _matGuide()
+    {
+        return $this->belongsTo(MatGuide::class, 'mat_guide_id');
+    }
 }

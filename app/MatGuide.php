@@ -10,4 +10,9 @@ class MatGuide extends Model
     {
         return $this->hasMany(Material::class);
     }
+
+    public function _groups()
+    {
+        return $this->hasMany(Group::class);
+    }
 }
