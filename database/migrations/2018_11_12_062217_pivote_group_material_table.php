@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePivoteGroupMaterialTable extends Migration
+class PivoteGroupMaterialTable extends Migration
 {
     /**
      * Run the migrations.
@@ -36,6 +36,10 @@ class CreatePivoteGroupMaterialTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_group');
+        Schema::table('group_material', function(Blueprint $table) {
+            $table->dropForeign(['group_id']);
+            $table->dropForeign(['material_id']);
+        });
+        Schema::dropIfExists('group_material');
     }
 }

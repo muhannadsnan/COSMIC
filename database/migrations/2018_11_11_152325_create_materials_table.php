@@ -45,10 +45,6 @@ class CreateMaterialsTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::table('materials', function(Blueprint $table) {
-            $table->dropForeign('materials_mat_guide_id_foreign');
-        });
         Schema::dropIfExists('materials');
     }
 }
