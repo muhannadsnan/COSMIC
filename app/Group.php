@@ -8,17 +8,17 @@ class Group extends _Model
 {
     public function _parents()
     { 
-        return $this->belongsToMany(Group::class, 'group_group', 'child_id', 'parent_id', 'id', 'id');
+        return $this->belongsToMany(Group::class, 'group_group', 'child_id' /* this */, 'parent_id', 'id', 'id');
     }
 
     public function _children()
     {
-        return $this->belongsToMany(Group::class, 'group_group', 'parent_id', 'child_id', 'id', 'id');
+        return $this->belongsToMany(Group::class, 'group_group', 'parent_id' /* this */, 'child_id', 'id', 'id');
     }
 
     public function _materials()
     {
-        return $this->belongsToMany(Material::class, 'group_material', 'group_id', 'material_id');
+        return $this->belongsToMany(Material::class, 'group_material', 'group_id' /* this */, 'material_id');
     }
 
     public function _matGuide()

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProfilesTable extends Migration
+class CreateAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
+            $table->unsignedInteger('currency_id')->nullable();
+            $table->unsignedInteger('closing_acc_id')->nullable();
             $table->string('code');
-            $table->date('endPeriodDate');
+            $table->string('title');
+            $table->text('desc')->nullable();
+            $table->string('nType')->default("N"); // Normal, Closing, Aggregative, Distributive
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('accounts');
     }
 }

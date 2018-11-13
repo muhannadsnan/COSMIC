@@ -27,5 +27,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function _accounts()
+    {
+        return $this->belongsToMany(Account::class, 'account_user', 'user_id'/* this */, 'account_id');
+    }
     
 }
