@@ -20,4 +20,9 @@ class Material extends _Model
     {
         return $this->belongsToMany(Material::class, 'material_material', 'parent_id', 'child_id');
     }
+
+    public function _matGuide()
+    {
+        return $this->belongsTo(MatGuide::class, 'mat_guide_id');
+    }
 }
