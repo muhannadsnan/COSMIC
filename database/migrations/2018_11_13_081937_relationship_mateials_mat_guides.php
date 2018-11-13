@@ -14,7 +14,7 @@ class RelationshipMateialsMatGuides extends Migration
     public function up()
     {
         Schema::table('materials', function (Blueprint $table){
-            $table->unsignedInteger('mat_guide_id')->after('currency_id'); // #4
+            $table->unsignedInteger('mat_guide_id')->after('id'); // #4
 
             $table->foreign('mat_guide_id')
                     ->references('id')

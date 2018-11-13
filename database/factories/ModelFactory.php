@@ -1,32 +1,42 @@
-<?php
+<?php use Faker\Generator as Faker;
 
-use Faker\Generator as Faker;
-use App\MatGuide;
-
-$factory->define(App\MatGuide::class, function (Faker $faker) {
+$factory->define(App\Profile::class, function (Faker $faker) {
     return [               
         'title' => $faker->name,
-        'desc' => $faker->text 
+        'code' => $faker->ean13,
+        'endPeriodDate' => $faker->date
+    ];
+});
+$factory->define(App\MatGuide::class, function (Faker $faker) {
+    $profiles = App\Profile::all()->pluck('id')->toArray();
+    return [               
+        'title' => $faker->name,
+        'desc' => $faker->text,
+        'profile_id' => $faker->randomElement($profiles)
     ];
 });
 $factory->define(App\Group::class, function (Faker $faker) {
-    $matGuide = MatGuide::all()->pluck('id')->toArray();
+    $profiles = App\Profile::all()->pluck('id')->toArray();
+    $matGuide = App\MatGuide::all()->pluck('id')->toArray();
     return [               
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
-        'mat_guide_id' => $faker->randomElement($matGuide)
+        'mat_guide_id' => $faker->randomElement($matGuide),
+        'profile_id' => $faker->randomElement($profiles)
     ];
 });
 $factory->define(App\Material::class, function (Faker $faker) {
-    $matGuide = MatGuide::all()->pluck('id')->toArray();
+    $matGuide = App\MatGuide::all()->pluck('id')->toArray();
+    $profiles = App\Profile::all()->pluck('id')->toArray();
     return [
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
         'dimention_unit' => $faker->randomElement(['cm', 'in']),
         'weight_unit' => $faker->randomElement(['kg', 'g']),
-        'mat_guide_id' => $faker->randomElement($matGuide)
+        'mat_guide_id' => $faker->randomElement($matGuide),
+        'profile_id' => $faker->randomElement($profiles)
     ];
 });
 

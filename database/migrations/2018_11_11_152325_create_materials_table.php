@@ -15,7 +15,6 @@ class CreateMaterialsTable extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('currency_id')->nullable();
             $table->string('title');
             $table->text('desc');
             $table->string('code');
