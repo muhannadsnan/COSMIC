@@ -31,8 +31,9 @@ class UserController extends Controller
     
     public function show(User $user)
     { 
-        return $user->_accounts;
         return $user;
+        return $user->_matGuide;
+        return $user->_accounts;
     }
     
     public function edit(User $user)

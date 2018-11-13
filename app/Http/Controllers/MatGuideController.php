@@ -32,6 +32,7 @@ class MatGuideController extends Controller
     public function show(MatGuide $matGuide)
     {
         return $matGuide;
+        return $matGuide->_users;
         return $matGuide->_groups;
         return $matGuide->_materials;
     }

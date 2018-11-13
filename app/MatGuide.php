@@ -15,4 +15,9 @@ class MatGuide extends _Model
     {
         return $this->hasMany(Group::class);
     }
+
+    public function _users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

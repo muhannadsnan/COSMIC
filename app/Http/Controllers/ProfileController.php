@@ -31,10 +31,10 @@ class ProfileController extends Controller
     
     public function show(Profile $profile)
     { 
+        return $profile;
         return $profile->_materials;
         return $profile->_matGuides;
         return $profile->_groups;
-        return $profile;
     }
     
     public function edit(Profile $profile)

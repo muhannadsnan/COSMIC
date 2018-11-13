@@ -31,10 +31,10 @@ class AccountController extends Controller
     
     public function show(Account $account)
     { 
+        return $account;
         return $account->_users;
         return $account->_closingAccount;
         return $account->_childAccount;
-        return $account;
     }
     
     public function edit(Account $account)
