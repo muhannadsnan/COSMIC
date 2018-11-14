@@ -23,6 +23,11 @@ class Profile extends _Model
 
     public function _accounts()
     {
-        return $this->hasMany(account::class);
+        return $this->hasMany(Account::class);
+    } 
+
+    public function _users()
+    {
+        return $this->hasMany(User::class);
     } 
 }
