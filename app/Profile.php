@@ -19,5 +19,5 @@ class Profile extends _Model
     public function _matGuides()
     {
         return $this->hasMany(MatGuide::class);
-    }
+    } 
 }

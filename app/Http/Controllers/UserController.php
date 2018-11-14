@@ -32,6 +32,7 @@ class UserController extends Controller
     public function show(User $user)
     { 
         return $user;
+        return $user->_groups;
         return $user->_matGuide;
         return $user->_accounts;
     }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RelationshipGroupsMatguide extends Migration
+class RelationshipGroupsMatguides extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class RelationshipGroupsMatguide extends Migration
     public function up()
     {
         Schema::table('groups', function (Blueprint $table) {
-            $table->unsignedInteger('mat_guide_id')->after('nType');
-
+            $table->unsignedInteger('mat_guide_id')->after('id');
             $table->foreign('mat_guide_id')
                     ->on('id')
                     ->references('mat_guides');

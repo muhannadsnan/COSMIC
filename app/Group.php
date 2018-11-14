@@ -25,4 +25,9 @@ class Group extends _Model
     {
         return $this->belongsTo(MatGuide::class, 'mat_guide_id');
     }
+
+    public function _users()
+    {
+        return $this->belongsToMany(User::class, 'user_group', 'group_id', 'user_id');
+    }
 }

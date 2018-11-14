@@ -32,6 +32,7 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         return $group;
+        return $group->_users;
         return $group->_matGuide;
         return Group::with('_materials')->where('id', '=', 4)->get();
         return $group->_materials;

@@ -16,7 +16,9 @@ class UserTableSeeder extends Seeder
 
         $usr = User::find(1);
         $usr->_accounts()->sync([3,4,5]);
+        $usr->_groups()->sync([1,3,4]);
         $usr = User::find(5);
         $usr->_accounts()->sync([2,3,6]);
+        $usr->_groups()->sync([2,3,4,5]);
     }
 }
