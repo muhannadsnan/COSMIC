@@ -49,6 +49,17 @@ $factory->define(App\Material::class, function (Faker $faker) {
         'profile_id' => $faker->randomElement($profiles)
     ];
 });
+$factory->define(App\Customer::class, function (Faker $faker) {
+    return [               
+        'name' => $faker->name,
+        'company_name' => $faker->company,
+        'company_form' => $faker->word,
+        'licsence_address' => $faker->address,
+        'delivery_address' => $faker->address,
+        'tax_num' => $faker->ean8,
+        'tax_dept' => $faker->randomElement(['dept#1', 'dept#2', 'dept#3', 'dept#4']),
+    ];
+});
 
 
 /*
