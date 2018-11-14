@@ -31,8 +31,8 @@ class CustomerController extends Controller
     
     public function show(Customer $customer)
     { 
+        return $customer->_users;
         return $customer;
-        return $customer->_profile;
     }
     
     public function edit(Customer $customer)

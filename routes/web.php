@@ -11,5 +11,6 @@ Route::resource('/matGuides', 'MatGuideController');
 Route::resource('/profiles', 'ProfileController');
 Route::resource('/accounts', 'AccountController');
 Route::resource('/users', 'UserController');
+Route::resource('/customers', 'CustomerController');
 
 // Route::get('/', 'HomeController@index')->name('home');

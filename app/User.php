@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
+
+    public function _customers()
+    {
+        return $this->belongsToMany(Customer::class, 'user_customer', 'user_id', 'customer_id');
+    }
 }
