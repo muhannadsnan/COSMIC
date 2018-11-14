@@ -20,4 +20,9 @@ class Profile extends _Model
     {
         return $this->hasMany(MatGuide::class);
     } 
+
+    public function _accounts()
+    {
+        return $this->hasMany(account::class);
+    } 
 }

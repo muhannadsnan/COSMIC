@@ -31,6 +31,7 @@ class ProfileController extends Controller
     
     public function show(Profile $profile)
     { 
+        return $profile->_accounts;
         return $profile;
         return $profile->_materials;
         return $profile->_matGuides;

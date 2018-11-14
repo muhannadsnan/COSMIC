@@ -31,6 +31,7 @@ class AccountController extends Controller
     
     public function show(Account $account)
     { 
+        return $account->_profile;
         return $account;
         return $account->_users;
         return $account->_closingAccount;

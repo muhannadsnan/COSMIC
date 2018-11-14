@@ -8,11 +8,13 @@ $factory->define(App\Profile::class, function (Faker $faker) {
     ];
 });
 $factory->define(App\Account::class, function (Faker $faker) {
+    $profiles = App\Profile::all()->pluck('id')->toArray();
     return [               
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
-        'nType' => $faker->randomElement(['N', 'C', 'A', 'D'])
+        'nType' => $faker->randomElement(['N', 'C', 'A', 'D']),
+        'profile_id' => $faker->randomElement($profiles)
     ];
 });
 $factory->define(App\MatGuide::class, function (Faker $faker) {
