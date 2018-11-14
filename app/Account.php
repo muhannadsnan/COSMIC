@@ -21,8 +21,13 @@ class Account extends _Model
         return $this->belongsToMany(Account::class, 'account_account', 'parent_id'/* this */, 'child_id');
     }
 
-    public function _profile() // child accounts
+    public function _profile() 
     {
         return $this->belongsTo(Profile::class, 'profile_id');
+    }
+
+    public function _customers() 
+    {
+        return $this->hasMany(Customer::class);
     }
 }
