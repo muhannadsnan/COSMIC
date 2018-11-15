@@ -15,4 +15,9 @@ class Customer extends Model
     {
         return $this->belongsTo(User::class, 'account_id');
     }
+
+    public function _profile()
+    {
+        return $this->belongsTo(Profile::class, 'profile_id');
+    }
 }

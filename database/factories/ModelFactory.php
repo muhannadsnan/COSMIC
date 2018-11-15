@@ -51,6 +51,7 @@ $factory->define(App\Material::class, function (Faker $faker) {
 });
 $factory->define(App\Customer::class, function (Faker $faker) {
     $accounts = App\Account::all()->pluck('id')->toArray();
+    $profiles = App\Profile::all()->pluck('id')->toArray();
     return [               
         'name' => $faker->name,
         'company_name' => $faker->company,
@@ -60,6 +61,7 @@ $factory->define(App\Customer::class, function (Faker $faker) {
         'tax_num' => $faker->ean8,
         'tax_dept' => $faker->randomElement(['dept#1', 'dept#2', 'dept#3', 'dept#4']),
         'account_id' => $faker->randomElement($accounts),
+        'profile_id' => $faker->randomElement($profiles),
     ];
 });
 
