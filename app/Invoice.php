@@ -15,4 +15,9 @@ class Invoice extends _Model
     {
         return $this->belongsToMany(Material::class, 'invoice_material', 'invoice_id', 'material_id');
     }
+
+    public function _users()
+    {
+        return $this->belongsToMany(User::class, 'invoice_user', 'invoice_id', 'user_id');
+    }
 }

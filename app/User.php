@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Customer::class, 'user_customer', 'user_id', 'customer_id');
     }
+
+    public function _invoices()
+    {
+        return $this->belongsToMany(Invoice::class, 'invoice_user', 'user_id', 'invoice_id');
+    }
 }

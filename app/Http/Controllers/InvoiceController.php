@@ -31,8 +31,9 @@ class InvoiceController extends Controller
     
     public function show(Invoice $invoice)
     { 
-        return $invoice->_materials;
+        return $invoice->_users;
         return $invoice;
+        return $invoice->_materials;
         return $invoice->_customers;
     }
     
