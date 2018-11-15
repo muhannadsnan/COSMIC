@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMatGuidesTable extends Migration
+class CreateEntriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateMatGuidesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mat_guides', function (Blueprint $table) {
+        Schema::create('entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
+            $table->float('debit');
+            $table->float('credit');
+            $table->float('equivalent');
             $table->text('desc')->nullable();
+            $table->string('nType')->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateMatGuidesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mat_guides');
+        Schema::dropIfExists('entries');
     }
 }

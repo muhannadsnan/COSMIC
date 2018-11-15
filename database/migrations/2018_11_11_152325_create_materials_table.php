@@ -16,7 +16,7 @@ class CreateMaterialsTable extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->text('desc');
+            $table->text('desc')->nullable();
             $table->string('code');
             $table->string('unit1')->nullable(); // these units can be set to m:m relationship
             $table->string('unit2')->nullable(); // 
