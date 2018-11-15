@@ -16,7 +16,9 @@ class InvoiceTableSeeder extends Seeder
 
         $inv = Invoice::find(1);
         $inv->_customers()->sync([3,5,7,9]);
+        $inv->_materials()->sync([3,4,5,6,7,8,9]);
         $inv = Invoice::find(5);
         $inv->_customers()->sync([1,2,3,7]);
+        $inv->_materials()->sync([3,5,7,9]);
     }
 }

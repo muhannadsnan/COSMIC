@@ -32,6 +32,7 @@ class MaterialController extends Controller
     
     public function show(Material $material)
     { 
+        return $material->_invoices;
         return $material;
         return $material->_matGuide;
         return $material->_groups;

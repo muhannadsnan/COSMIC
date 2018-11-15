@@ -25,4 +25,9 @@ class Material extends _Model
     {
         return $this->belongsTo(MatGuide::class, 'mat_guide_id');
     }
+
+    public function _invoices()
+    {
+        return $this->belongsToMany(MatGuide::class, 'invoice_material', 'material_id', 'invoice_id');
+    }
 }
