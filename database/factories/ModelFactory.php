@@ -64,7 +64,17 @@ $factory->define(App\Customer::class, function (Faker $faker) {
         'profile_id' => $faker->randomElement($profiles),
     ];
 });
-
+$factory->define(App\Invoice::class, function (Faker $faker) { 
+    return [ 
+        'title' => $faker->name,
+        'desc' => $faker->sentence,
+        'client_acc' => $faker->randomElement(['cash', 'remaining', 'x_client_acc']),
+        'ext_num' => $faker->ean8,
+        'int_num' => $faker->ean8,
+        'sum' => $faker->randomFloat(null, 0, 1000),
+        'remaining' => $faker->randomFloat(null, 0, 1000),
+    ];
+});
 
 /*
   >  php artisan migrate:refresh --seed

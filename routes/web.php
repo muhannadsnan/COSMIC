@@ -12,5 +12,6 @@ Route::resource('/profiles', 'ProfileController');
 Route::resource('/accounts', 'AccountController');
 Route::resource('/users', 'UserController');
 Route::resource('/customers', 'CustomerController');
+Route::resource('/invoices', 'InvoiceController');
 
 // Route::get('/', 'HomeController@index')->name('home');
