@@ -86,6 +86,17 @@ $factory->define(App\Entry::class, function (Faker $faker) {
         'equivalent' => $faker->randomFloat(null, 0, 10000),
     ];
 });
+$factory->define(App\Currency::class, function (Faker $faker) { 
+    return [
+        'sell' => $faker->randomFloat(null, 0, 10000),
+        'buy' => $faker->randomFloat(null, 0, 10000),
+        'sell_black' => $faker->randomFloat(null, 0, 10000),
+        'buy_black' => $faker->randomFloat(null, 0, 10000),
+        'nDate' => $faker->date(),
+        'country' => $faker->country,
+        'title' => $faker->currencyCode,
+    ];
+});
 
 /*
   >  php artisan migrate:refresh --seed

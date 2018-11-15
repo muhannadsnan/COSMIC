@@ -14,5 +14,6 @@ Route::resource('/users', 'UserController');
 Route::resource('/customers', 'CustomerController');
 Route::resource('/invoices', 'InvoiceController');
 Route::resource('/entries', 'EntryController');
+Route::resource('/currencies', 'CurrencyController');
 
 // Route::get('/', 'HomeController@index')->name('home');
