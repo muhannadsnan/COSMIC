@@ -20,4 +20,9 @@ class Customer extends Model
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
+
+    public function _invoices()
+    {
+        return $this->belongsToMany(Invoice::class, 'invoice_customer', 'customer_id', 'invoice_id');
+    }
 }

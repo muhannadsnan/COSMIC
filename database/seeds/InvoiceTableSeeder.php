@@ -13,5 +13,10 @@ class InvoiceTableSeeder extends Seeder
     public function run()
     {
         factory(Invoice::class, 30)->create();
+
+        $inv = Invoice::find(1);
+        $inv->_customers()->sync([3,5,7,9]);
+        $inv = Invoice::find(5);
+        $inv->_customers()->sync([1,2,3,7]);
     }
 }

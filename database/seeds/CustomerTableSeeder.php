@@ -11,7 +11,9 @@ class CustomerTableSeeder extends Seeder
 
         $cust = Customer::find(1);
         $cust->_users()->sync([2,5,6,7]);
+        $cust->_invoices()->sync([2,5,6,7,11,15]);
         $cust = Customer::find(4);
         $cust->_users()->sync([1,2,3,6,8,10]);
+        $cust->_invoices()->sync([2,5,9,11]);
     }
 }
