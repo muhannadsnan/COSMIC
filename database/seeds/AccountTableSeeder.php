@@ -18,9 +18,11 @@ class AccountTableSeeder extends Seeder
         $acc->_closingAccount()->sync([3,5]);
         $acc->_childAccount()->sync([4,6]);
         $acc->_users()->sync([3,5,7,9]);
+        $acc->_invoices()->sync([10,14,18]);
         $acc = Account::find(5);
         $acc->_closingAccount()->sync([1,2,3]);
         $acc->_childAccount()->sync([1,2,4]);
         $acc->_users()->sync([1,2,3,7]);
+        $acc->_invoices()->sync([20,22,10]);
     }
 }
