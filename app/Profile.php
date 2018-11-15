@@ -35,4 +35,9 @@ class Profile extends _Model
     {
         return $this->hasMany(Customer::class);
     } 
+
+    public function _invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    } 
 }

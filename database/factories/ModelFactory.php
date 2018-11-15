@@ -65,6 +65,7 @@ $factory->define(App\Customer::class, function (Faker $faker) {
     ];
 });
 $factory->define(App\Invoice::class, function (Faker $faker) { 
+    $profiles = App\Profile::all()->pluck('id')->toArray();
     return [ 
         'title' => $faker->name,
         'desc' => $faker->sentence,
@@ -73,6 +74,7 @@ $factory->define(App\Invoice::class, function (Faker $faker) {
         'int_num' => $faker->ean8,
         'sum' => $faker->randomFloat(null, 0, 1000),
         'remaining' => $faker->randomFloat(null, 0, 1000),
+        'profile_id' => $faker->randomElement($profiles)
     ];
 });
 

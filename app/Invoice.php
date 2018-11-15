@@ -25,4 +25,9 @@ class Invoice extends _Model
     {
         return $this->belongsToMany(Account::class, 'invoice_account', 'invoice_id', 'account_id');
     }
+
+    public function _profile()
+    {
+        return $this->belongsTo(Profile::class, 'profile_id');
+    }
 }
