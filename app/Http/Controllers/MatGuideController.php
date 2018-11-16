@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\MatGuide;
+use App\Warehouse;
 use Illuminate\Http\Request;
 
-class MatGuideController extends Controller
+class WarehouseController extends Controller
 {
     public function index()
     {        
-        return MatGuide::all();
+        return Warehouse::all();
     }
     
     public function create()
     {
-        $matGuide = new MatGuide([
+        $warehouse = new Warehouse([
             'title' => 't1',
             'desc' => 'd1',
             'code' => 'c1',
             'group_id' => '1',
         ]);
-        $matGuide->save();
-        return $matGuide;
+        $warehouse->save();
+        return $warehouse;
     }
     
     public function store(Request $request)
@@ -29,27 +29,27 @@ class MatGuideController extends Controller
         //
     }
     
-    public function show(MatGuide $matGuide)
+    public function show(Warehouse $warehouse)
     {
-        return $matGuide;
-        return $matGuide->_users;
-        return $matGuide->_groups;
-        return $matGuide->_materials;
+        return $warehouse;
+        return $warehouse->_users;
+        return $warehouse->_groups;
+        return $warehouse->_materials;
     }
     
-    public function edit(MatGuide $matGuide)
+    public function edit(Warehouse $warehouse)
     {
-        $matGuide->title = 'T1';
-        $matGuide->save();
-        return $matGuide;
+        $warehouse->title = 'T1';
+        $warehouse->save();
+        return $warehouse;
     }
     
-    public function update(Request $request, MatGuide $matGuide)
+    public function update(Request $request, Warehouse $warehouse)
     {
         //
     }
     
-    public function destroy(MatGuide $matGuide)
+    public function destroy(Warehouse $warehouse)
     {
         //
     }

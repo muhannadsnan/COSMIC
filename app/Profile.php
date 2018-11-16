@@ -16,9 +16,9 @@ class Profile extends _Model
         return $this->hasMany(Group::class);
     }
     
-    public function _matGuides()
+    public function _warehouses()
     {
-        return $this->hasMany(MatGuide::class);
+        return $this->hasMany(Warehouse::class);
     } 
 
     public function _accounts()

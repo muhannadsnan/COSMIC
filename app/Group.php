@@ -21,9 +21,9 @@ class Group extends _Model
         return $this->belongsToMany(Material::class, 'group_material', 'group_id' /* this */, 'material_id');
     }
 
-    public function _matGuide()
+    public function _warehouses()
     {
-        return $this->belongsTo(MatGuide::class, 'mat_guide_id');
+        return $this->belongsToMany(Warehouse::class, 'group_warehouse', 'group_id', 'warehouse_id');
     }
 
     public function _users()

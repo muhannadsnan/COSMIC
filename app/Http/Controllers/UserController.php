@@ -36,7 +36,7 @@ class UserController extends Controller
         return $user;
         return $user->_profile;
         return $user->_groups;
-        return $user->_matGuide;
+        return $user->_warehouse;
         return $user->_accounts;
     }
     

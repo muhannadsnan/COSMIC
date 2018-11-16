@@ -34,7 +34,7 @@ class MaterialController extends Controller
     { 
         return $material->_invoices;
         return $material;
-        return $material->_matGuide;
+        return $material->_warehouse;
         return $material->_groups;
         return $material->_parents;
         return $material->_children;

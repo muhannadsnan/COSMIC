@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RelationshipProfileToMaterialGroupMatGuide extends Migration
+class RelationshipProfileToMaterialsGroupsWarehouses extends Migration
 {
     /**
      * Run the migrations.
@@ -27,7 +27,7 @@ class RelationshipProfileToMaterialGroupMatGuide extends Migration
                     ->references('profiles');
         });
 
-        Schema::table('mat_guides', function (Blueprint $table) {
+        Schema::table('warehouses', function (Blueprint $table) {
             $table->unsignedInteger('profile_id')->after('id');
             $table->foreign('profile_id')
                     ->on('id')
@@ -50,7 +50,7 @@ class RelationshipProfileToMaterialGroupMatGuide extends Migration
             $table->dropForeign(['profile_id']);
         });
 
-        Schema::table('mat_guides', function (Blueprint $table) {
+        Schema::table('warehouses', function (Blueprint $table) {
             $table->dropForeign(['profile_id']);
         });
     }

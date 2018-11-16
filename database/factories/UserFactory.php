@@ -14,7 +14,7 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
-    $matGuides = App\MatGuide::all()->pluck('id')->toArray();
+    $warehouses = App\Warehouse::all()->pluck('id')->toArray();
     $profiles = App\Profile::all()->pluck('id')->toArray();
     return [
         'name' => $faker->name,
@@ -22,7 +22,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'email_verified_at' => now(),
         'password' => bcrypt($faker->sentence()), // secret
         'remember_token' => str_random(10),
-        'mat_guide_id' => $faker->randomElement($matGuides),
+        'warehouse_id' => $faker->randomElement($warehouses),
         'profile_id' => $faker->randomElement($profiles)
     ];
 });

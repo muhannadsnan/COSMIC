@@ -33,9 +33,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Account::class, 'account_user', 'user_id'/* this */, 'account_id');
     }
     
-    public function _matGuide()
+    public function _warehouse()
     {
-        return $this->belongsTo(Account::class, 'mat_guide_id');
+        return $this->belongsTo(Account::class, 'warehouse_id');
     }
     
     public function _groups()

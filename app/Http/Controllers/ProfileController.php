@@ -37,7 +37,7 @@ class ProfileController extends Controller
         return $profile->_users;
         return $profile->_accounts;
         return $profile->_materials;
-        return $profile->_matGuides;
+        return $profile->_warehouses;
         return $profile->_groups;
     }
     

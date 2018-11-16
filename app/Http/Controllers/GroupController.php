@@ -33,7 +33,7 @@ class GroupController extends Controller
     {
         return $group;
         return $group->_users;
-        return $group->_matGuide;
+        return $group->_warehouse;
         return Group::with('_materials')->where('id', '=', 4)->get();
         return $group->_materials;
         return $group->_parents;

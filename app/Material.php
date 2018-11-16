@@ -21,13 +21,13 @@ class Material extends _Model
         return $this->belongsToMany(Material::class, 'material_material', 'parent_id', 'child_id');
     }
 
-    public function _matGuide()
+    public function _warehouses()
     {
-        return $this->belongsTo(MatGuide::class, 'mat_guide_id');
+        return $this->belongsToMany(Warehouse::class, 'material_warehouse', 'material_id', 'warehouse_id');
     }
 
     public function _invoices()
     {
-        return $this->belongsToMany(MatGuide::class, 'invoice_material', 'material_id', 'invoice_id');
+        return $this->belongsToMany(Invoice::class, 'invoice_material', 'material_id', 'invoice_id');
     }
 }

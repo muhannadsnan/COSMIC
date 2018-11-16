@@ -7,7 +7,7 @@ Auth::routes();
 Route::resource('/', 'HomeController');
 Route::resource('/groups', 'GroupController');
 Route::resource('/materials', 'MaterialController');
-Route::resource('/matGuides', 'MatGuideController');
+Route::resource('/warehouses', 'WarehouseController');
 Route::resource('/profiles', 'ProfileController');
 Route::resource('/accounts', 'AccountController');
 Route::resource('/users', 'UserController');

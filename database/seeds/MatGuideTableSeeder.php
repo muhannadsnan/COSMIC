@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\MatGuide;
+use App\Warehouse;
 
-class MatGuideTableSeeder extends Seeder
+class WarehouseTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class MatGuideTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(MatGuide::class, 5)->create();   
+        factory(Warehouse::class, 5)->create();   
     }
 }
