@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RelationshipUsersWarehouses extends Migration
+class PivoteUserWarehouse extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class RelationshipUsersWarehouses extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('warehouse_id')->unsigned()->after('id');
+        Schema::create('user_warehouse', function (Blueprint $table) {
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('warehouse_id');
       
+            $table->foreign('user_id')
+                    ->references('id')
+                    ->on('users');
             $table->foreign('warehouse_id')
                     ->references('id')
                     ->on('warehouses');
@@ -29,8 +33,10 @@ class RelationshipUsersWarehouses extends Migration
      */
     public function down()
     {
-        Schema::table('users', function(Blueprint $table) {
+        Schema::table('user_warehouse', function(Blueprint $table) {
+            $table->dropForeign(['user_id']);
             $table->dropForeign(['warehouse_id']);
+            $table->dropIfExists('user_warehouse');
         });
     }
 }
