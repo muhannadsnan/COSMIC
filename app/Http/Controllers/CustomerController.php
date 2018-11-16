@@ -3,25 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Customer;
+use App\Client;
 
-class CustomerController extends Controller
+class ClientController extends Controller
 {
     public function index()
     {        
-        return Customer::all();
+        return Client::all();
     }
     
     public function create()
     {
-        $customer = new Customer([
+        $client = new Client([
             'title' => 't1',
             'desc' => 'd1',
             'code' => 'c1',
             'group_id' => '1',
         ]);
-        $customer->save();
-        return $customer;
+        $client->save();
+        return $client;
     }
     
     public function store(Request $request)
@@ -29,28 +29,28 @@ class CustomerController extends Controller
         //
     }
     
-    public function show(Customer $customer)
+    public function show(Client $client)
     { 
-        return $customer->_invoices;
-        return $customer;
-        return $customer->_profile;
-        return $customer->_account;
-        return $customer->_users;
+        return $client->_invoices;
+        return $client;
+        return $client->_profile;
+        return $client->_account;
+        return $client->_users;
     }
     
-    public function edit(Customer $customer)
+    public function edit(Client $client)
     {
-        $customer->title = 'T1';
-        $customer->save();
-        return $customer;
+        $client->title = 'T1';
+        $client->save();
+        return $client;
     }
     
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Client $client)
     {
         //
     }
     
-    public function destroy(Customer $customer)
+    public function destroy(Client $client)
     {
         //
     }

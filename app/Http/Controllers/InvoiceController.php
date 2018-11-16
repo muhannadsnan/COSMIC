@@ -36,7 +36,7 @@ class InvoiceController extends Controller
         return $invoice->_accounts;
         return $invoice->_users;
         return $invoice->_materials;
-        return $invoice->_customers;
+        return $invoice->_clients;
     }
     
     public function edit(Invoice $invoice)

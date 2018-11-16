@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends _Model
 {
-    public function _customers()
+    public function _clients()
     {
-        return $this->belongsToMany(Customer::class, 'invoice_customer', 'invoice_id', 'customer_id');
+        return $this->belongsToMany(Client::class, 'invoice_client', 'invoice_id', 'client_id');
     }
 
     public function _materials()

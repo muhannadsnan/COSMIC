@@ -11,7 +11,7 @@ Route::resource('/warehouses', 'WarehouseController');
 Route::resource('/profiles', 'ProfileController');
 Route::resource('/accounts', 'AccountController');
 Route::resource('/users', 'UserController');
-Route::resource('/customers', 'CustomerController');
+Route::resource('/clients', 'ClientController');
 Route::resource('/invoices', 'InvoiceController');
 Route::resource('/entries', 'EntryController');
 Route::resource('/currencies', 'CurrencyController');

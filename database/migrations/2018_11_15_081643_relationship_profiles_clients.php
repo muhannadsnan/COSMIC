@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RelationshipProfilesCustomers extends Migration
+class RelationshipProfilesClients extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class RelationshipProfilesCustomers extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table){
+        Schema::table('clients', function (Blueprint $table){
             $table->unsignedInteger('profile_id')->after('id');
             $table->foreign('profile_id')
                     ->references('id')
@@ -28,7 +28,7 @@ class RelationshipProfilesCustomers extends Migration
      */
     public function down()
     {
-        Schema::table('customers', function (Blueprint $table){
+        Schema::table('clients', function (Blueprint $table){
             $table->dropForeign(['profile_id']);
         });
     }

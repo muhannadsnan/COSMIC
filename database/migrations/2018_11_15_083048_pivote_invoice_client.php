@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PivoteInvoiceCustomer extends Migration
+class PivoteInvoiceClient extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class PivoteInvoiceCustomer extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_customer', function (Blueprint $table) {
+        Schema::create('invoice_client', function (Blueprint $table) {
             $table->integer('invoice_id')->unsigned()->nullable();
-            $table->integer('customer_id')->unsigned()->nullable();
+            $table->integer('client_id')->unsigned()->nullable();
 
             $table->foreign('invoice_id')
                     ->references('id')
                     ->on('invoices');
             
-            $table->foreign('customer_id')
+            $table->foreign('client_id')
                     ->references('id')
-                    ->on('customers');
+                    ->on('clients');
       
             $table->timestamps();
         });
@@ -36,10 +36,10 @@ class PivoteInvoiceCustomer extends Migration
      */
     public function down()
     {
-        Schema::table('invoice_customer', function(Blueprint $table) {
-            $table->dropForeign(['customer_id']);
+        Schema::table('invoice_client', function(Blueprint $table) {
+            $table->dropForeign(['client_id']);
             $table->dropForeign(['invoice_id']);
-            $table->dropIfExists('invoice_customer');
+            $table->dropIfExists('invoice_client');
         });
     }
 }

@@ -33,7 +33,7 @@ class AccountController extends Controller
     { 
         return $account->_invoices;
         return $account;
-        return $account->_customers;
+        return $account->_clients;
         return $account->_profile;
         return $account->_users;
         return $account->_closingAccount;

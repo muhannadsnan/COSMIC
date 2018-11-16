@@ -49,7 +49,7 @@ $factory->define(App\Material::class, function (Faker $faker) {
         'profile_id' => $faker->randomElement($profiles)
     ];
 });
-$factory->define(App\Customer::class, function (Faker $faker) {
+$factory->define(App\Client::class, function (Faker $faker) {
     $accounts = App\Account::all()->pluck('id')->toArray();
     $profiles = App\Profile::all()->pluck('id')->toArray();
     return [               

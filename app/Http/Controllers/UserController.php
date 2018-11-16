@@ -32,7 +32,7 @@ class UserController extends Controller
     public function show(User $user)
     { 
         return $user->_invoices;
-        return $user->_customers;
+        return $user->_clients;
         return $user;
         return $user->_profile;
         return $user->_groups;

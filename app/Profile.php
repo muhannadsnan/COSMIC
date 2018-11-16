@@ -31,9 +31,9 @@ class Profile extends _Model
         return $this->hasMany(User::class);
     } 
 
-    public function _customers()
+    public function _clients()
     {
-        return $this->hasMany(Customer::class);
+        return $this->hasMany(Client::class);
     } 
 
     public function _invoices()

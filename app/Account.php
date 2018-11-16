@@ -26,9 +26,9 @@ class Account extends _Model
         return $this->belongsTo(Profile::class, 'profile_id');
     }
 
-    public function _customers() 
+    public function _clients() 
     {
-        return $this->hasMany(Customer::class);
+        return $this->hasMany(Client::class);
     }
 
     public function _invoices() 

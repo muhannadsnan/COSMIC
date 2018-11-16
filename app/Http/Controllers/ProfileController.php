@@ -33,7 +33,7 @@ class ProfileController extends Controller
     { 
         return $profile->_invoices;
         return $profile;
-        return $profile->_customers;
+        return $profile->_clients;
         return $profile->_users;
         return $profile->_accounts;
         return $profile->_materials;
