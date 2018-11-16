@@ -27,17 +27,14 @@ $factory->define(App\Warehouse::class, function (Faker $faker) {
 });
 $factory->define(App\Group::class, function (Faker $faker) {
     $profiles = App\Profile::all()->pluck('id')->toArray();
-    $warehouse = App\Warehouse::all()->pluck('id')->toArray();
     return [               
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
-        'warehouse_id' => $faker->randomElement($warehouse),
         'profile_id' => $faker->randomElement($profiles)
     ];
 });
 $factory->define(App\Material::class, function (Faker $faker) {
-    $warehouse = App\Warehouse::all()->pluck('id')->toArray();
     $profiles = App\Profile::all()->pluck('id')->toArray();
     return [
         'title' => $faker->name,
@@ -45,7 +42,6 @@ $factory->define(App\Material::class, function (Faker $faker) {
         'desc' => $faker->text,
         'dimention_unit' => $faker->randomElement(['cm', 'in']),
         'weight_unit' => $faker->randomElement(['kg', 'g']),
-        'warehouse_id' => $faker->randomElement($warehouse),
         'profile_id' => $faker->randomElement($profiles)
     ];
 });

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PivotMateialWarehouse extends Migration
+class PivotMaterialWarehouse extends Migration
 {
     /**
      * Run the migrations.
@@ -34,9 +34,10 @@ class PivotMateialWarehouse extends Migration
      */
     public function down()
     {
-        Schema::table('matermaterial_warehouseials', function (Blueprint $table){
+        Schema::table('material_warehouse', function (Blueprint $table){
             $table->dropForeign(['material_id']);
             $table->dropForeign(['warehouse_id']);
+            $table->dropIfExists('material_warehouse');
         });
     }
 }

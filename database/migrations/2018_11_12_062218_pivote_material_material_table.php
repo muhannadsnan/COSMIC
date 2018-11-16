@@ -39,7 +39,7 @@ class PivoteMaterialMaterialTable extends Migration
         Schema::table('material_material', function(Blueprint $table) {
             $table->dropForeign(['parent_id']);
             $table->dropForeign(['child_id']);
+            $table->dropIfExists('material_material');
         });
-        Schema::dropIfExists('material_material');
     }
 }

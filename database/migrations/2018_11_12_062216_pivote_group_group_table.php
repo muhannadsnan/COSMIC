@@ -39,7 +39,7 @@ class PivoteGroupGroupTable extends Migration
         Schema::table('group_group', function(Blueprint $table) {
             $table->dropForeign(['parent_id']);
             $table->dropForeign(['child_id']);
+            $table->dropIfExists('group_group');
         });
-        Schema::dropIfExists('group_group');
     }
 }
