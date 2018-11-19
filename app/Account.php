@@ -40,4 +40,9 @@ class Account extends _Model
     {
         return $this->belongsToMany(Entry::class, 'account_entry', 'account_id', 'entry_id');
     }
+    
+    public function _currency() 
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
+    }
 }

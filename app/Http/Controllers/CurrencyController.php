@@ -32,7 +32,7 @@ class CurrencyController extends Controller
     public function show(Currency $currency)
     { 
         return $currency;
-        return $currency->_invoices;
+        return $currency->_accounts;
     }
     
     public function edit(Currency $currency)

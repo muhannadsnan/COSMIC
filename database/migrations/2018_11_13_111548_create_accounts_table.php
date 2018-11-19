@@ -15,7 +15,6 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('currency_id')->nullable();
             $table->unsignedInteger('closing_acc_id')->nullable();
             $table->string('code');
             $table->string('title');

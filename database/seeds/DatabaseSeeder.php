@@ -6,6 +6,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run() // don't mess with the order !!!!!!!!
     {
+        $this->call(CurrencyTableSeeder::class);
         $this->call(ProfileTableSeeder::class);
         $this->call(WarehouseTableSeeder::class);
         $this->call(UserTableSeeder::class);
@@ -15,6 +16,5 @@ class DatabaseSeeder extends Seeder
         $this->call(ClientTableSeeder::class);
         $this->call(InvoiceTableSeeder::class);
         $this->call(EntryTableSeeder::class);
-        $this->call(CurrencyTableSeeder::class);
     }
 }
