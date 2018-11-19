@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Invoice::class, 'invoice_user', 'user_id', 'invoice_id');
     }
+
+    public function _entries()
+    {
+        return $this->belongsToMany(User::class, 'user_entry', 'user_id', 'entry_id');
+    }
 }
