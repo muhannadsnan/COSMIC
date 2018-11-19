@@ -31,6 +31,7 @@ class WarehouseController extends Controller
     
     public function show(Warehouse $warehouse)
     {
+        return $warehouse->_entries;
         return $warehouse;
         return $warehouse->_users;
         return $warehouse->_groups;

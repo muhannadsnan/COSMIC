@@ -31,13 +31,13 @@ class UserController extends Controller
     
     public function show(User $user)
     { 
-        return $user->_entries;
         return $user;
+        return $user->_warehouse;
+        return $user->_entries;
         return $user->_invoices;
         return $user->_clients;
         return $user->_profile;
         return $user->_groups;
-        return $user->_warehouse;
         return $user->_accounts;
     }
     
