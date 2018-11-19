@@ -14,8 +14,8 @@ class PivoteInvoiceClient extends Migration
     public function up()
     {
         Schema::create('invoice_client', function (Blueprint $table) {
-            $table->integer('invoice_id')->unsigned()->nullable();
-            $table->integer('client_id')->unsigned()->nullable();
+            $table->unsignedInteger('invoice_id');
+            $table->unsignedInteger('client_id');
 
             $table->foreign('invoice_id')
                     ->references('id')
