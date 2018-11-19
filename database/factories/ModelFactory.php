@@ -1,5 +1,12 @@
 <?php use Faker\Generator as Faker;
 
+$factory->define(App\Profile::class, function (Faker $faker) {
+    return [               
+        'title' => $faker->name,
+        'code' => $faker->ean13,
+        'endPeriodDate' => $faker->date,
+    ];
+});
 $factory->define(App\Currency::class, function (Faker $faker) {
     return [               
         'title' => $faker->name,
@@ -9,13 +16,6 @@ $factory->define(App\Currency::class, function (Faker $faker) {
         'buy' => $faker->randomFloat(null, 0, 1000),
         'sell_black' => $faker->randomFloat(null, 0, 1000),
         'buy_black' => $faker->randomFloat(null, 0, 1000),
-    ];
-});
-$factory->define(App\Profile::class, function (Faker $faker) {
-    return [               
-        'title' => $faker->name,
-        'code' => $faker->ean13,
-        'endPeriodDate' => $faker->date,
     ];
 });
 $factory->define(App\Account::class, function (Faker $faker) {

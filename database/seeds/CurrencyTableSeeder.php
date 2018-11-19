@@ -12,6 +12,11 @@ class CurrencyTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Currency::class, 4)->create();
+        factory(Currency::class, 6)->create();
+
+        $cur = Currency::find(1);
+        $cur->_profiles()->sync([1,2,3,4]);
+        $cur = Currency::find(5);
+        $cur->_profiles()->sync([1,2,3,4,5,6]);
     }
 }
