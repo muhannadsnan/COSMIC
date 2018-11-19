@@ -20,4 +20,9 @@ class Entry extends Model
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
+    
+    public function _accounts()
+    {
+        return $this->belongsToMany(Account::class, 'account_entry', 'entry_id', 'account_id');
+    }
 }

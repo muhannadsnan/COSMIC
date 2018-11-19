@@ -35,4 +35,9 @@ class Account extends _Model
     {
         return $this->belongsToMany(Invoice::class, 'invoice_account', 'account_id', 'invoice_id');
     }
+
+    public function _entries() 
+    {
+        return $this->belongsToMany(Entry::class, 'account_entry', 'account_id', 'entry_id');
+    }
 }
