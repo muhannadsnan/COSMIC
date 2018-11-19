@@ -31,9 +31,10 @@ class EntryController extends Controller
     
     public function show(Entry $entry)
     { 
+        return $entry->_profile;
+        return $entry;
         return $entry->_warehouses;
         return $entry->_users;
-        return $entry;
     }
     
     public function edit(Entry $entry)

@@ -74,12 +74,14 @@ $factory->define(App\Invoice::class, function (Faker $faker) {
     ];
 });
 $factory->define(App\Entry::class, function (Faker $faker) { 
+    $profiles = App\Profile::all()->pluck('id')->toArray();
     return [ 
         'nType' => $faker->randomElement([0,10,20,30]),
         'desc' => $faker->sentence,
         'debit' => $faker->randomFloat(null, 0, 10000),
         'credit' => $faker->randomFloat(null, 0, 10000),
         'equivalent' => $faker->randomFloat(null, 0, 10000),
+        'profile_id' => $faker->randomElement($profiles)
     ];
 });
 $factory->define(App\Currency::class, function (Faker $faker) { 
