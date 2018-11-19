@@ -10,4 +10,9 @@ class Currency extends Model
     {
         return $this->hasMany(Account::class);
     }
+
+    public function _invoices() 
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

@@ -30,4 +30,9 @@ class Invoice extends _Model
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
+
+    public function _currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
+    }
 }
