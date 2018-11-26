@@ -31,6 +31,7 @@ class UserController extends Controller
     
     public function show(User $user)
     { 
+        return $user->_currencies;
         return $user;
         return $user->_warehouse;
         return $user->_entries;

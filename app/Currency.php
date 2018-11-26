@@ -20,4 +20,9 @@ class Currency extends Model
     {
         return $this->belongsToMany(Profile::class, 'profile_currency', 'currency_id', 'profile_id');
     }
+
+    public function _users() 
+    {
+        return $this->belongsToMany(User::class, 'user_currency', 'currency_id', 'user_id');
+    }
 }

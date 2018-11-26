@@ -16,7 +16,9 @@ class CurrencyTableSeeder extends Seeder
 
         $cur = Currency::find(1);
         $cur->_profiles()->sync([1,2,3,4]);
+        $cur->_users()->sync([5]);
         $cur = Currency::find(5);
         $cur->_profiles()->sync([1,2,3,4,5,6]);
+        $cur->_users()->sync([5]);
     }
 }
