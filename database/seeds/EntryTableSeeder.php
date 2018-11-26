@@ -18,9 +18,11 @@ class EntryTableSeeder extends Seeder
         $ent->_users()->sync([2,3,6,7,9]);
         $ent->_warehouses()->sync([1,6,8]);
         $ent->_accounts()->sync([1,6,8]);
+        $ent->_currencies()->sync([1,4,5]);
         $ent = Entry::find(5);
         $ent->_users()->sync([2,7,8,11]);
         $ent->_warehouses()->sync([2,3,7,8,10]);
         $ent->_accounts()->sync([2,3,7,8,10]);
+        $ent->_currencies()->sync([1,3,4]);
     }
 }
