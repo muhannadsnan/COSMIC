@@ -30,4 +30,9 @@ class Entry extends Model
     {
         return $this->belongsToMany(Currency::class, 'entry_currency', 'entry_id', 'currency_id');
     }
+
+    public function _invoice() // 1:1 or 1:0
+    {
+        return $this->belongsToMany(Currency::class, 'entry_invoice', 'entry_id', 'invoice_id');
+    }
 }

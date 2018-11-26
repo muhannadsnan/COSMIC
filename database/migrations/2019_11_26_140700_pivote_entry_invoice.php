@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PivoteEntryCurrency extends Migration
+class PivoteEntryInvoice extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class PivoteEntryCurrency extends Migration
      */
     public function up()
     {
-        Schema::create('entry_currency', function (Blueprint $table) {
+        Schema::create('entry_invoice', function (Blueprint $table) {
             $table->unsignedInteger('entry_id');
-            $table->unsignedInteger('currency_id');
+            $table->unsignedInteger('invoice_id');
 
             $table->foreign('entry_id')
                     ->references('id')
                     ->on('entries');
             
-            $table->foreign('currency_id')
+            $table->foreign('invoice_id')
                     ->references('id')
-                    ->on('currencies');
+                    ->on('invoices');
       
             $table->timestamps();
         });
@@ -36,10 +36,10 @@ class PivoteEntryCurrency extends Migration
      */
     public function down()
     {
-        Schema::table('entry_currency', function(Blueprint $table) {
-            $table->dropForeign(['currency_id']);
+        Schema::table('entry_invoice', function(Blueprint $table) {
+            $table->dropForeign(['invoice_id']);
             $table->dropForeign(['entry_id']);
-            $table->dropIfExists('entry_currency');
+            $table->dropIfExists('entry_invoice');
         });
     }
 }
