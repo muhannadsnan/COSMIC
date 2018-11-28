@@ -116,6 +116,12 @@ $factory->define(App\Entryinfo::class, function (Faker $faker) {
         'd2' => $faker->word,
     ];
 });
+$factory->define(App\Invoiceinfo::class, function (Faker $faker) { 
+    return [
+        'd1' => $faker->word,
+        'd2' => $faker->word,
+    ];
+});
 
 /*
   >  php artisan migrate:refresh --seed

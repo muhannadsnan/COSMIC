@@ -16,5 +16,6 @@ Route::resource('/invoices', 'InvoiceController');
 Route::resource('/entries', 'EntryController');
 Route::resource('/currencies', 'CurrencyController');
 Route::resource('/entryinfos', 'EntryinfoController');
+Route::resource('/invoiceinfos', 'InvoiceinfoController');
 
 // Route::get('/', 'HomeController@index')->name('home');
