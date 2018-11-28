@@ -110,6 +110,12 @@ $factory->define(App\Currency::class, function (Faker $faker) {
         'title' => $faker->currencyCode,
     ];
 });
+$factory->define(App\Entryinfo::class, function (Faker $faker) { 
+    return [
+        'd1' => $faker->word,
+        'd2' => $faker->word,
+    ];
+});
 
 /*
   >  php artisan migrate:refresh --seed
