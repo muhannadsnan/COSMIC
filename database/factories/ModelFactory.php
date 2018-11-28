@@ -122,6 +122,11 @@ $factory->define(App\Invoiceinfo::class, function (Faker $faker) {
         'd2' => $faker->word,
     ];
 });
+$factory->define(App\Invoicetype::class, function (Faker $faker) { 
+    return [
+        'title' => $faker->sentence,
+    ];
+});
 
 /*
   >  php artisan migrate:refresh --seed
