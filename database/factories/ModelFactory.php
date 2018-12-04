@@ -111,7 +111,9 @@ $factory->define(App\Currency::class, function (Faker $faker) {
     ];
 });
 $factory->define(App\Entryinfo::class, function (Faker $faker) { 
+    $entries = App\Entry::all()->pluck('id')->toArray();
     return [
+        'entry_id' => $faker->randomElement($entries),
         'd1' => $faker->word,
         'd2' => $faker->word,
     ];

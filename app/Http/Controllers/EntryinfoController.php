@@ -31,6 +31,7 @@ class EntryinfoController extends Controller
     
     public function show(Entryinfo $entryinfo)
     { 
+        return $entryinfo->_entry;
         return $entryinfo;
     }
     

@@ -31,8 +31,9 @@ class EntryController extends Controller
     
     public function show(Entry $entry)
     { 
-        return $entry->_invoice;
+        return $entry->_entryinfos;
         return $entry;
+        return $entry->_invoice;
         return $entry->_currencies;
         return $entry->_accounts;
         return $entry->_profile;

@@ -2,8 +2,6 @@
 
 Auth::routes();
 
-
-Auth::routes();
 Route::resource('/', 'HomeController');
 Route::resource('/groups', 'GroupController');
 Route::resource('/materials', 'MaterialController');
