@@ -10,4 +10,9 @@ class Entryinfo extends Model
     {
         return $this->belongsTo(Entry::class, 'entry_id');
     }
+
+    public function _currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
+    }
 }

@@ -31,8 +31,9 @@ class EntryinfoController extends Controller
     
     public function show(Entryinfo $entryinfo)
     { 
-        return $entryinfo->_entry;
         return $entryinfo;
+        return $entryinfo->_currency;
+        return $entryinfo->_entry;
     }
     
     public function edit(Entryinfo $entryinfo)

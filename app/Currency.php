@@ -30,4 +30,9 @@ class Currency extends Model
     {
         return $this->belongsToMany(Entry::class, 'entry_currency', 'currency_id', 'entry_id');
     }
+
+    public function _entryinfos() 
+    {
+        return $this->hasMany(Entryinfo::class);
+    }
 }
