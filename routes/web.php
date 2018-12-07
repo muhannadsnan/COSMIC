@@ -3,6 +3,7 @@
 Auth::routes();
 
 Route::resource('/', 'HomeController');
+Route::get('/home', 'HomeController@index');
 Route::resource('/groups', 'GroupController');
 Route::resource('/materials', 'MaterialController');
 Route::resource('/warehouses', 'WarehouseController');

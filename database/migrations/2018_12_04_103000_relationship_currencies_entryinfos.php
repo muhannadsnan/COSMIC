@@ -28,7 +28,7 @@ class RelationshipCurrenciesEntryinfos extends Migration
      */
     public function down()
     {
-        Schema::table('currencyinfos', function (Blueprint $table){
+        Schema::table('entryinfos', function (Blueprint $table){
             $table->dropForeign(['currency_id']);
         });
     }

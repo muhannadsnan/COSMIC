@@ -13,6 +13,13 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         factory(User::class, 10)->create();
+        $USER = App\User::create([
+            'name' => 'Admin',
+            'email' => 'admin@MSN.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('123'),
+            'profile_id' => 1
+        ]);
 
         $usr = User::find(1);
         $usr->_accounts()->sync([3,4,5]);
