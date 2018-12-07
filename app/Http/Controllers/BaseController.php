@@ -9,6 +9,7 @@ class BaseController extends Controller
 {
     public function index()
     {        
+        return view('bases.index');
         return Base::all();
     }
     
