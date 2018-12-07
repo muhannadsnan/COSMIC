@@ -32,6 +32,7 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         return $payment;
+        return $payment->_invoices;
     }
     
     public function edit(Payment $payment)

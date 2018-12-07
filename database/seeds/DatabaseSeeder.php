@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
         $this->call(GroupTableSeeder::class);
         $this->call(MaterialTableSeeder::class);
         $this->call(ClientTableSeeder::class);
+        $this->call(PaymentTableSeeder::class);
         $this->call(InvoiceTableSeeder::class);
         $this->call(EntryTableSeeder::class);
         $this->call(EntryinfoTableSeeder::class);
         $this->call(InvoiceinfoTableSeeder::class);
         $this->call(InvoicetypeTableSeeder::class);
-        $this->call(PaymentTableSeeder::class);
     }
 }

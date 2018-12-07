@@ -40,4 +40,9 @@ class Invoice extends _Model
     {
         return $this->belongsToMany(Entry::class, 'entry_invoice', 'invoice_id', 'entry_id');
     }
+
+    public function _payment()
+    {
+        return $this->belongsTo(Payment::class, 'payment_id');
+    }
 }
