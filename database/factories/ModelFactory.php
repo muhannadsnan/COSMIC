@@ -136,6 +136,11 @@ $factory->define(App\Payment::class, function (Faker $faker) {
         'title' => $faker->word,
     ];
 });
+$factory->define(App\Base::class, function (Faker $faker) { 
+    return [
+        'title' => $faker->word,
+    ];
+});
 
 /*
   >  php artisan migrate:refresh --seed
