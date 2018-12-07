@@ -14,14 +14,14 @@ class BaseController extends Controller
     
     public function create()
     {
-        $base = new Base([
+        $basis = new Base([
             'title' => 't1',
             'desc' => 'd1',
             'code' => 'c1',
             'group_id' => '1',
         ]);
-        $base->save();
-        return $base;
+        $basis->save();
+        return $basis;
     }
     
     public function store(Request $request)
@@ -29,24 +29,25 @@ class BaseController extends Controller
         //
     }
     
-    public function show(Base $base)
+    public function show(Base $basis)
     { 
-        return $base;
+        return $basis;
+        return $basis->_user;
     }
     
-    public function edit(Base $base)
+    public function edit(Base $basis)
     {
-        $base->title = 'T1';
-        $base->save();
-        return $base;
+        $basis->title = 'T1';
+        $basis->save();
+        return $basis;
     }
     
-    public function update(Request $request, Base $base)
+    public function update(Request $request, Base $basis)
     {
         //
     }
     
-    public function destroy(Base $base)
+    public function destroy(Base $basis)
     {
         //
     }

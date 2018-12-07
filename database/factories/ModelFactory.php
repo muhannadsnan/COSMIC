@@ -137,8 +137,10 @@ $factory->define(App\Payment::class, function (Faker $faker) {
     ];
 });
 $factory->define(App\Base::class, function (Faker $faker) { 
+    $users = App\User::find([3,6,8,9])->pluck('id')->toArray();
     return [
         'title' => $faker->word,
+        'user_id' => $faker->randomElement($users),
     ];
 });
 
