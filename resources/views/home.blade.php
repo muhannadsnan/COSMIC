@@ -3,6 +3,10 @@
 
 @section('content')
 <div class="col-md-8">
+    <!-- @alert
+        koko koko
+    @endalert -->
+
     @auth
         <div class="card">
             <h4 class="card-header bg-primary text-lg">Dashboard</h4>

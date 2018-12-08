@@ -7,13 +7,19 @@
     <div id="app">
         @include('partials.nav')
 
-        <main class="py-4">
-            <div class="container">
+        <main class="">
+            <div class="container py-4">
                 <div class="row justify-content-center">
-                    @yield('content')
+                    <div class="container">
+                        @yield('content')
+                    </div>
                 </div>
             </div>
         </main>
+
+        <footer class="row justify-content-center w-100">
+            msn-23@live.com
+        </footer>
     </div>
 </body>
 </html>
