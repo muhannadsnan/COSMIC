@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Base extends Model
+class Base extends _model
 {
     public function _user()
     {

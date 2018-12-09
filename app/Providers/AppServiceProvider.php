@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191); //Solved by increasing StringLength
         Blade::component('partials.components.alert', 'alert');
         Blade::component('partials.components.modal', 'modal');
+        Blade::component('partials.components.modalbtn', 'modalbtn');
     }
 
     /**

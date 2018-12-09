@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entry extends Model
+class Entry extends _model
 {
     public function _users()
     {

@@ -32,7 +32,14 @@ class BaseController extends Controller
     
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $newBase = Base::create([
+            'title' => $request->title,
+            'materials' => $request->materials,
+            'groups' => $request->groups,
+            'user_id' => auth()->id(),
+        ]);
+        return redirect("/bases/{$newBase->id}");
     }
     
     public function show(Base $basis)

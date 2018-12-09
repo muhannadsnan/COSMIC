@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entryinfo extends Model
+class Entryinfo extends _model
 {
     public function _entry()
     {

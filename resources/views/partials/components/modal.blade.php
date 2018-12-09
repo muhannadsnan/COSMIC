@@ -12,11 +12,12 @@
         $showBtn = true;
     if(!isset($title))
         $title = "";
+    if(!isset($submitForm))
+        $submitForm = "form1"; // form id
     if(!isset($showFooter))
         $showFooter = true;
     if(!isset($footer)){
         $footer['ok'] = "Save";
-        $footer['cancel'] = "Close";
         $footer['cancel'] = "Close";
     }
 ?>
@@ -43,7 +44,7 @@
             @if($showFooter)
                 <div class="modal-footer">
                     @if(isset($footer['cancel'])) <button type="button" class="btn btn-secondary" data-dismiss="modal">{{$footer['cancel']}}</button> @endif
-                    @if(isset($footer['ok'])) <button type="button" class="btn btn-primary">{{$footer['ok']}}</button> @endif
+                    @if(isset($footer['ok'])) <button type="submit" form="{{$submitForm}}" class="btn btn-primary">{{$footer['ok']}}</button> @endif
                 </div>
             @endif
         </div>
