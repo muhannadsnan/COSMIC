@@ -7,6 +7,14 @@ use App\Currency;
 
 class CurrencyController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Profile();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
         return Currency::all();

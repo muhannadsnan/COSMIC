@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Invoiceinfo;
-use App\Group;
 use Illuminate\Http\Request;
 
 class InvoiceinfoController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Invoiceinfo();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
         return Invoiceinfo::all();

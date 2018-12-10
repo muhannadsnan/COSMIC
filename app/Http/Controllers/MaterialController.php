@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Material;
-use App\Group;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Material();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
         return Material::all();

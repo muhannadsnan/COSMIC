@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Group;
-use App\Material;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Group();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {
         return Group::with('_materials')->get();

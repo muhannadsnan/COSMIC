@@ -7,6 +7,14 @@ use App\Entryinfo;
 
 class EntryinfoController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Entryinfo();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
         return Entryinfo::all();

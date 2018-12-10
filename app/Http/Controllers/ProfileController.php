@@ -7,21 +7,23 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Profile();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
+        return view('profiles.index', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[2])]);
         return Profile::all();
     }
     
     public function create()
     {
-        $profile = new Profile([
-            'title' => 't1',
-            'desc' => 'd1',
-            'code' => 'c1',
-            'group_id' => '1',
-        ]);
-        $profile->save();
-        return $profile;
+        return view('profiles.create', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[2])]);
     }
     
     public function store(Request $request)

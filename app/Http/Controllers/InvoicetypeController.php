@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Invoicetype;
-use App\Group;
 use Illuminate\Http\Request;
 
 class InvoicetypeController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Invoicetype();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
         return Invoicetype::all();

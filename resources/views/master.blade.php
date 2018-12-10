@@ -23,9 +23,7 @@
             </div>
         </main>
 
-        <footer class="row justify-content-center w-100">
-            msn-23@live.com
-        </footer>
+        @include('partials.footer') <!-- with scripts -->
     </div>
 </body>
 </html>

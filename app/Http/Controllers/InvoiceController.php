@@ -7,6 +7,15 @@ use App\Invoice;
 
 class InvoiceController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Invoice();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
+
     public function index()
     {        
         return Invoice::all();

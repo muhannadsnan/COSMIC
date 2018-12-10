@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\About;
 
 class HomeController extends Controller
 {
+    private $obj;
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show', 'edit']]);
-    }
+    } 
     
     public function index()
     {

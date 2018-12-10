@@ -7,6 +7,14 @@ use App\Entry;
 
 class EntryController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Entry();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
         return Entry::all();

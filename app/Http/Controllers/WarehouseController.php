@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
+    private $obj;
+    public function __construct()
+    {
+        $this->obj = new Warehouse();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {        
         return Warehouse::all();

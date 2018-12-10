@@ -1,13 +1,17 @@
 @extends('master')
-@section('title', ' My Bases')
+@section('title', '........')
 @section('card-header')
-    My Bases 
-    @modalbtn(['modalid'=>'createBaseModal', 'classes'=>'float-right']) Create Base @endmodalbtn
+    <ol class="breadcrumb bg-light col-sm-6 float-left">
+        <li class="breadcrumb-item"><a href="/bases">Bases</a></li>
+        <li class="breadcrumb-item"><a href="/bases/{{$from[2]}}">{{$base->title}}</a></li>
+        <li class="breadcrumb-item active">Profiles</li>
+    </ol>
+    @modalbtn(['modalid'=>'createProfileModal', 'classes'=>'float-right']) Create Profile @endmodalbtn
 @endsection
 
 @section('content')
-    @modal(['title' => 'Create Base', 'showBtn' => false, 'footer' => ['ok'=>'Create', 'cancel'=>'Close'], 'btn' =>['text'=>'Create Base', 'type'=>'warning', 'classes'=>'mb-2'], 'id'=>'createBaseModal'])
-        <form action="/bases" method="post" class="px-5" id="form1">
+    @modal(['title' => 'Create Profile', 'showBtn' => false, 'footer' => ['ok'=>'Create', 'cancel'=>'Close'], 'btn' =>['text'=>'Create Profile', 'type'=>'warning', 'classes'=>'mb-2'], 'id'=>'createProfileModal'])
+        <form action="/profile" method="post" class="px-5" id="form1">
             @csrf
             <div class="form-group row">
                 <label class="col-sm-3">Title</label>
@@ -25,19 +29,19 @@
     @endmodal    
 
     <ul class="list-unstyled">
-        @forelse(auth()->user()->_bases as $base)
-            <li><a href="/bases/{{$base->id}}">{{$base->title}} - {{$base->created_at}}</a></li>
+        {{-- @forelse($base->_profiles as $profile)
+            <li><a href="/profiles/{{$profile->id}}">{{$profile->title}} - {{$profile->created_at}}</a></li>
         @empty
             @alert
-                You don't have any bases. You can create one.
+                You don't have any profiles. You can create one.
             @endalert
-        @endforelse        
+        @endforelse      --}}  
     </ul>
 @endsection
 
 @section('styles')
 <style>
-
+    
 </style>
 @endsection
 

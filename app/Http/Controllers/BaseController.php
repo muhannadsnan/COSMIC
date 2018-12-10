@@ -7,9 +7,12 @@ use App\Base;
 
 class BaseController extends Controller
 {
+    private $obj;
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->obj = new Base();
+        $this->obj->getFromUrl(@$_GET['from']);
+        $this->middleware('auth', ['except' => []]);
     }
 
     public function index()
@@ -44,6 +47,7 @@ class BaseController extends Controller
     
     public function show(Base $basis)
     { 
+        return view('bases.show', ['base' => $basis]);
         return $basis;
         return $basis->_user;
     }

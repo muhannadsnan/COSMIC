@@ -1,1 +1,0 @@
-here this is products/index.blade.php
