@@ -7,11 +7,9 @@ use App\Entry;
 
 class EntryController extends Controller
 {
-    private $obj;
     public function __construct()
     {
-        $this->obj = new Entry();
-        $this->obj->getFromUrl(@$_GET['from']);
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 

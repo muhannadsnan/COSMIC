@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    private $obj;
     public function __construct()
     {
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
-    } 
+    }
     
     public function index()
     {

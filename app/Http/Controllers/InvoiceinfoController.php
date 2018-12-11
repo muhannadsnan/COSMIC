@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 
 class InvoiceinfoController extends Controller
 {
-    private $obj;
     public function __construct()
     {
-        $this->obj = new Invoiceinfo();
-        $this->obj->getFromUrl(@$_GET['from']);
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 

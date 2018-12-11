@@ -7,11 +7,9 @@ use App\Entryinfo;
 
 class EntryinfoController extends Controller
 {
-    private $obj;
     public function __construct()
     {
-        $this->obj = new Entryinfo();
-        $this->obj->getFromUrl(@$_GET['from']);
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 

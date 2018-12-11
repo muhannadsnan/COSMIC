@@ -3,27 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Profile;
+use App\Base;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    private $obj;
     public function __construct()
     {
-        $this->obj = new Profile();
-        $this->obj->getFromUrl(@$_GET['from']);
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 
     public function index()
     {        
-        return view('profiles.index', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[1])]);
+        return view('profiles.index', ['from'=>config('app.breadcrumb'), 'base'=>Base::find(config('app.breadcrumb')[1])]);
         return Profile::all();
     }
     
     public function create()
     {
-        return view('profiles.create', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[1])]);
+        return view('profiles.index', ['from'=>config('app.breadcrumb'), 'base'=>Base::find(config('app.breadcrumb')[1])]);
     }
     
     public function store(Request $request)

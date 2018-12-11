@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    private $obj;
     public function __construct()
     {
-        $this->obj = new Group();
-        $this->obj->getFromUrl(@$_GET['from']);
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 

@@ -7,11 +7,9 @@ use App\Currency;
 
 class CurrencyController extends Controller
 {
-    private $obj;
     public function __construct()
     {
-        $this->obj = new Profile();
-        $this->obj->getFromUrl(@$_GET['from']);
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 

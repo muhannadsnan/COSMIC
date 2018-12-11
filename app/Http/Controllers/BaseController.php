@@ -7,11 +7,9 @@ use App\Base;
 
 class BaseController extends Controller
 {
-    private $obj;
     public function __construct()
     {
-        $this->obj = new Base();
-        $this->obj->getFromUrl(@$_GET['from']);
+        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 
