@@ -1,10 +1,12 @@
 @extends('master')
 @section('title', ' My Bases')
 @section('card-header')
-    <ol class="breadcrumb bg-light col-sm-6 float-left">
-        <li class="breadcrumb-item"><a href="/bases">Base</a></li>
-        <li class="breadcrumb-item active">{{$base->title}}</li>
-    </ol>
+    @breadcrumb(['items' =>[
+                        ['href' => '/bases', 'text' => 'Bases'],
+                        ['active' => '', 'text' => $base->title]
+                    ], 'classes'=>''
+                ]) 
+    @endbreadcrumb
 @endsection
 
 @section('content')
