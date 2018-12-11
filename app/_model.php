@@ -11,6 +11,6 @@ class _Model extends Model
 
     public function getFromUrl($url)
     {
-        $this->from = explode("/", $url);
+        $this->from = explode(".", $url);
     }
 }

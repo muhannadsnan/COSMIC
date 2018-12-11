@@ -9,11 +9,12 @@ class HomeController extends Controller
     private $obj;
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show', 'edit']]);
+        $this->middleware('auth', ['except' => []]);
     } 
     
     public function index()
     {
+        return redirect()->route('home');
         return view('home');
     }
     
@@ -29,13 +30,13 @@ class HomeController extends Controller
     
     public function show(About $about)
     {
-        return "show !!!";
+        return redirect('home');
         return view('home');
     }
     
     public function edit(About $about)
     {
-        return "edit !!!";
+        return redirect()->route('home');
         return view('home');
     }
     

@@ -11,13 +11,16 @@
             <div class="container py-4">
                 <div class="row justify-content-center">
                     <div class="container">
-                        <div class="card bg-default mb-3">
-                            @if(trim($__env->yieldContent('card-header'))) <div class="card-header">@yield('card-header')</div> 
-                            @else <div class="card-header">@yield('title')</div>  @endif
-                            <div class="card-body">        
-                                @yield('content')
+                        @if(trim($__env->yieldContent('card-header'))) 
+                            <div class="card bg-default mb-3">
+                                <div class="card-header">@yield('card-header')</div>
+                                <div class="card-body">        
+                                    @yield('content')
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            @yield('content')
+                        @endif
                     </div>
                 </div>
             </div>

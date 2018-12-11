@@ -17,13 +17,13 @@ class ProfileController extends Controller
 
     public function index()
     {        
-        return view('profiles.index', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[2])]);
+        return view('profiles.index', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[1])]);
         return Profile::all();
     }
     
     public function create()
     {
-        return view('profiles.create', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[2])]);
+        return view('profiles.create', ['from'=>$this->obj->from, 'base'=>\App\Base::find($this->obj->from[1])]);
     }
     
     public function store(Request $request)
