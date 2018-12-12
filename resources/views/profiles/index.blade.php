@@ -1,13 +1,17 @@
 @extends('master')
 @section('title', '........')
 @section('card-header')
-    @breadcrumb(['items' =>[
-                        ['href' => '/bases', 'text' => 'Bases'],
-                        ['href' => '/bases/'.$from[1], 'text' => $base->title],
-                        ['active' => '', 'text' => 'Profiles']
-                    ], 'classes'=>''
-                ]) 
-    @endbreadcrumb
+    @if(@$from[0] != '')
+        @breadcrumb(['items' =>[
+                            ['href' => '/bases', 'text' => 'Bases'],
+                            ['href' => "/bases/{$from[0]}", 'text' => $from[1]],
+                            ['active' => '', 'text' => 'Profiles']
+                        ], 'classes'=>''
+                    ]) 
+        @endbreadcrumb
+    @else
+        Profile : 
+    @endif
     @modalbtn(['modalid'=>'createProfileModal', 'classes'=>'float-right']) Create Profile @endmodalbtn
 @endsection
 

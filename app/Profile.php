@@ -50,4 +50,9 @@ class Profile extends _Model
     {
         return $this->belongsToMany(Currency::class, 'profile_currency', 'profile_id', 'currency_id');
     } 
+
+    public function _base()
+    {
+        return $this->belongsTo(Base::class, 'base_id');
+    }
 }

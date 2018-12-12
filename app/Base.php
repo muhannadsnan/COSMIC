@@ -10,4 +10,9 @@ class Base extends _model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function _profiles()
+    {
+        return $this->hasMany(Profile::class);
+    } 
 }

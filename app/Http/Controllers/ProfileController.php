@@ -11,18 +11,18 @@ class ProfileController extends Controller
     public function __construct()
     {
         config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
-        $this->middleware('auth', ['except' => []]);
+        // $this->middleware('auth', ['except' => []]);
     }
 
     public function index()
     {        
-        return view('profiles.index', ['from'=>config('app.breadcrumb'), 'base'=>Base::find(config('app.breadcrumb')[1])]);
         return Profile::all();
+        return view('profiles.index', ['from'=>config('app.breadcrumb')]);
     }
     
     public function create()
     {
-        return view('profiles.index', ['from'=>config('app.breadcrumb'), 'base'=>Base::find(config('app.breadcrumb')[1])]);
+        return view('profiles.index', ['from'=>config('app.breadcrumb')]);
     }
     
     public function store(Request $request)
@@ -32,8 +32,9 @@ class ProfileController extends Controller
     
     public function show(Profile $profile)
     { 
-        return $profile->_currencies;
         return $profile;
+        return $profile->_base;
+        return $profile->_currencies;
         return $profile->_entries;
         return $profile->_invoices;
         return $profile->_clients;

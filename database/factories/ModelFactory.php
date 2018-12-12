@@ -1,10 +1,19 @@
 <?php use Faker\Generator as Faker;
 
+$factory->define(App\Base::class, function (Faker $faker) { 
+    $users = App\User::find([3,6,8,9])->pluck('id')->toArray();
+    return [
+        'title' => $faker->word,
+        'user_id' => $faker->randomElement($users),
+    ];
+});
 $factory->define(App\Profile::class, function (Faker $faker) {
+    $bases = App\Base::all()->pluck('id')->toArray();
     return [               
         'title' => $faker->name,
         'code' => $faker->ean13,
         'endPeriodDate' => $faker->date,
+        'base_id' => $faker->randomElement($bases),
     ];
 });
 $factory->define(App\Currency::class, function (Faker $faker) {
@@ -138,13 +147,7 @@ $factory->define(App\Payment::class, function (Faker $faker) {
         'title' => $faker->word,
     ];
 });
-$factory->define(App\Base::class, function (Faker $faker) { 
-    $users = App\User::find([3,6,8,9])->pluck('id')->toArray();
-    return [
-        'title' => $faker->word,
-        'user_id' => $faker->randomElement($users),
-    ];
-});
+
 
 /*
   >  php artisan migrate:refresh --seed

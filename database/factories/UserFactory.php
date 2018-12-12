@@ -14,13 +14,13 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
-    $profiles = App\Profile::all()->pluck('id')->toArray();
+    // $profiles = App\Profile::all()->pluck('id')->toArray();
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => bcrypt($faker->sentence()), // secret
         'remember_token' => str_random(10),
-        'profile_id' => $faker->randomElement($profiles)
+        // 'profile_id' => $faker->randomElement($profiles)
     ];
 });
