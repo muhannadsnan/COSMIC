@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Profile;
 use App\Base;
 use Illuminate\Http\Request;
@@ -9,40 +8,49 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
     public function __construct()
-    {
-        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
-        // $this->middleware('auth', ['except' => []]);
+    { 
+        $this->middleware('auth', ['except' => []]);
+        $this->middleware('sitetree', ['except' => []]);
+        // $this->middleware('owner', ['except' => []]);
     }
 
-    public function index()
-    {        
+    public function index(Base $basis)
+    {
+        // Profile::breadcrumb([$basis]); // fill breadcrumb
+        return view('profiles.index', ['profiles'=>session('app.base')->_profiles]);
         return Profile::all();
-        return view('profiles.index', ['from'=>config('app.breadcrumb')]);
     }
     
     public function create()
     {
-        return view('profiles.index', ['from'=>config('app.breadcrumb')]);
+        return view('profiles.index');
     }
-    
+
+    public function fillProfileIntoBase($newProfile)
+    {
+        Profile::SiteTree([$newProfile->_base, $newProfile]);  // fill breadcrumb
+        $base = session('app.base'); $bProfiles = $base->_profiles->toArray();
+        array_push($bProfiles, $newProfile);
+        $base->_profiles = $bProfiles;
+        session(['app.base' => $base]);
+    }    
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $newProfile = Profile::create([
+            'title' => $request->title,
+            'endPeriodDate' => now(),
+            'code' => $request->code,
+            'base_id' => $request->base_id,
+        ]);
+        $this->fillProfileIntoBase($newProfile); // insert newProfile to Base
+        return redirect()->back();
     }
     
-    public function show(Profile $profile)
+    public function show(Base $basis, Profile $profile)
     { 
-        return $profile;
-        return $profile->_base;
-        return $profile->_currencies;
-        return $profile->_entries;
-        return $profile->_invoices;
-        return $profile->_clients;
-        return $profile->_users;
-        return $profile->_accounts;
-        return $profile->_materials;
-        return $profile->_warehouses;
-        return $profile->_groups;
+        // Profile::breadcrumb([$basis, $profile]); // fill breadcrumb
+        return view('profiles.show', ['profile' => $profile]);
     }
     
     public function edit(Profile $profile)

@@ -14,8 +14,8 @@ class HomeController extends Controller
     
     public function index()
     {
-        return redirect()->route('home');
-        return view('home');
+        return redirect()->route('bases');
+        return view('bases');
     }
     
     public function create()
@@ -30,14 +30,14 @@ class HomeController extends Controller
     
     public function show(About $about)
     {
-        return redirect('home');
-        return view('home');
+        return redirect('bases');
+        return view('bases');
     }
     
     public function edit(About $about)
     {
-        return redirect()->route('home');
-        return view('home');
+        return redirect()->route('bases');
+        return view('bases');
     }
     
     public function update(Request $request, About $about)

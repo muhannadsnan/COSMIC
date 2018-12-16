@@ -1,6 +1,6 @@
 /******************** INITIALS ********************/
 .form-group label{line-height: 36px; margin-bottom: 0;}
-.card .card-header{padding: 5px 15px;    line-height: 46px;    text-align: center;  }
+.card .card-header{padding: 5px 15px;    line-height: 46px;    text-align: left;  }
 .card .card-header .btn{margin: 5px 0px 0px 5px;}
 .card .card-header .breadcrumb{margin-bottom: 0;    padding: 0;}
 .card .card-body{min-height: 350px;}

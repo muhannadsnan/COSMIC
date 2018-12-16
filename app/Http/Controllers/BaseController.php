@@ -10,7 +10,7 @@ class BaseController extends Controller
     public function __construct()
     {
         config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
-        // $this->middleware('auth', ['except' => []]);
+        $this->middleware('auth', ['except' => []]);
     }
 
     public function index()
@@ -45,10 +45,11 @@ class BaseController extends Controller
     
     public function show(Base $basis)
     { 
+        session(['app.base' => $basis]);
+        return view('bases.show', ['base' => $basis]);
         return $basis->_profiles;
         return $basis;
         return $basis->_user;
-        return view('bases.show', ['base' => $basis]);
     }
     
     public function edit(Base $basis)

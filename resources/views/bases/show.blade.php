@@ -11,9 +11,9 @@
 
 @section('content')
     <ul class="list-unstyled">
-        <li><a href="/profiles?from={{$base->id}}.{{$base->title}}">Profiles</a></li>
-        <li><a href="/profiles?from={{$base->id}}.{{$base->title}}">Groups</a></li>
-        <li><a href="/profiles?from={{$base->id}}.{{$base->title}}">Materials</a></li>
+        <li><a href="/bases/{{$base->id}}/profiles">Profiles</a></li>
+        <li><a href="/bases/{{$base->id}}/profiles">Groups</a></li>
+        <li><a href="/bases/{{$base->id}}/profiles">Materials</a></li>
     </ul>
 @endsection
 
