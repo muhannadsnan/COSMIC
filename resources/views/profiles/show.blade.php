@@ -12,11 +12,15 @@
 @endsection
 
 @section('content')
-    <ul class="list-unstyled">
+    <h3 class="text-center">Accounts</h3>
+    <!-- <ul class="list-unstyled">
         <li><a href="/profiles?from=">Profiles</a></li>
         <li><a href="/profiles?from=">Groups</a></li>
         <li><a href="/profiles?from=">Materials</a></li>
-    </ul>
+    </ul> -->
+    @foreach($accounts as $key=>$account)
+        <p>Account: {{$account->title}} - Code: {{$account->code}}</p>
+    @endforeach
 @endsection
 
 @section('styles')

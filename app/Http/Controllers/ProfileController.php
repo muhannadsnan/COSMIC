@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Profile;
 use App\Base;
+use App\Currency;
+use App\Account;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -17,7 +19,10 @@ class ProfileController extends Controller
     public function index(Base $basis)
     {
         // Profile::breadcrumb([$basis]); // fill breadcrumb
-        return view('profiles.index', ['profiles'=>session('app.base')->_profiles]);
+        return view('profiles.index', [
+                'profiles' => session('app.base')->_profiles, 
+                'currencies' => Currency::all()->pluck('title', 'id')->toArray()
+            ]);
         return Profile::all();
     }
     
@@ -39,8 +44,9 @@ class ProfileController extends Controller
         // dd($request->all());
         $newProfile = Profile::create([
             'title' => $request->title,
-            'endPeriodDate' => now(),
-            'code' => $request->code,
+            'code' => "new code.",
+            'startPeriodDate' => $request->startPeriodDate,
+            'endPeriodDate' => $request->endPeriodDate,
             'base_id' => $request->base_id,
         ]);
         $this->fillProfileIntoBase($newProfile); // insert newProfile to Base
@@ -50,7 +56,7 @@ class ProfileController extends Controller
     public function show(Base $basis, Profile $profile)
     { 
         // Profile::breadcrumb([$basis, $profile]); // fill breadcrumb
-        return view('profiles.show', ['profile' => $profile]);
+        return view('profiles.show', ['profile' => $profile, 'accounts' => Account::where('isDefault', '=', true)->get()]);
     }
     
     public function edit(Profile $profile)

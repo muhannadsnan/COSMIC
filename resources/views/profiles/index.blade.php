@@ -13,19 +13,27 @@
 
 @section('content')
     @modal(['title' => 'Create Profile', 'showBtn' => false, 'footer' => ['ok'=>'Create', 'cancel'=>'Close'], 'btn' =>['text'=>'Create Profile', 'type'=>'warning', 'classes'=>'mb-2'], 'id'=>'createProfileModal'])
-        <form action="/profiles" method="post" class="px-5" id="form1">
+        <form action="/profiles" method="post" class="px-5X" id="form1">
             @csrf
             <div class="form-group row">
-                <label class="col-sm-3">Title</label>
-                <input type="text" name="title" class="form-control col-sm-9" placeholder="Enter a title..">
+                <label class="col-sm-4">Profile title</label>
+                <input type="text" name="title" placeholder="Enter a profile title.." class="form-control col-sm-8">
             </div>
             <div class="form-group row">
-                <label class="col-sm-3">endPeriodDate</label>
-                <input type="number" name="endPeriodDate" class="form-control col-sm-9" placeholder="Enter a endPeriodDate..">
+                <label class="col-sm-4">Start period date</label>
+                <input type="text" name="startPeriodDate" placeholder="Enter a start period date.." class="form-control col-sm-8">
             </div>
             <div class="form-group row">
-                <label class="col-sm-3">Code</label>
-                <input type="number" name="code" class="form-control col-sm-9" placeholder="Enter a code..">
+                <label class="col-sm-4">End period date</label>
+                <input type="text" name="endPeriodDate" placeholder="Enter an end period date.." class="form-control col-sm-8">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4">default currency</label>
+                <select name="currency" class="form-control col-sm-8">
+                    @foreach($currencies as $key=>$currency)
+                        <option value="{{$key}}">{{$currency}}</option>
+                    @endforeach
+                </select>
             </div>
             <input type="hidden" name="base_id" value="{{session('app.base')->id}}">
         </form>
