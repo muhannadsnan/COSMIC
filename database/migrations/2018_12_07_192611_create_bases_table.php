@@ -16,7 +16,7 @@ class CreateBasesTable extends Migration
         Schema::create('bases', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->integer('materials')->default(0); // rules for the materials
+            // $table->integer('materials')->default(0); // rules for the materials
             $table->boolean('reqPass')->default(0);
             $table->integer('accGuide');
             $table->timestamps();

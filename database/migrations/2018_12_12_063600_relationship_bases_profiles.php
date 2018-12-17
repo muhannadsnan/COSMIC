@@ -10,7 +10,7 @@ class RelationshipBasesProfiles extends Migration
     {
         Schema::table('profiles', function (Blueprint $table){
             $table->unsignedInteger('base_id')->after('id');
-            $table->foreign('base_id')->references('id')->on('bases');
+            $table->foreign('base_id')->references('id')->on('bases')->onDelete('restrict');
         });
     }
 
