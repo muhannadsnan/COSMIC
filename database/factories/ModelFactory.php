@@ -4,6 +4,8 @@ $factory->define(App\Base::class, function (Faker $faker) {
     $users = App\User::find([3,6,8,9])->pluck('id')->toArray();
     return [
         'title' => $faker->word,
+        'accGuide' => $faker->randomElement([0,1]),
+        'reqPass' => $faker->randomElement([0,1]),
         'user_id' => $faker->randomElement($users),
     ];
 });
@@ -12,6 +14,7 @@ $factory->define(App\Profile::class, function (Faker $faker) {
     return [               
         'title' => $faker->name,
         'code' => $faker->ean13,
+        'startPeriodDate' => $faker->date,
         'endPeriodDate' => $faker->date,
         'base_id' => $faker->randomElement($bases),
     ];

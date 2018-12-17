@@ -17,7 +17,8 @@ class CreateBasesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->integer('materials')->default(0); // rules for the materials
-            $table->integer('groups')->default(0); // rules for the groups
+            $table->boolean('reqPass')->default(0);
+            $table->integer('accGuide');
             $table->timestamps();
         });
     }

@@ -4,21 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Base;
+use App\Profile;
+use App\Currency;
 
 class BaseController extends Controller
 {
     public function __construct()
     {
-        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 
     public function index()
     {        
-        return view('bases.index');
+        $currencies = Currency::all()->pluck('title', 'id')->toArray(); //dd($currencies);
+        return view('bases.index', ['currencies' => $currencies]);
         return Base::all();
     }
-    
+
     public function create()
     {
         $basis = new Base([
@@ -36,11 +38,19 @@ class BaseController extends Controller
         // dd($request->all());
         $newBase = Base::create([
             'title' => $request->title,
-            'materials' => $request->materials,
-            'groups' => $request->groups,
+            'accGuide' => $request->accGuide ? 1 : 0,
+            'reqPass' => $request->reqPass ? 1 : 0,
             'user_id' => auth()->id(),
         ]);
-        return redirect("/bases/{$newBase->id}");
+        $firstProfile = Profile::create([
+            'Title' => $request->profileTitle,
+            'code' => "new code.",
+            'endPeriodDate' => $request->endPeriodDate,
+            'startPeriodDate' => $request->startPeriodDate,
+            'base_id' => $newBase->id,
+        ]);
+        $firstProfile->_currencies()->sync([$request->currency]);
+        return redirect("/bases/{$newBase->id}/profiles/{$firstProfile->id}");
     }
     
     public function show(Base $basis)

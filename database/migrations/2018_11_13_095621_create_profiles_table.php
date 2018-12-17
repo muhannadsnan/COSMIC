@@ -17,6 +17,7 @@ class CreateProfilesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('code');
+            $table->date('startPeriodDate');
             $table->date('endPeriodDate');
             $table->timestamps();
         });

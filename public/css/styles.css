@@ -4,6 +4,7 @@
 .card .card-header .btn{margin: 5px 0px 0px 5px;}
 .card .card-header .breadcrumb{margin-bottom: 0;    padding: 0;}
 .card .card-body{min-height: 350px;}
+.card .card-body form{min-height: 350px; margin: 10px 20px 0px 10px}
 /******************** CUSTOM ********************/
 main{background: #eee; min-height: 500px;}
 main .container{/* background: #fff; */ min-height: 500px;}
