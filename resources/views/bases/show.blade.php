@@ -7,6 +7,7 @@
                     ], 'classes'=>''
                 ]) 
     @endbreadcrumb
+    @modalbtn(['modalid'=>'updateBaseModal', 'classes'=>'float-right', 'type'=>'warning']) Edit @endmodalbtn
 @endsection
 
 @section('content')

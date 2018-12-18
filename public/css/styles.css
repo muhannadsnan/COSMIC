@@ -6,5 +6,8 @@
 .card .card-body{min-height: 350px;}
 .card .card-body form{min-height: 350px; margin: 10px 20px 0px 10px}
 /******************** CUSTOM ********************/
-main{background: #eee; min-height: 500px;}
+main{background: #555; min-height: 500px;}
 main .container{/* background: #fff; */ min-height: 500px;}
+
+.nav-tabs{}
+.tab-content .tab-pane{min-height: 350px}
