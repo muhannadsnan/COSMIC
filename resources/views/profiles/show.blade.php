@@ -31,6 +31,7 @@
             <input type="hidden" name="base_id" value="{{session('app.base')->id}}">
         </form>
     @endmodal   
+    @lang('lbl.bases.0')
     <div class="TABS">
         <ul class="nav nav-tabs " id="myTab" role="tablist">
             <li class="nav-item">
