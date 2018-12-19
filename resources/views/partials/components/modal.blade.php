@@ -17,8 +17,8 @@
     if(!isset($showFooter))
         $showFooter = true;
     if(!isset($footer)){
-        $footer['ok'] = "Save";
-        $footer['cancel'] = "Close";
+        $footer['ok'] = __('lbl.save');
+        $footer['cancel'] = __('lbl.close');
     }
 ?>
 <!-- Button trigger modal -->

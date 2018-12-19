@@ -1,13 +1,27 @@
 /******************** INITIALS ********************/
-.form-group label{line-height: 36px; margin-bottom: 0;}
-.card .card-header{padding: 5px 15px;    line-height: 46px;    text-align: left;  }
-.card .card-header .btn{margin: 5px 0px 0px 5px;}
-.card .card-header .breadcrumb{margin-bottom: 0;    padding: 0;}
-.card .card-body{min-height: 350px;}
-.card .card-body form{min-height: 350px; margin: 10px 20px 0px 10px}
-/******************** CUSTOM ********************/
-main{background: #555; min-height: 500px;}
-main .container{/* background: #fff; */ min-height: 500px;}
+html, body, div, ul, li, a{direction: rtl !important;     text-align: right !important;}
+input[type="radio"], input[type="checkbox"]{vertical-align: middle;     margin-left: 5px;}
+.form-group label{line-height: 36px;    margin-bottom: 0;}
 
-.nav-tabs{}
+/******************** CUSTOM ********************/
+main{background: #555;      min-height: 500px;}
+main .container{/* background: #fff; */ min-height: 500px;}
 .tab-content .tab-pane{min-height: 350px}
+nav .navbar-brand{margin-left: 1rem; margin-right: unset;}
+.dropdown-menu .dropdown-item{text-align: right; }
+.nav-tabs{padding-right: unset; padding-left: 20px;}
+
+/******************** MODAL ********************/
+#createBaseModal .modal-footer .btn{margin-right: 10px;}
+#createBaseModal .modal-header .close{    margin-right: auto;   margin-left: -1rem;}
+
+/******************** MODAL ********************/
+.breadcrumb .breadcrumb-item{padding-right: 0 !important;      padding-left: 0 !important;}
+.breadcrumb .breadcrumb-item:before{padding-left: .5rem !important;    padding-right: .5rem !important;}
+
+/******************** CARD ********************/
+.card .card-header{padding: 5px 15px;    line-height: 46px;    text-align: right;  }
+.card .card-header .btn{margin: 5px 0px 0px 5px;}
+.card .card-header .breadcrumb{margin-bottom: 0;    padding: 0; }
+.card .card-body{min-height: 350px;}
+.card .card-body form{min-height: 350px;    margin: 10px 20px 0px 10px;}

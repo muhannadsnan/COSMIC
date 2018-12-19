@@ -2,33 +2,33 @@
 @section('title', '........')
 @section('card-header')
     @breadcrumb(['items' =>[
-                        ['href' => '/bases', 'text' => 'Bases'],
+                        ['href' => '/bases', 'text' => __('lbl.base.0')],
                         ['href' => "/bases/".session('app.base')->id, 'text' => session('app.base')->title],
-                        ['active' => '', 'text' => 'Profiles']
+                        ['active' => '', 'text' => __('lbl.profile.0')]
                     ], 'classes'=>''
                 ]) 
     @endbreadcrumb
-    @modalbtn(['modalid'=>'createProfileModal', 'classes'=>'float-right']) Create Profile @endmodalbtn
+    @modalbtn(['modalid'=>'createProfileModal', 'classes'=>__('lbl.float-2')]) {{__('lbl.profile.create')}} @endmodalbtn
 @endsection
 
 @section('content')
-    @modal(['title' => 'Create Profile', 'showBtn' => false, 'footer' => ['ok'=>'Create', 'cancel'=>'Close'], 'btn' =>['text'=>'Create Profile', 'type'=>'warning', 'classes'=>'mb-2'], 'id'=>'createProfileModal'])
+    @modal(['title' => __('lbl.profile.create'), 'showBtn' => false, 'footer' => ['ok'=>__('lbl.save'), 'cancel'=>__('lbl.close')], 'btn' =>['text'=>__('lbl.profile.create'), 'type'=>'warning', 'classes'=>'mb-2'], 'id'=>'createProfileModal'])
         <form action="/profiles" method="post" class="px-5X" id="form1">
             @csrf
             <div class="form-group row">
-                <label class="col-sm-4">Profile title</label>
-                <input type="text" name="title" placeholder="Enter a profile title.." class="form-control col-sm-8">
+                <label class="col-sm-4">{{__('lbl.profile.title')}}</label>
+                <input type="text" name="title" placeholder="{{__('msg.enter_entity', ['entity'=>'اسم الملف'])}}" class="form-control col-sm-8">
             </div>
             <div class="form-group row">
-                <label class="col-sm-4">Start period date</label>
-                <input type="text" name="startPeriodDate" placeholder="Enter a start period date.." class="form-control col-sm-8">
+                <label class="col-sm-4">{{__('lbl.profile.startPeriodDate')}}</label>
+                <input type="text" name="startPeriodDate" placeholder="{{__('msg.enter_entity', ['entity'=>'تاريخ بداية المدة'])}}" class="form-control col-sm-8">
             </div>
             <div class="form-group row">
-                <label class="col-sm-4">End period date</label>
-                <input type="text" name="endPeriodDate" placeholder="Enter an end period date.." class="form-control col-sm-8">
+                <label class="col-sm-4">{{__('lbl.profile.endPeriodDate')}}</label>
+                <input type="text" name="endPeriodDate" placeholder="{{__('msg.enter_entity', ['entity'=>'تاريخ نهاية المدة'])}}" class="form-control col-sm-8">
             </div>
             <div class="form-group row">
-                <label class="col-sm-4">default currency</label>
+                <label class="col-sm-4">{{__('lbl.profile.currency')}}</label>
                 <select name="currency" class="form-control col-sm-8">
                     @foreach($currencies as $key=>$currency)
                         <option value="{{$key}}">{{$currency}}</option>
@@ -41,10 +41,10 @@
 
     <ul class="list-unstyled">
         @forelse($profiles as $profile)
-            <li><a href="profiles/{{$profile->id}}">{{$profile->title}} - {{$profile->created_at}}</a></li>
+            <li><a href="profiles/{{$profile->id}}">{{$profile->title}}</a></li>
         @empty
             @alert
-                You don't have any profiles. You can create one.
+                {{__('msg.no_entity', ['entity'=>'ملفات'])}}
             @endalert
         @endforelse 
     </ul>
