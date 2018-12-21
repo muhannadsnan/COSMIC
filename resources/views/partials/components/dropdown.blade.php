@@ -8,11 +8,11 @@
 <div class="dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$slot}}</a>
     <div class="dropdown-menu"> 
-        @foreach($items as $key => $item)
+        @foreach($items as $key => $item) 
             @if($key == 'divider')
                 <div class="dropdown-divider"></div>         
 
-            @elseif($key == 'submenu')  0
+            @elseif(is_array($item))
                 <div class="{{__('lbl.drop1')}}">
                     <div class="dropdown-item  sub-menu-btn " href="#">
                         <div class="dropdown-toggle">{{$item[0]}}</div>                

@@ -27,14 +27,14 @@
                 <li class="nav-item">
                     @dropdown([
                         'items' => [
-                            'submenu' => [
+                            'submenu1' => [
                                 'فواتير',
                                 'مشتريات' => '#href',
                                 'مبيعات' => '#href',
                                 'مرتجع مشتريات' => '#href',
                                 'مرتجع مبيعات' => '#href',
                                 'هدايا' => '#href',
-                             ],
+                            ],
                         ]
                     ])  {{__('lbl.invoice.1')}}  @enddropdown
                 </li>
@@ -68,23 +68,23 @@
                             'بطاقة مستودع' => '#href',
                             'دليل مستودعات' => '#href',
                             'divider' => '',
-                            'submenu' => [
+                            [
                                 'تقارير الحركة',
                                 'sss' => '#href',
-                                ],
-                            'submenu' => [
-                                    'تقارير الجرد',
-                                    'sss' => '#href',
-                                    ],
-                            'submenu' => [
+                            ],
+                            [
+                                'تقارير الجرد',
+                                'sss' => '#href',
+                            ],
+                            [
                                 'تقارير الارباح',
                                 'sss' => '#href',
-                                ],
+                            ],
                             'divider' => '',
-                            'submenu' => [
+                            [
                                 'ادوات',
                                 'sss' => '#href',
-                                ],
+                            ],
                         ]
                     ])  {{__('lbl.material.0')}}  @enddropdown
                 </li>
