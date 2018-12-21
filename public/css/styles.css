@@ -7,9 +7,14 @@ input[type="radio"], input[type="checkbox"]{vertical-align: middle;     margin-l
 main{background: #555;      min-height: 500px;}
 main .container{/* background: #fff; */ min-height: 500px;}
 .tab-content .tab-pane{min-height: 350px}
-nav .navbar-brand{margin-left: 1rem; margin-right: unset;}
+nav .navbar-brand{margin-left: 1rem;    margin-right: unset;}
 .dropdown-menu .dropdown-item{text-align: right; }
-.nav-tabs{padding-right: unset; padding-left: 20px;}
+.nav-tabs{padding-right: unset;     padding-left: 20px;}
+ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
+.sub-menu{ display: none;}
+.sub-menu-btn:hover + .sub-menu{display: block;}
+.sub-menu:hover{display: block;}
+
 
 /******************** MODAL ********************/
 #createBaseModal .modal-footer .btn{margin-right: 10px;}

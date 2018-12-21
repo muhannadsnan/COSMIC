@@ -3,26 +3,87 @@
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
-        </button>
+        </button> -->
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav nav-pills {{__('lbl.m2-auto')}}" id="NAVBAR">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">{{ __('item1') }}</a>
+                    @dropdown([
+                        'items' => [
+                            'item1' => '#href1',
+                            'item2' => '#href2',
+                            'divider',
+                            'item3' => '#href3',
+                        ]
+                    ])  {{__('lbl.profile.1')}}  @enddropdown
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">{{ __('item2') }}</a>
+                    @dropdown([
+                        'items' => [
+                            'item1' => '#href1',
+                            'item2' => '#href2',
+                            'divider',
+                            'item3' => '#href3',
+                        ]
+                    ])  {{__('lbl.invoice.1')}}  @enddropdown
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">{{ __('item3') }}</a>
+                    @dropdown([
+                        'items' => [
+                            'item1' => '#href1',
+                            'item2' => '#href2',
+                            'divider',
+                            'item3' => '#href3',
+                        ]
+                    ])  {{__('lbl.bond.0')}}  @enddropdown
+                </li>
+                <li class="nav-item ">
+                    @dropdown([
+                        'items' => [
+                            'item1' => '#href1',
+                            'item2' => '#href2',
+                            'divider',
+                            'item3' => '#href3',
+                        ]
+                    ])  {{__('lbl.customer.0')}}  @enddropdown
+                </li>
+                <li class="nav-item ">
+                    @dropdown([
+                        'items' => [
+                            'item1' => '#href1',
+                            'item2' => '#href2',
+                            'divider',
+                            'item3' => '#href3',
+                        ]
+                    ])  {{__('lbl.material.0')}}  @enddropdown
+                </li>
+                <li class="nav-item ">
+                    @dropdown([
+                        'items' => [
+                            'item1' => '#href1',
+                            'item2' => '#href2',
+                            'divider',
+                            'item3' => '#href3',
+                        ]
+                    ])  {{__('lbl.account.0')}}  @enddropdown
+                </li>
+                <li class="nav-item ">
+                    @dropdown([
+                        'items' => [
+                            'item1' => '#href1',
+                            'item2' => '#href2',
+                            'divider',
+                            'item3' => '#href3',
+                        ]
+                    ])  {{__('lbl.instruction.0')}}  @enddropdown
                 </li>
             </ul>
 
             <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav  {{__('lbl.m1-auto')}}">
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">

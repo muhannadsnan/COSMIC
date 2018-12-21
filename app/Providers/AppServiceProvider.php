@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('partials.components.modal', 'modal');
         Blade::component('partials.components.modalbtn', 'modalbtn');
         Blade::component('partials.components.breadcrumb', 'breadcrumb');
+        Blade::component('partials.components.dropdown', 'dropdown');
     }
 
     /**
