@@ -13,70 +13,98 @@
                 <li class="nav-item">
                     @dropdown([
                         'items' => [
-                            'item1' => '#href1',
-                            'item2' => '#href2',
-                            'divider',
-                            'item3' => '#href3',
+                            'جديد' => '#href',
+                            'إعداد الصفحة' => '#href',
+                            'divider' => '',
+                            'معلومات' => '#href',
+                            'divider' => '',
+                            'ملف 1' => '#href',
+                            'ملف 2' => '#href',
+                            'ملف 3' => '#href',
                         ]
                     ])  {{__('lbl.profile.1')}}  @enddropdown
                 </li>
                 <li class="nav-item">
                     @dropdown([
                         'items' => [
-                            'item1' => '#href1',
-                            'item2' => '#href2',
-                            'divider',
-                            'item3' => '#href3',
+                            'submenu' => [
+                                'فواتير',
+                                'مشتريات' => '#href',
+                                'مبيعات' => '#href',
+                                'مرتجع مشتريات' => '#href',
+                                'مرتجع مبيعات' => '#href',
+                                'هدايا' => '#href',
+                             ],
                         ]
                     ])  {{__('lbl.invoice.1')}}  @enddropdown
                 </li>
                 <li class="nav-item">
                     @dropdown([
                         'items' => [
-                            'item1' => '#href1',
-                            'item2' => '#href2',
+                            'item1' => '#href',
+                            'item2' => '#href',
                             'divider',
-                            'item3' => '#href3',
+                            'item3' => '#href',
                         ]
                     ])  {{__('lbl.bond.0')}}  @enddropdown
                 </li>
                 <li class="nav-item ">
                     @dropdown([
                         'items' => [
-                            'item1' => '#href1',
-                            'item2' => '#href2',
+                            'item1' => '#href',
+                            'item2' => '#href',
                             'divider',
-                            'item3' => '#href3',
+                            'item3' => '#href',
                         ]
                     ])  {{__('lbl.customer.0')}}  @enddropdown
                 </li>
                 <li class="nav-item ">
                     @dropdown([
                         'items' => [
-                            'item1' => '#href1',
-                            'item2' => '#href2',
-                            'divider',
-                            'item3' => '#href3',
+                            'بطاقة مادة' => '#href',
+                            'بطاقة مجموعة' => '#href',
+                            'دليل المواد' => '#href',
+                            'divider' => '',
+                            'بطاقة مستودع' => '#href',
+                            'دليل مستودعات' => '#href',
+                            'divider' => '',
+                            'submenu' => [
+                                'تقارير الحركة',
+                                'sss' => '#href',
+                                ],
+                            'submenu' => [
+                                    'تقارير الجرد',
+                                    'sss' => '#href',
+                                    ],
+                            'submenu' => [
+                                'تقارير الارباح',
+                                'sss' => '#href',
+                                ],
+                            'divider' => '',
+                            'submenu' => [
+                                'ادوات',
+                                'sss' => '#href',
+                                ],
                         ]
                     ])  {{__('lbl.material.0')}}  @enddropdown
                 </li>
                 <li class="nav-item ">
                     @dropdown([
                         'items' => [
-                            'item1' => '#href1',
-                            'item2' => '#href2',
+                            'item1' => '#href',
+                            'item2' => '#href',
                             'divider',
-                            'item3' => '#href3',
+                            'item3' => '#href',
                         ]
                     ])  {{__('lbl.account.0')}}  @enddropdown
                 </li>
                 <li class="nav-item ">
                     @dropdown([
                         'items' => [
-                            'item1' => '#href1',
-                            'item2' => '#href2',
+                            'item1' => '#href',
+                            'item2' => '#href',
                             'divider',
-                            'item3' => '#href3',
+                            'item3' => '#href',
                         ]
                     ])  {{__('lbl.instruction.0')}}  @enddropdown
                 </li>

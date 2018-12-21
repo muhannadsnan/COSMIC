@@ -9,12 +9,15 @@ main .container{/* background: #fff; */ min-height: 500px;}
 .tab-content .tab-pane{min-height: 350px}
 nav .navbar-brand{margin-left: 1rem;    margin-right: unset;}
 .dropdown-menu .dropdown-item{text-align: right; }
+.dropdown-menu .dropdown-item:hover{background: #ccc; }
 .nav-tabs{padding-right: unset;     padding-left: 20px;}
 ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 .sub-menu{ display: none;}
-.sub-menu-btn:hover + .sub-menu{display: block;}
 .sub-menu:hover{display: block;}
-
+.sub-menu-btn:hover + .sub-menu{display: block;}
+.sub-menu-btn .dropdown-toggle::before{    float: left;    margin-top: 7px;     margin-left: -17px; }
+/* .sub-menu-btn .dropdown-toggle::before, .sub-menu-btn .dropdown-toggle::after{display: none !important;} */
+/* .sub-menu-btn .dropdown-toggle p::after{ display: inline !important;     float: left; width: 0; height: 0; border-top: 5px solid transparent; border-right: 10px solid red; border-bottom: 5px solid transparent;} */
 
 /******************** MODAL ********************/
 #createBaseModal .modal-footer .btn{margin-right: 10px;}
