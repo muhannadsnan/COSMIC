@@ -42,16 +42,19 @@
             <li class="nav-item">
                 <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">{{__('lbl.settings.0')}}</a>
             </li>
-        </ul>
+        </ul>  
         <div class="tab-content border border-default border-top-0 p-3" id="myTabContent">
             <div class="tab-pane fade show active" id="accounts" role="tabpanel" aria-labelledby="accounts-tab">
-                @modalbtn(['modalid'=>'createAccountModal', 'classes'=>'float-right']) {{__('lbl.account.create')}} @endmodalbtn
+                @modalbtn(['modalid'=>'createAccountModal', 'classes'=>'float-left']) {{__('lbl.account.create')}} @endmodalbtn
                 @if(session('app.base')->accGuide)
-                    @forelse($accounts as $key=>$account)
-                        <p>{{$account->title}}</p>
+                    <button id="expandAll">+</button>
+                    <button id="collapseAll">-</button>
+                    <div id="tree"></div>
+                    {{-- @forelse($accounts->where('closing_acc_id', '=', null) as $key=>$account)
+                        <p>{{$key+1}}.{{$account->title}} -- {{$account->_children->first()['title']}}</p>
                     @empty
                         @alert You don't have any accounts. You can create one. @endalert
-                    @endforelse
+                    @endforelse --}}
                 @else
                     @alert {{__('msg.entity_is_empty', ['entity'=>'دليل الحسابات'])}} @endalert
                 @endif
@@ -59,20 +62,57 @@
             <div class="tab-pane fade" id="invoices" role="tabpanel" aria-labelledby="invoices-tab">22222222222222222222</div>
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">3333333333333333333</div>
         </div>
-    </div> 
+    </div>  
 @endsection
 
 @section('styles')
-<style>
-    
-</style>
+    <link rel="stylesheet" href="{{ URL::asset('treeview.min.css') }}" />
+    <style>
+        
+    </style>
 @endsection
 
 @section('scripts')
-<script>
-    $('#myTab a').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    })
-</script>
+    <script type="text/javascript" src="{{ URL::asset('treeview.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){                
+            $('#myTab a').on('click', function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+
+            var acc = <?php echo json_encode($accounts->where('closing_acc_id', '=', null)); ?>; //console.log(acc);
+            var acc = <?php echo $accounts; ?>; //console.log(acc);
+            acc = Object.values(acc);
+            
+            var tree = [];
+
+            // add roots to tree
+            acc.forEach(function(item, i){  //console.log(item);
+                if(item.closing_acc_id === null){
+                    tree.push({id: item.id, name: item.title, children: []});
+                }
+            });
+            // add subs to tree
+            acc.forEach(function(item, i){  //console.log(item);
+                if(item.closing_acc_id != null){
+                    var parent = tree.find(function(x){ //console.log("x", item.closing_acc_id);
+                        return x.id == item.closing_acc_id; 
+                    }); //console.log("parent", parent);
+                    if(parent){
+                        parent['children'].push({id: item.id, name: item.title, children: []});
+                    }
+                }
+            }); 
+
+            var t = new TreeView(tree, 'tree'); //console.log(t);
+            t.expandAll();
+
+            var expandAll = document.getElementById('expandAll');
+            var collapseAll = document.getElementById('collapseAll');
+
+            expandAll.onclick = function () { t.expandAll(); };
+            collapseAll.onclick = function () { t.collapseAll(); };
+        });
+    </script>
 @endsection

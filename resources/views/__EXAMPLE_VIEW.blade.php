@@ -14,13 +14,15 @@
 @endsection
 
 @section('styles')
-<style>
-    
-</style>
+    <style>
+        
+    </style>
 @endsection
 
 @section('scripts')
-<script>
-
-</script>
+    <script>
+        $(document).ready(function(){
+            
+        });
+    </script>
 @endsection

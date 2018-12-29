@@ -6,7 +6,7 @@
 ?>
 
 <div class="dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$slot}}</a>
+    <a class="nav-link dropdown-toggle btn btn-outline-successx ml-1" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{$slot}}</a>
     <div class="dropdown-menu"> 
         @foreach($items as $key => $item) 
             @if($key == 'divider')

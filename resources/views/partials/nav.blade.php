@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-primary navbar-laravel">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        {{-- <img src="xxx" class="d-inline-block align-top"/> --}}
+        <a class="navbar-brand mb-0 h1" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
         <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -34,6 +35,8 @@
                                 'مرتجع مشتريات' => '#href',
                                 'مرتجع مبيعات' => '#href',
                                 'هدايا' => '#href',
+                                'divider',
+                                'مرتجع من فاتورة' => '#href'
                             ],
                         ]
                     ])  {{__('lbl.invoice.1')}}  @enddropdown
