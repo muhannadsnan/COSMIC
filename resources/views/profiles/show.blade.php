@@ -106,19 +106,17 @@
                 {id: 7, name: "g", parent: 8},
                 {id: 8, name: "h", parent: 4},
             ];*/
-            var allowedLevels = 20;
+            var allowedLevels = 200;
             function getNestedChildren(arr, parent) {   //console.log("allowedLevels", allowedLevels);
-                
                     var out = [];  var counter = 0; 
                     for(var i=0; i< arr.length;i++) { //console.log(i);
                         if(arr[i].parent == parent) {
                             if(allowedLevels != 0){
                                 allowedLevels--;
-                                var children = getNestedChildren(arr, arr[i].id); console.log("continue", allowedLevels);
+                                var children = getNestedChildren(arr, arr[i].id); //console.log("continue", allowedLevels);
                             }else{
                                 var children = [];
                             }
-
                             if(children.length) {
                                 arr[i].children = children
                             }
