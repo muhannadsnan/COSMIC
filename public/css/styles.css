@@ -23,7 +23,7 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 #createBaseModal .modal-footer .btn{margin-right: 10px;}
 #createBaseModal .modal-header .close{    margin-right: auto;   margin-left: -1rem;}
 
-/******************** MODAL ********************/
+/******************** BREADCRUMB ********************/
 .breadcrumb .breadcrumb-item{padding-right: 0 !important;      padding-left: 0 !important;}
 .breadcrumb .breadcrumb-item:before{padding-left: .5rem !important;    padding-right: .5rem !important;}
 
@@ -34,8 +34,8 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 .card .card-body{min-height: 350px;}
 .card .card-body form{min-height: 350px;    margin: 10px 20px 0px 10px;}
 
-/******************** CARD ********************/
+/******************** TREE ********************/
 .tree-leaf .tree-leaf-text{float: right !important;   }
 .tree-expando{float: right !important;   }
-.tree-child-leaves{margin-right: 30px;  border-right: 1px solid #ccc;    padding-right: 20px;    margin-right: 5px;    margin-bottom: 10px;}
+.tree-child-leaves{margin-right: 30px;  border-right: 1px solid #ccc;    padding-right: 20px;    margin-right: 5px;    padding-bottom: 10px;}
 .tree-expando{margin-left: 4px;    width: 12px !important;	height: 12px !important;	text-align: center !important;	border: 1px solid #ccc !important;    background: #fff !important;	}

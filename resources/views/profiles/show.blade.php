@@ -81,29 +81,54 @@
                 $(this).tab('show')
             });
 
-            var acc = <?php echo json_encode($accounts->where('closing_acc_id', '=', null)); ?>; //console.log(acc);
-            var acc = <?php echo $accounts; ?>; //console.log(acc);
+            //var acc = <?php echo json_encode($accounts->where('closing_acc_id', '=', null)); ?>; console.log(acc);
+            var acc = <?php echo $accounts; ?>; console.log(acc);
             acc = Object.values(acc);
             
             var tree = [];
 
-            // add roots to tree
-            acc.forEach(function(item, i){  //console.log(item);
-                if(item.closing_acc_id === null){
-                    tree.push({id: item.id, name: item.title, children: []});
+            acc.forEach(function(item){
+                if(item._parents.length > 0){
+                    item._parents.forEach(function(parent){
+                        tree.push({id: item.id, name: item.title+"--"+item.id, parent: parent.id})                    
+                    });
+                }else{
+                    tree.push({id: item.id, name: item.title+"--"+item.id, parent: 0}) 
                 }
-            });
-            // add subs to tree
-            acc.forEach(function(item, i){  //console.log(item);
-                if(item.closing_acc_id != null){
-                    var parent = tree.find(function(x){ //console.log("x", item.closing_acc_id);
-                        return x.id == item.closing_acc_id; 
-                    }); //console.log("parent", parent);
-                    if(parent){
-                        parent['children'].push({id: item.id, name: item.title, children: []});
+            });     console.log("tree",tree);
+            /*tree=[
+                {id: 1, name: "a", parent: 0},
+                {id: 2, name: "b", parent: 0},
+                {id: 3, name: "c", parent: 0},
+                {id: 4, name: "d", parent: 1},
+                {id: 5, name: "e", parent: 2},
+                {id: 6, name: "f", parent: 1},
+                {id: 7, name: "g", parent: 8},
+                {id: 8, name: "h", parent: 4},
+            ];*/
+            var allowedLevels = 20;
+            function getNestedChildren(arr, parent) {   //console.log("allowedLevels", allowedLevels);
+                
+                    var out = [];  var counter = 0; 
+                    for(var i=0; i< arr.length;i++) { //console.log(i);
+                        if(arr[i].parent == parent) {
+                            if(allowedLevels != 0){
+                                allowedLevels--;
+                                var children = getNestedChildren(arr, arr[i].id); console.log("continue", allowedLevels);
+                            }else{
+                                var children = [];
+                            }
+
+                            if(children.length) {
+                                arr[i].children = children
+                            }
+                            out.push(arr[i])
+                        }
                     }
-                }
-            }); 
+                    return JSON.parse(JSON.stringify(out));
+                    //return out
+            }
+            tree = getNestedChildren(tree, 0); console.log("newTree",tree);
 
             var t = new TreeView(tree, 'tree'); //console.log(t);
             t.expandAll();
