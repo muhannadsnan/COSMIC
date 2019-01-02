@@ -8,8 +8,10 @@ main{background: #555;      min-height: 500px;}
 main .container{/* background: #fff; */ min-height: 500px;}
 .tab-content .tab-pane{min-height: 350px}
 nav .navbar-brand{margin-left: 1rem;    margin-right: unset;}
+.dropdown-menu{padding: 0 !important;	}
 .dropdown-menu .dropdown-item{text-align: right; }
 .dropdown-menu .dropdown-item:hover{background: #ccc; }
+.dropdown-divider{margin: 2px 0px !important;}
 .nav-tabs{padding-right: unset;     padding-left: 20px;}
 ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 .sub-menu{ display: none;}

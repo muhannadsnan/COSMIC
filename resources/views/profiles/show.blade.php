@@ -81,7 +81,7 @@
                 $(this).tab('show')
             });
 
-            //var acc = <?php echo json_encode($accounts->where('closing_acc_id', '=', null)); ?>; console.log(acc);
+            /***  COLLECT DATA & GENERATE TREE VIEW FROM THE ENTRIES  ***/
             var acc = <?php echo $accounts; ?>; console.log(acc);
             acc = Object.values(acc);
             
@@ -136,6 +136,7 @@
 
             expandAll.onclick = function () { t.expandAll(); };
             collapseAll.onclick = function () { t.collapseAll(); };
+            // https://www.cssscript.com/tag/tree-view/
         });
     </script>
 @endsection
