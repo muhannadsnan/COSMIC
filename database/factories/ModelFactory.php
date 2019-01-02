@@ -37,11 +37,11 @@ $factory->define(App\Account::class, function (Faker $faker) {
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
-        'isDefault' => true,
+        'isDefault' => false,
         'nType' => $faker->randomElement(['N', 'C', 'A', 'D']),
         'profile_id' => $faker->randomElement($profiles),
         'currency_id' => $faker->randomElement($currencies),
-        'currency_id' => $faker->randomElement($accounts),
+        // 'currency_id' => $faker->randomElement($accounts),
     ];
 });
 $factory->define(App\Warehouse::class, function (Faker $faker) {

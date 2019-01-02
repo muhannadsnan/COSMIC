@@ -46,7 +46,7 @@
         <div class="tab-content border border-default border-top-0 p-3" id="myTabContent">
             <div class="tab-pane fade show active" id="accounts" role="tabpanel" aria-labelledby="accounts-tab">
                 @modalbtn(['modalid'=>'createAccountModal', 'classes'=>'float-left']) {{__('lbl.account.create')}} @endmodalbtn
-                @if(session('app.base')->accGuide)
+                @if(session('app.base')->accGuide && count($accounts))
                     <button id="expandAll">+</button>
                     <button id="collapseAll">-</button>
                     <div id="tree"></div>

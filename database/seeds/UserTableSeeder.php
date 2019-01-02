@@ -4,22 +4,17 @@ use Illuminate\Database\Seeder;
 use App\User;
 
 class UserTableSeeder extends Seeder
-{
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+{ 
     public function run()
     {
+        User::create([
+            'name' => 'admin',
+            'email' => 'admin@COSMIC.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt("123456"), 
+            'remember_token' => str_random(10),
+        ]);
         factory(User::class, 10)->create();
-        // $USER = App\User::create([
-        //     'name' => 'Admin',
-        //     'email' => 'admin@MSN.com',
-        //     'email_verified_at' => now(),
-        //     'password' => bcrypt('123'),
-        //     'profile_id' => 1
-        // ]);
 
         $usr = User::find(1);
         $usr->_accounts()->sync([3,4,5]);

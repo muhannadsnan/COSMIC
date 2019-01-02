@@ -24,6 +24,8 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 /******************** MODAL ********************/
 #createBaseModal .modal-footer .btn{margin-right: 10px;}
 #createBaseModal .modal-header .close{    margin-right: auto;   margin-left: -1rem;}
+.modal-btn{z-index: 1 !important;	position: relative;}
+.modal-header .close{    margin-left: -1rem !important;	  }
 
 /******************** BREADCRUMB ********************/
 .breadcrumb .breadcrumb-item{padding-right: 0 !important;      padding-left: 0 !important;}
