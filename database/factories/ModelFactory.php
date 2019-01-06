@@ -37,7 +37,7 @@ $factory->define(App\Account::class, function (Faker $faker) {
         'title' => $faker->name,
         'code' => $faker->ean13,
         'desc' => $faker->text,
-        'isDefault' => false,
+        // 'isDefault' => false, >> deleted
         'nType' => $faker->randomElement(['N', 'C', 'A', 'D']),
         'profile_id' => $faker->randomElement($profiles),
         'currency_id' => $faker->randomElement($currencies),

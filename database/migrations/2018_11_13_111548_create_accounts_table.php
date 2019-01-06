@@ -18,7 +18,7 @@ class CreateAccountsTable extends Migration
             $table->unsignedInteger('closing_acc_id')->nullable();
             $table->string('code');
             $table->string('title');
-            $table->boolean('isDefault')->default(false);
+            // $table->boolean('isDefault')->default(false);
             $table->text('desc')->nullable();
             $table->string('nType')->default("N"); // Normal, Closing, Aggregative, Distributive
             $table->timestamps();

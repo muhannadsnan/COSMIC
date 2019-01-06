@@ -14,7 +14,7 @@ class RelationshipAccountsProfiles extends Migration
     public function up()
     {
         Schema::table('accounts', function (Blueprint $table){
-            $table->unsignedInteger('profile_id')->after('id')->nullable(); // #4
+            $table->unsignedInteger('profile_id')->after('id')->nullable()->default(null); // #4
             $table->foreign('profile_id')
                     ->references('id')
                     ->on('profiles');

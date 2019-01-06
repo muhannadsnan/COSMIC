@@ -56,7 +56,7 @@ class ProfileController extends Controller
     public function show(Base $basis, Profile $profile)
     { 
         // Profile::breadcrumb([$basis, $profile]); // fill breadcrumb 
-        return view('profiles.show', ['profile' => $profile, 'accounts' => Account::where('isDefault', '=', true)->with("_parents")->get() ]);
+        return view('profiles.show', ['profile' => $profile, 'accounts' => Account::where('profile_id', '=', null)->with("_parents")->get() ]); // the default accounts have no profile_id
     }
     
     public function edit(Profile $profile)
