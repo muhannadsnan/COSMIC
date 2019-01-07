@@ -15,10 +15,19 @@ class SiteTree
      */
     public function handle($request, Closure $next)
     {
-        session([
-            'app.base' => $request->route()->parameter('basis'),
-            'app.profile' => $request->route()->parameter('profile'),
-        ]);
+        if(!empty($request->route())){
+            if(!empty($request->route()->parameter('basis'))){
+                session([
+                    'app.base' => $request->route()->parameter('basis'),
+                ]);
+            }
+            
+            if($request->route()->parameter('profile') != null){
+                session([
+                    'app.profile' => $request->route()->parameter('profile'),
+                ]);
+            }                
+        }
         return $next($request);
     }
 }

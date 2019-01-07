@@ -20,10 +20,12 @@
                         'معلومات' => '#href',
                         'divider',
                     ];
-                    foreach(session('app.base')->_profiles as $prof){
-                        $new[$prof->title] = "/bases/".session('app.base')->id."/profiles/".$prof->id;
+                    if(@count(session('app.base')->_profiles) > 0){
+                        foreach(session('app.base')->_profiles as $prof){
+                            $new[$prof->title] = "/bases/".session('app.base')->id."/profiles/".$prof->id;
+                        }
+                        $items = array_merge($items, $new); //dd($items);
                     }
-                    $items = array_merge($items, $new); //dd($items);
                     ?>
                     @dropdown([
                         'items' => $items
