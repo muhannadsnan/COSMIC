@@ -55,11 +55,8 @@ class BaseController extends Controller
     
     public function show(Base $basis)
     { 
-        session(['app.base' => $basis]);
-        return view('bases.show', ['base' => $basis]);
-        return $basis->_profiles;
-        return $basis;
-        return $basis->_user;
+        session(['app.base' => $basis]);        
+        return view('bases.show', ['base' => $basis, 'currencies' => Currency::all()->pluck('title', 'id')->toArray()]); 
     }
     
     public function edit(Base $basis)

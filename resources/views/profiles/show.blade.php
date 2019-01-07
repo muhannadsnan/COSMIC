@@ -4,7 +4,7 @@
     @breadcrumb(['items' => [
                         ['href' => '/bases', 'text' => __('lbl.base.0')],
                         ['href' => "/bases/".session('app.base')->id, 'text' => session('app.base')->title],
-                        ['href' => "/bases/".session('app.base')->id."/profiles", 'text' => __('lbl.profile.0')],
+                        /**** 'href' => "/bases/".session('app.base')->id."/profiles", 'text' => __('lbl.profile.0')], ****/
                         ['active' => '', 'text' => session('app.profile')->title],
                     ], 'classes'=>''
                 ]) 
@@ -83,8 +83,7 @@
 
             /***  COLLECT DATA & GENERATE TREE VIEW FROM THE ENTRIES  ***/
             var acc = <?php echo $accounts; ?>; console.log(acc);
-            acc = Object.values(acc);
-            
+            acc = Object.values(acc);            
             var tree = [];
 
             acc.forEach(function(item){
@@ -96,16 +95,7 @@
                     tree.push({id: item.id, name: item.title+"--"+item.id, parent: 0}) 
                 }
             });     console.log("tree",tree);
-            /*tree=[
-                {id: 1, name: "a", parent: 0},
-                {id: 2, name: "b", parent: 0},
-                {id: 3, name: "c", parent: 0},
-                {id: 4, name: "d", parent: 1},
-                {id: 5, name: "e", parent: 2},
-                {id: 6, name: "f", parent: 1},
-                {id: 7, name: "g", parent: 8},
-                {id: 8, name: "h", parent: 4},
-            ];*/
+
             var allowedLevels = 200;
             function getNestedChildren(arr, parent) {   //console.log("allowedLevels", allowedLevels);
                     var out = [];  var counter = 0; 
