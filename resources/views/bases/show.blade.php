@@ -35,7 +35,7 @@
                     @endforeach
                 </select>
             </div>
-            <input type="hidden" name="base_id" value="{{session('app.base')->id}}">
+            <input type="hidden" name="base_id" value="{{request('base')->id}}">
         </form>
     @endmodal    
 

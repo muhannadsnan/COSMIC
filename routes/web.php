@@ -16,6 +16,7 @@ Route::resource('/groups', 'GroupController');
 Route::resource('/materials', 'MaterialController');
 Route::resource('/warehouses', 'WarehouseController');
 Route::resource('/accounts', 'AccountController');
+Route::get('/bases/{basis}/profiles/{profile}/accounts', 'AccountController@index');
 Route::resource('/users', 'UserController');
 Route::resource('/clients', 'ClientController');
 Route::resource('/invoices', 'InvoiceController');

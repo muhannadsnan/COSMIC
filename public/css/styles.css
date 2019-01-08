@@ -5,7 +5,7 @@ input[type="radio"], input[type="checkbox"]{vertical-align: middle;     margin-l
 
 /******************** CUSTOM ********************/
 main{background: #555;      min-height: 500px;}
-main .container{/* background: #fff; */ min-height: 500px;}
+main .container{/* background: #fff; */ }
 .tab-content .tab-pane{min-height: 350px}
 nav .navbar-brand{margin-left: 1rem;    margin-right: unset;}
 .dropdown-menu{padding: 0 !important;	}
@@ -32,6 +32,7 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 .breadcrumb .breadcrumb-item:before{padding-left: .5rem !important;    padding-right: .5rem !important;}
 
 /******************** CARD ********************/
+.card{min-height: 80vh}
 .card .card-header{padding: 5px 15px;    line-height: 46px;    text-align: right;  }
 .card .card-header .btn{margin: 5px 0px 0px 5px;}
 .card .card-header .breadcrumb{margin-bottom: 0;    padding: 0; }

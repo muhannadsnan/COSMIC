@@ -23,7 +23,7 @@
                         $new = [];
                         array_push($new, 'divider');
                         foreach(request('base')->_profiles as $prof){
-                            $new[$prof->title] = "/bases/".request('base')->id."/profiles/".$prof->id;
+                            $new[$prof->title] = makeLinkTo(request('base')->id, $prof->id);
                         }
                         $items = array_merge($items, $new); //dd($items);
                     }
@@ -177,7 +177,7 @@
                         @dropdown([
                             'items' => [
                                 'بطاقة حساب' => '#href',
-                                'دليل الحسابات' => '/accounts',
+                                'دليل الحسابات' => linkTo('/accounts'),
                                 'divider',
                                 'دفتر الاستاذ' => '#href',
                                 'دفتر الاستاذ لعدة سنوات' => '#href',

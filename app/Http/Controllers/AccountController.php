@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Account;
+use App\Base;
+use App\Profile;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
@@ -13,9 +15,9 @@ class AccountController extends Controller
         $this->middleware('auth', ['except' => []]);
     }
 
-    public function index()
+    public function index(Base $basis, Profile $profile)
     {
-        return view('accounts.index', ['accounts' => Account::where('profile_id', null)->orWhere('profile_id', session('app.profile')->id)->with("_parents")->get() ]); // the default accounts have no profile_id
+        return view('accounts.index', ['accounts' => Account::where('profile_id', null)->orWhere('profile_id', $profile->id)->with("_parents")->get() ]); // the default accounts have no profile_id
     }
     
     public function create()
