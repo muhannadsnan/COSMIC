@@ -13,20 +13,20 @@
             <ul class="navbar-nav nav-pills {{__('lbl.m2-auto')}}" id="NAVBAR">
                 <li class="nav-item">
                     <?php
-                    $items = [
-                        'جديد' => '#href',
-                        'إعداد الصفحة' => '#href',
-                        'divider',
-                        'معلومات' => '#href',
-                    ];
-                    if(@count(request('base')->_profiles) > 0){
-                        $new = [];
-                        array_push($new, 'divider');
-                        foreach(request('base')->_profiles as $prof){
-                            $new[$prof->title] = makeLinkTo(request('base')->id, $prof->id);
+                        $items = [
+                            'جديد' => '#href',
+                            'إعداد الصفحة' => '#href',
+                            'divider',
+                            'معلومات' => '#href',
+                        ];
+                        if(@count(request('base')->_profiles) > 0){
+                            $new = [];
+                            array_push($new, 'divider');
+                            foreach(request('base')->_profiles as $prof){
+                                $new[] = ['same_window', $prof->title,  makeLinkTo(request('base')->id, $prof->id)];
+                            }
+                            $items = array_merge($items, $new); //dd($items);
                         }
-                        $items = array_merge($items, $new); //dd($items);
-                    }
                     ?>
                     @dropdown([
                         'items' => $items

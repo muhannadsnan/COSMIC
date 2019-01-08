@@ -12,3 +12,8 @@ function makeLinkTo($baseID, $profileID, $url="")
     if($profileID == "") $profileID =request('profile')->id;
     return '/bases/'.$baseID.'/profiles/'.$profileID.$url;
 }
+
+function openNewWindow($url, $title="title", $width=600, $height=500){
+    // dd($url);
+    return ' onclick=MyWindow=window.open(\''.$url.'\',\''.$title.'\',width='.$width.',height='.$height.'); return false;';
+}

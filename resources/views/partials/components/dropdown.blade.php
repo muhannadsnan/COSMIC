@@ -3,6 +3,7 @@
         $title = "";
     if(!isset($items))
         $items = [];
+        // dd($items);
 ?>
 
 <div class="dropdown">
@@ -12,20 +13,24 @@
             @if($item == 'divider')
                 <div class="dropdown-divider" style="border-color: #ccc;"></div>         
 
-            @elseif(is_array($item))
+            @elseif(is_array($item)) 
                 <div class="{{__('lbl.drop1')}}">
-                    <div class="dropdown-item  sub-menu-btn " href="#">
-                        <div class="dropdown-toggle">{{$item[0]}}</div>                
-                    </div>
-                    <div class="dropdown-menu sub-menu">
-                        @foreach(array_splice($item, 1, count($item)-1) as $k => $subItem)
-                            <a class="dropdown-item" href="{{$subItem}}">{{$k}}</a> 
-                        @endforeach
-                    </div>
+                    @if(@$item[0] === 'same_window') 
+                        <a class="dropdown-item" href="{{$item[2]}}">{{$item[1]}}</a> 
+                    @else
+                        <div class="dropdown-item  sub-menu-btn " href="#">
+                            <div class="dropdown-toggle" >{{$item[0]}}</div> 
+                        </div> 
+                        <div class="dropdown-menu sub-menu">
+                            @foreach(array_splice($item, 1, count($item)-1) as $k => $subItem)
+                                <a class="dropdown-item" href="{{$subItem}}">{{$k}}</a> 
+                            @endforeach
+                        </div>  
+                    @endif
                 </div>
 
-            @else        
-                <a class="dropdown-item" href="{{$item}}">{{$key}}</a>
+            @else  
+                <a class="dropdown-item" href="{{$item}}" {{openNewWindow($item)}}>{{$key}}</a>
             @endif
         @endforeach
     </div>
