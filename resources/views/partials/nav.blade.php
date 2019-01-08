@@ -18,11 +18,12 @@
                         'إعداد الصفحة' => '#href',
                         'divider',
                         'معلومات' => '#href',
-                        'divider',
                     ];
-                    if(@count(session('app.base')->_profiles) > 0){
-                        foreach(session('app.base')->_profiles as $prof){
-                            $new[$prof->title] = "/bases/".session('app.base')->id."/profiles/".$prof->id;
+                    if(@count(request('base')->_profiles) > 0){
+                        $new = [];
+                        array_push($new, 'divider');
+                        foreach(request('base')->_profiles as $prof){
+                            $new[$prof->title] = "/bases/".request('base')->id."/profiles/".$prof->id;
                         }
                         $items = array_merge($items, $new); //dd($items);
                     }
