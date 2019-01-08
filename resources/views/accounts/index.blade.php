@@ -56,14 +56,8 @@
 @section('scripts')
     <script type="text/javascript" src="{{ URL::asset('treeview.min.js') }}"></script>
     <script>
-        $(document).ready(function(){                
-            $('#myTab a').on('click', function (e) {
-                e.preventDefault()
-                $(this).tab('show')
-            });
-
-            /***  COLLECT DATA & GENERATE TREE VIEW FROM THE ENTRIES  ***/
-            var acc = <?php echo $accounts; ?>; console.log(acc);
+        $(document).ready(function(){ /***  COLLECT DATA & GENERATE TREE VIEW FROM THE ENTRIES  ***/
+            var acc = <?php echo $accounts; ?>; console.log("acc",acc);
             acc = Object.values(acc);            
             var tree = [];
 
