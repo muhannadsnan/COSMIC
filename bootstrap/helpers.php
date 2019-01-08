@@ -13,7 +13,7 @@ function makeLinkTo($baseID, $profileID, $url="")
     return '/bases/'.$baseID.'/profiles/'.$profileID.$url;
 }
 
-function openNewWindow($url, $title="title", $width=600, $height=500){
+function openNewWindow($url, $title="title", $width=600, $height=600){
     // dd($url);
-    return ' onclick=MyWindow=window.open(\''.$url.'\',\''.$title.'\',width='.$width.',height='.$height.'); return false;';
+    return "MyWindow=window.open('".$url."','$title',[\"width=$width\",\"height=$height\"]); return false;";
 }

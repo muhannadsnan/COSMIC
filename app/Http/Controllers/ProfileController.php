@@ -20,7 +20,7 @@ class ProfileController extends Controller
     {
         // Profile::breadcrumb([$basis]); // fill breadcrumb
         return view('profiles.index', [
-                'profiles' => session('app.base')->_profiles, 
+                'profiles' => request('base')->_profiles, 
                 'currencies' => Currency::all()->pluck('title', 'id')->toArray()
             ]);
         return Profile::all();
@@ -31,14 +31,14 @@ class ProfileController extends Controller
         return view('profiles.index');
     }
 
-    public function fillProfileIntoBase($newProfile)
-    {
-        Profile::SiteTree([$newProfile->_base, $newProfile]);  // fill breadcrumb
-        $base = session('app.base'); $bProfiles = $base->_profiles->toArray();
-        array_push($bProfiles, $newProfile);
-        $base->_profiles = $bProfiles;
-        session(['app.base' => $base]);
-    }    
+    // public function fillProfileIntoBase($newProfile)
+    // {
+    //     Profile::SiteTree([$newProfile->_base, $newProfile]);  // fill breadcrumb
+    //     $base = request('base'); $bProfiles = $base->_profiles->toArray();
+    //     array_push($bProfiles, $newProfile);
+    //     $base->_profiles = $bProfiles;
+    //     session(['app.base' => $base]);
+    // }    
     public function store(Request $request)
     {
         // dd($request->all());
@@ -49,7 +49,7 @@ class ProfileController extends Controller
             'endPeriodDate' => $request->endPeriodDate,
             'base_id' => $request->base_id,
         ]);
-        $this->fillProfileIntoBase($newProfile); // insert newProfile to Base
+        // $this->fillProfileIntoBase($newProfile); // insert newProfile to Base
         return redirect()->back();
     }
     

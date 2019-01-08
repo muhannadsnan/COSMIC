@@ -1,1 +1,0 @@
-here this is brands/index.blade.php

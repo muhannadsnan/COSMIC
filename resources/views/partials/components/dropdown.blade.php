@@ -30,7 +30,7 @@
                 </div>
 
             @else  
-                <a class="dropdown-item" href="{{$item}}" {{openNewWindow($item)}}>{{$key}}</a>
+                <a class="dropdown-item" href="{{$item}}" onclick="{{openNewWindow($item)}}">{{$key}}</a>
             @endif
         @endforeach
     </div>

@@ -5,9 +5,8 @@
 </head>
 <body>
     <div id="app">
-        @include('partials.nav')
 
-        <main class="master">
+        <main class="window">
             <div class="container py-4">
                 <div class="row justify-content-center">
                     <div class="container">
@@ -26,7 +25,6 @@
             </div>
         </main>
 
-        @include('partials.footer') <!-- with scripts -->
     </div>
 </body>
 </html>

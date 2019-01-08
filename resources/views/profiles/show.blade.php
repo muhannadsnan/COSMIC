@@ -3,9 +3,9 @@
 @section('card-header')
     @breadcrumb(['items' => [
                         ['href' => '/bases', 'text' => __('lbl.base.0')],
-                        ['href' => "/bases/".session('app.base')->id, 'text' => session('app.base')->title],
-                        /**** 'href' => "/bases/".session('app.base')->id."/profiles", 'text' => __('lbl.profile.0')], ****/
-                        ['active' => '', 'text' => session('app.profile')->title],
+                        ['href' => "/bases/".request('base')->id, 'text' => request('base')->title],
+                        /**** 'href' => "/bases/".request('base')->id."/profiles", 'text' => __('lbl.profile.0')], ****/
+                        ['active' => '', 'text' => request('profile')->title],
                     ], 'classes'=>''
                 ]) 
     @endbreadcrumb

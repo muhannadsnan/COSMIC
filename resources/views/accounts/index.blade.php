@@ -1,4 +1,4 @@
-@extends('master')
+@extends('window')
 @section('title', '........')
 @section('card-header')
     @breadcrumb(['items' =>[
@@ -26,13 +26,13 @@
                 <label class="col-sm-4">End period date</label>
                 <input type="text" name="endPeriodDate" placeholder="Enter an end period date.." class="form-control col-sm-8">
             </div> 
-            <input type="hidden" name="base_id" value="{{session('app.base')->id}}">
+            <input type="hidden" name="base_id" value="{{request('base')->id}}">
         </form>
     @endmodal   
 
     @modalbtn(['modalid'=>'createAccountModal', 'classes'=>'float-left']) {{__('lbl.account.create')}} @endmodalbtn
 
-    @if(session('app.base')->accGuide && count($accounts))
+    @if(request('base')->accGuide && count($accounts))
         <button id="expandAll">+</button>
         <button id="collapseAll">-</button>
         <div id="tree"></div>

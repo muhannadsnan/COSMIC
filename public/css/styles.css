@@ -4,8 +4,8 @@ input[type="radio"], input[type="checkbox"]{vertical-align: middle;     margin-l
 .form-group label{line-height: 36px;    margin-bottom: 0;}
 
 /******************** CUSTOM ********************/
-main{background: #555;      min-height: 500px;}
-main .container{/* background: #fff; */ }
+main.master{background: #555;      min-height: 500px;}
+main.master .container{/* background: #fff; */ }
 .tab-content .tab-pane{min-height: 350px}
 nav .navbar-brand{margin-left: 1rem;    margin-right: unset;}
 .dropdown-menu{padding: 0 !important;	}
