@@ -12,6 +12,7 @@ class BaseController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => []]);
+        $this->middleware('belongstome', ['except' => []]);
     }
 
     public function index()
@@ -55,7 +56,7 @@ class BaseController extends Controller
     
     public function show(Base $basis)
     { 
-        session(['app.base' => $basis]);        
+        // session(['app.base' => $basis]);        
         return view('bases.show', ['base' => $basis, 'currencies' => Currency::all()->pluck('title', 'id')->toArray()]); 
     }
     

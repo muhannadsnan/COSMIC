@@ -32,7 +32,8 @@
                     ])  {{__('lbl.profile.1')}}  @enddropdown
                 </li>
                 <!-- If in bases.show then hide other dropdowns -->
-                @if(Route::currentRouteName() != 'bases.show')
+
+                @if( !empty(request('base')) && !empty(request('profile')))
                     <li class="nav-item">
                         @dropdown([
                             'items' => [

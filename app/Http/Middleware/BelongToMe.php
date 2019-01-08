@@ -17,15 +17,17 @@ class BelongToMe
             $profile = $request->route()->parameter('profile');
 
             if(!empty($base)){
-                if($base->_user->id != auth()->id){
+                if($base->_user->id != auth()->id()){
                     return false;
                 }
+                $request->request->add(['base' => $base]);
             }
             
             if($profile != null){
-                if($profile->_base->_user->id != auth()->id && $profile->_base->id == $base->id){
+                if($profile->_base->_user->id != auth()->id() && $profile->_base->id == $base->id){
                     return false;
                 }
+                $request->request->add(['profile' => $profile]);
             }                
         }
             return $next($request);

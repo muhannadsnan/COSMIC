@@ -56,7 +56,7 @@ class ProfileController extends Controller
     public function show(Base $basis, Profile $profile)
     { 
         // Profile::breadcrumb([$basis, $profile]); // fill breadcrumb 
-        session(['app.profile' => $profile]);
+        // session(['app.profile' => $profile]);
         return view('profiles.show', ['profile' => $profile]);
     }
     
