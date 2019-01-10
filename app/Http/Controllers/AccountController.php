@@ -11,13 +11,12 @@ class AccountController extends Controller
 {
     public function __construct()
     {
-        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
     }
 
     public function index(Base $basis, Profile $profile)
     {
-        return view('accounts.index', ['accounts' => Account::where('profile_id', null)->orWhere('profile_id', $profile->id)->with("_parents")->get() ]); // the default accounts have no profile_id
+        return view('accounts.index', ['accounts' => Account::where('profile_id', null)->orWhere('profile_id', $profile->id)->with("_parents")->get() , 'noscript' => 1 ]); // the default accounts have no profile_id
     }
     
     public function create()

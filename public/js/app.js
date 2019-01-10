@@ -13926,27 +13926,25 @@ module.exports = __webpack_require__(43);
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 __webpack_require__(13);
-
 window.Vue = __webpack_require__(36);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+window.Store = __webpack_require__(48);
 
 Vue.component('example-component', __webpack_require__(39));
+Vue.component('Records', __webpack_require__(49));
 
 var app = new Vue({
-  el: '#app'
+    el: '#app',
+    data: function data() {
+        return {
+            msg: "welcome kong!"
+        };
+    },
+
+    methods: {},
+    mounted: function mounted() {
+        console.log(this.msg);
+    }
 });
 
 /***/ }),
@@ -47836,6 +47834,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {};
+    },
     mounted: function mounted() {
         console.log('Component mounted.');
     }
@@ -47889,6 +47890,334 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    store: {
+        debug: true,
+        state: {
+            message: 'Hello!',
+            text: 'haha'
+        },
+        setMessageAction: function setMessageAction(newValue) {
+            if (this.debug) console.log('setMessageAction triggered with', newValue);
+            this.state.message = newValue;
+        },
+        clearMessageAction: function clearMessageAction() {
+            if (this.debug) console.log('clearMessageAction triggered');
+            this.state.message = '';
+        },
+        getData: function getData() {
+            var _this = this;
+
+            axios.get('https://jsonplaceholder.typicode.com/todos/1').then(function (response) {
+                return _this.info = response;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(40)
+/* script */
+var __vue_script__ = __webpack_require__(50)
+/* template */
+var __vue_template__ = __webpack_require__(51)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Records.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-270f56a7", Component.options)
+  } else {
+    hotAPI.reload("data-v-270f56a7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            newREC: { mat: '', qty: 0, single: 0, total: 0 },
+            records: []
+        };
+    },
+
+    methods: {
+        addRec: function addRec() {
+            this.records.unshift(this.newREC);
+            this.newREC = { mat: '', qty: 0, single: 0, total: 0 };
+        }
+    },
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row form-group" }, [
+    _c("div", { staticClass: "col-sm-6 px-0" }, [
+      _c("div", { staticClass: "row form-group mb-0" }, [
+        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("المادة")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newREC.mat,
+              expression: "newREC.mat"
+            }
+          ],
+          staticClass: "form-control col-sm-8",
+          attrs: { type: "text", placeholder: "enter value..." },
+          domProps: { value: _vm.newREC.mat },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.newREC, "mat", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-sm-6 px-0" }, [
+      _c("div", { staticClass: "row form-group mb-0" }, [
+        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("الكمية")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newREC.qty,
+              expression: "newREC.qty"
+            }
+          ],
+          staticClass: "form-control col-sm-8",
+          attrs: { type: "number", placeholder: "enter value..." },
+          domProps: { value: _vm.newREC.qty },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.newREC, "qty", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-sm-6 px-0" }, [
+      _c("div", { staticClass: "row form-group mb-0" }, [
+        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("الافرادي")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newREC.single,
+              expression: "newREC.single"
+            }
+          ],
+          staticClass: "form-control col-sm-8",
+          attrs: { type: "number", placeholder: "enter value..." },
+          domProps: { value: _vm.newREC.single },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.newREC, "single", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-sm-6 px-0" }, [
+      _c("div", { staticClass: "row form-group mb-0" }, [
+        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("الاجمالي")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newREC.total,
+              expression: "newREC.total"
+            }
+          ],
+          staticClass: "form-control col-sm-8",
+          attrs: { type: "number", placeholder: "enter value..." },
+          domProps: { value: _vm.newREC.total },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.newREC, "total", $event.target.value)
+            }
+          }
+        })
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: {
+            disabled:
+              _vm.newREC.mat == "" ||
+              _vm.newREC.qty == 0 ||
+              _vm.newREC.single == 0 ||
+              _vm.newREC.total == 0
+          },
+          on: {
+            click: function($event) {
+              _vm.addRec()
+            }
+          }
+        },
+        [_vm._v("اضافة")]
+      ),
+      _vm._v(" "),
+      _vm.records.length > 0
+        ? _c("div", [
+            _c("h4", [_vm._v("المواد")]),
+            _vm._v(" "),
+            _c(
+              "ul",
+              _vm._l(_vm.records, function(item) {
+                return _c("li", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(item.mat) +
+                      " : " +
+                      _vm._s(item.qty) +
+                      " × " +
+                      _vm._s(item.single) +
+                      " = " +
+                      _vm._s(item.qty * item.single) +
+                      "\n                "
+                  )
+                ])
+              }),
+              0
+            )
+          ])
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-270f56a7", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

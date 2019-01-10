@@ -11439,9 +11439,174 @@ a.text-dark:focus {
   }
 }
 
-.navbar-laravel {
-  background-color: #fff;
-  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+/******************** INITIALS ********************/
+
+html,
+body,
+div,
+ul,
+li,
+a {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  color: red;
+}
+
+.form-group label {
+  line-height: 36px;
+  margin-bottom: 0;
+}
+
+/******************** CUSTOM ********************/
+
+main.master {
+  background: #555;
+  min-height: 500px;
+}
+
+.tab-content .tab-pane {
+  min-height: 350px;
+}
+
+nav .navbar-brand {
+  margin-left: 1rem;
+  margin-right: unset;
+}
+
+.dropdown-menu {
+  padding: 0 !important;
+}
+
+.dropdown-menu .dropdown-item {
+  text-align: right;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background: #ccc;
+}
+
+.dropdown-menu .dropdown-divider {
+  margin: 2px 0px !important;
+}
+
+.nav-tabs {
+  padding-right: unset;
+  padding-left: 20px;
+}
+
+ul#NAVBAR li.nav-item .nav-link::after {
+  display: none !important;
+}
+
+.sub-menu {
+  display: none;
+}
+
+.sub-menu :hover {
+  display: block;
+}
+
+.sub-menu-btn:hover + .sub-menu {
+  display: block;
+}
+
+.sub-menu-btn .dropdown-toggle::before {
+  float: left;
+  margin-top: 7px;
+  margin-left: -17px;
+}
+
+/******************** MODAL ********************/
+
+#createBaseModal .modal-footer .btn {
+  margin-right: 10px;
+}
+
+#createBaseModal .modal-header .close {
+  margin-right: auto;
+  margin-left: -1rem;
+}
+
+#createBaseModal .modal-btn {
+  z-index: 1 !important;
+  position: relative;
+}
+
+/******************** BREADCRUMB ********************/
+
+.breadcrumb .breadcrumb-item {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.breadcrumb:before {
+  padding-left: .5rem !important;
+  padding-right: .5rem !important;
+}
+
+/******************** CARD ********************/
+
+.card {
+  min-height: 80vh;
+}
+
+.card .card-header {
+  padding: 5px 15px;
+  line-height: 46px;
+  text-align: right;
+}
+
+.card .card-header .btn {
+  margin: 5px 0px 0px 5px;
+}
+
+.card .card-header .breadcrumb {
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.card .card-body {
+  min-height: 350px;
+}
+
+.card .card-body form {
+  min-height: 350px;
+  margin: 10px 20px 0px 10px;
+}
+
+/******************** TREE ********************/
+
+.tree-leaf .tree-leaf-text {
+  float: right !important;
+}
+
+.tree-expando {
+  float: right !important;
+}
+
+.tree-child-leaves {
+  margin-right: 30px;
+  border-right: 1px solid #ccc;
+  padding-right: 20px;
+  margin-right: 5px;
+  padding-bottom: 10px;
+}
+
+.tree-expando {
+  margin-left: 4px;
+  width: 12px !important;
+  height: 12px !important;
+  text-align: center !important;
+  border: 1px solid #ccc !important;
+  background: #fff !important;
 }
 

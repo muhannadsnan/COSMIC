@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-<div id="invoice" class="d-flexX justify-content-centerX">
+<div id="app" class="d-flexX justify-content-centerX">
     <div class="row form-group">
         <div class="col-sm-6 px-0">
             <div class="row form-group">
@@ -69,37 +69,7 @@
     </div>
 
     <hr>
-    <div class="row form-group">
-        <div class="col-sm-6 px-0">
-            <div class="row form-group mb-0">
-                <label class="col-sm-4 d-flex">المادة</label>
-                <input type="text" name="" id="" class="form-control col-sm-8" placeholder="enter value...">
-            </div>
-        </div>
-        <div class="col-sm-6 px-0">
-            <div class="row form-group mb-0">
-                <label class="col-sm-4 d-flex">الكمية</label>
-                <input type="text" name="" id="" class="form-control col-sm-8" placeholder="enter value...">
-            </div>
-        </div>
-        <div class="col-sm-6 px-0">
-            <div class="row form-group mb-0">
-                <label class="col-sm-4 d-flex">الافرادي</label>
-                <input type="text" name="" id="" class="form-control col-sm-8" placeholder="enter value...">
-            </div>
-        </div>
-        <div class="col-sm-6 px-0">
-            <div class="row form-group mb-0">
-                <label class="col-sm-4 d-flex">الاجمالي</label>
-                <input type="text" name="" id="" class="form-control col-sm-8" placeholder="enter value...">
-            </div>
-        </div>
-        <button class="btn btn-primary">اضافة</button>
-    </div>
-    <h3>المواد</h3>
-    <p>شامبو × 2 (100) = 200</p>
-    <p>شامبو × 2 (100) = 200</p>
-    <p>اضف المزيد</p>
+    <Records></Records>
 </div>
 @endsection
 
@@ -108,25 +78,12 @@
         .form-group{margin: 3px 0}
         label{direction: <?=__('lbl.direct2')?> !important; }
     </style>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="{{asset('js/store.js')}}"></script>
-
-
 @endsection
 
 @section('scripts')
-<script>
-    var vmA = new Vue({
-        el: '#app',
-        data: {
-            msg: "welcome msn !",
-            arr: store.text
-        },
-        methods: {},
-        mounted() {
-            console.log('Application VueJS Instance Mounted!');
-        },
-    }) 
-</script>
+    <!-- <script>
+        $(document).ready(function(){
+            
+        });
+    </script> -->
 @endsection
