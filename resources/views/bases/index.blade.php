@@ -26,11 +26,11 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-4">{{__('lbl.profile.startPeriodDate')}}</label>
-                <input type="text" name="startPeriodDate" placeholder="{{__('msg.enter_entity', ['entity'=>'تاريخ بداية المدة'])}}" class="form-control col-sm-8">
+                <input type="date" name="startPeriodDate" placeholder="{{__('msg.enter_entity', ['entity'=>'تاريخ بداية المدة'])}}" class="form-control col-sm-8" value="2018-09-29">
             </div>
             <div class="form-group row">
                 <label class="col-sm-4">{{__('lbl.profile.endPeriodDate')}}</label>
-                <input type="text" name="endPeriodDate" placeholder="{{__('msg.enter_entity', ['entity'=>'تاريخ نهاية المدة'])}}" class="form-control col-sm-8">
+                <input type="date" name="endPeriodDate" placeholder="{{__('msg.enter_entity', ['entity'=>'تاريخ نهاية المدة'])}}" class="form-control col-sm-8" value="2018-09-30">
             </div>
             <div class="form-group row">
                 <label class="col-sm-4">{{__('lbl.profile.currency')}}</label>
