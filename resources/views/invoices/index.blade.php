@@ -106,13 +106,27 @@
 @section('styles')
     <style>
         .form-group{margin: 3px 0}
+        label{direction: <?=__('lbl.direct2')?> !important; }
     </style>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{{asset('js/store.js')}}"></script>
+
+
 @endsection
 
 @section('scripts')
-    <script>
-        $(document).ready(function(){
-            
-        });
-    </script>
+<script>
+    var vmA = new Vue({
+        el: '#app',
+        data: {
+            msg: "welcome msn !",
+            arr: store.text
+        },
+        methods: {},
+        mounted() {
+            console.log('Application VueJS Instance Mounted!');
+        },
+    }) 
+</script>
 @endsection

@@ -122,6 +122,10 @@
     "m1-auto" => "mr-auto",
     "m2-auto" => "ml-auto",
     "drop1" => "dropleft",
+    "start" => "right",
+    "end" => "left",
+    "direct" => "rtl",
+    "direct2" => "ltr",
 
     "edit" => "تعديل",
     "create" => "إنشاء",
