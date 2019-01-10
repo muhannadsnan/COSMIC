@@ -1,4 +1,4 @@
-@extends('master')
+@extends('window')
 @section('title', '........')
 @section('card-header')
     @breadcrumb(['items' =>[
@@ -7,7 +7,7 @@
                     ], 'classes'=>''
                 ]) 
     @endbreadcrumb
-    {{lbl.x}}
+    {{__('lbl.invoice.3')}}
 @endsection
 
 @section('content')

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Invoice;
+use App\Base;
+use App\Profile;
 
 class InvoiceController extends Controller
 {
@@ -14,9 +16,9 @@ class InvoiceController extends Controller
     }
 
 
-    public function index()
+    public function index(Base $basis, Profile $profile)
     {        
-        return Invoice::all();
+        return view('invoices.index', ['invoices' => Invoice::all()]);
     }
     
     public function create()

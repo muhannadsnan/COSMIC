@@ -8,6 +8,7 @@ Route::get('/home', 'HomeController@index');
 Route::resource('/bases', 'BaseController');
 Route::get('/bases', 'BaseController@index')->name('bases');
 Route::get('/bases/{basis}/profiles', 'ProfileController@index');
+
 Route::resource('/profiles', 'ProfileController');
 Route::get('/bases/{basis}/profiles', 'ProfileController@index');
 Route::get('/bases/{basis}/profiles/{profile}', 'ProfileController@show');
@@ -15,11 +16,16 @@ Route::get('/bases/{basis}/profiles/{profile}', 'ProfileController@show');
 Route::resource('/groups', 'GroupController');
 Route::resource('/materials', 'MaterialController');
 Route::resource('/warehouses', 'WarehouseController');
+
 Route::resource('/accounts', 'AccountController');
 Route::get('/bases/{basis}/profiles/{profile}/accounts', 'AccountController@index');
+
 Route::resource('/users', 'UserController');
 Route::resource('/clients', 'ClientController');
+
 Route::resource('/invoices', 'InvoiceController');
+Route::get('/bases/{basis}/profiles/{profile}/invoices', 'InvoiceController@index');
+
 Route::resource('/entries', 'EntryController');
 Route::resource('/currencies', 'CurrencyController');
 Route::resource('/entryinfos', 'EntryinfoController');
