@@ -21,6 +21,9 @@
                 
             }
         },
+        methods: {
+            
+        },
         mounted() {
             console.log('Component mounted.')
         }

@@ -2,7 +2,9 @@
 html, body, div, ul, li, a{direction: rtl !important; text-align: right !important;}
 input[type="radio"], input[type="checkbox"]{vertical-align: middle; margin-left: 5px;}
 input[type="number"]::-webkit-inner-spin-button {color: red;} 
-.form-group label{line-height: 36px; margin-bottom: 0;}
+.form-group {
+    label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important;}
+}
 
 /******************** CUSTOM ********************/
 main.master{background: #555; min-height: 500px;}
@@ -36,7 +38,7 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 }
 
 /******************** CARD ********************/
-.card{min-height: 80vh;
+.card{
     .card-header{
         padding: 5px 15px; 
         line-height: 46px; 

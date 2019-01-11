@@ -13931,17 +13931,20 @@ window.Vue = __webpack_require__(36);
 window.Store = __webpack_require__(48);
 
 Vue.component('example-component', __webpack_require__(39));
-Vue.component('Records', __webpack_require__(49));
+Vue.component('records', __webpack_require__(49));
+Vue.component('invoice-selling', __webpack_require__(55));
 
 var app = new Vue({
     el: '#app',
     data: function data() {
         return {
-            msg: "welcome kong!"
+            msg: "Welcome kong!"
         };
     },
 
-    methods: {},
+    methods: {
+        xxx: function xxx() {}
+    },
     mounted: function mounted() {
         console.log(this.msg);
     }
@@ -47837,6 +47840,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {};
     },
+
+    methods: {},
     mounted: function mounted() {
         console.log('Component mounted.');
     }
@@ -48021,6 +48026,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -48032,11 +48039,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         addRec: function addRec() {
-            this.records.unshift(this.newREC);
-            this.newREC = { mat: '', qty: 0, single: 0, total: 0 };
+            if (!(this.newREC.mat == '' || this.newREC.qty == 0 || this.newREC.single == 0)) {
+                this.records.unshift(this.newREC);
+                this.newREC = { mat: '', qty: 0, single: 0, total: 0 };
+            }
+        },
+        clear: function clear() {
+            alert('clear');
         }
     },
-    mounted: function mounted() {}
+    computed: {
+        newTotal: function newTotal() {
+            return this.newREC.single * this.newREC.qty;
+        }
+    },
+    watch: {
+        // if the values are negative
+    },
+    created: function created() {
+        this.$parent.$on('ClearInvoice', this.clear);
+    }
 });
 
 /***/ }),
@@ -48047,130 +48069,171 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row form-group" }, [
-    _c("div", { staticClass: "col-sm-6 px-0" }, [
-      _c("div", { staticClass: "row form-group mb-0" }, [
-        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("المادة")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.newREC.mat,
-              expression: "newREC.mat"
-            }
-          ],
-          staticClass: "form-control col-sm-8",
-          attrs: { type: "text", placeholder: "enter value..." },
-          domProps: { value: _vm.newREC.mat },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+  return _c("div", { staticClass: "xxx" }, [
+    _c("div", { staticClass: "row form-group d-flex justify-content-around" }, [
+      _c("div", { staticClass: "col-sm-6 col-md-4 px-0" }, [
+        _c("div", { staticClass: "row form-group mb-0" }, [
+          _c("label", { staticClass: "col-sm-3 d-flex" }, [_vm._v("المادة")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newREC.mat,
+                expression: "newREC.mat"
               }
-              _vm.$set(_vm.newREC, "mat", $event.target.value)
+            ],
+            staticClass: "form-control col-sm-9",
+            attrs: { type: "text", placeholder: "أدخل قيمة..." },
+            domProps: { value: _vm.newREC.mat },
+            on: {
+              keyup: function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                _vm.addRec()
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.newREC, "mat", $event.target.value)
+              }
             }
-          }
-        })
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 col-md-2 px-0" }, [
+        _c("div", { staticClass: "row form-group mb-0" }, [
+          _c("label", { staticClass: "col-sm-3 d-flex" }, [_vm._v("الكمية")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newREC.qty,
+                expression: "newREC.qty"
+              }
+            ],
+            staticClass: "form-control col-sm-9",
+            attrs: { type: "number", placeholder: "أدخل قيمة..." },
+            domProps: { value: _vm.newREC.qty },
+            on: {
+              keyup: function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                _vm.addRec()
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.newREC, "qty", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 col-md-2 px-0" }, [
+        _c("div", { staticClass: "row form-group mb-0" }, [
+          _c("label", { staticClass: "col-sm-3 d-flex" }, [_vm._v("الافرادي")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newREC.single,
+                expression: "newREC.single"
+              }
+            ],
+            staticClass: "form-control col-sm-9",
+            attrs: { type: "number", placeholder: "أدخل قيمة..." },
+            domProps: { value: _vm.newREC.single },
+            on: {
+              keyup: function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                _vm.addRec()
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.newREC, "single", $event.target.value)
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 col-md-2 px-0" }, [
+        _c("div", { staticClass: "row form-group mb-0 mr-auto" }, [
+          _c("label", { staticClass: "col-sm-3 d-flex" }, [_vm._v("الاجمالي")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.newTotal,
+                expression: "newTotal"
+              }
+            ],
+            staticClass: "form-control col-sm-9",
+            attrs: {
+              type: "number",
+              placeholder: "أدخل قيمة...",
+              disabled: "disabled"
+            },
+            domProps: { value: _vm.newTotal },
+            on: {
+              keyup: function($event) {
+                if (
+                  !("button" in $event) &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                _vm.addRec()
+              },
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.newTotal = $event.target.value
+              }
+            }
+          })
+        ])
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-sm-6 px-0" }, [
-      _c("div", { staticClass: "row form-group mb-0" }, [
-        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("الكمية")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.newREC.qty,
-              expression: "newREC.qty"
-            }
-          ],
-          staticClass: "form-control col-sm-8",
-          attrs: { type: "number", placeholder: "enter value..." },
-          domProps: { value: _vm.newREC.qty },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.newREC, "qty", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-sm-6 px-0" }, [
-      _c("div", { staticClass: "row form-group mb-0" }, [
-        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("الافرادي")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.newREC.single,
-              expression: "newREC.single"
-            }
-          ],
-          staticClass: "form-control col-sm-8",
-          attrs: { type: "number", placeholder: "enter value..." },
-          domProps: { value: _vm.newREC.single },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.newREC, "single", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-sm-6 px-0" }, [
-      _c("div", { staticClass: "row form-group mb-0" }, [
-        _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("الاجمالي")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.newREC.total,
-              expression: "newREC.total"
-            }
-          ],
-          staticClass: "form-control col-sm-8",
-          attrs: { type: "number", placeholder: "enter value..." },
-          domProps: { value: _vm.newREC.total },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.newREC, "total", $event.target.value)
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
+    _c("div", { staticClass: "form-group d-flex" }, [
       _c(
         "button",
         {
-          staticClass: "btn btn-primary",
+          staticClass: "btn btn-primary align-self-start",
           attrs: {
             disabled:
               _vm.newREC.mat == "" ||
               _vm.newREC.qty == 0 ||
-              _vm.newREC.single == 0 ||
-              _vm.newREC.total == 0
+              _vm.newREC.single == 0
           },
           on: {
             click: function($event) {
@@ -48182,8 +48245,8 @@ var render = function() {
       ),
       _vm._v(" "),
       _vm.records.length > 0
-        ? _c("div", [
-            _c("h4", [_vm._v("المواد")]),
+        ? _c("div", { staticClass: "flex-grow-1 px-3 pt-5" }, [
+            _c("h4", { staticClass: "align-self-start" }, [_vm._v("المواد")]),
             _vm._v(" "),
             _c(
               "ul",
@@ -48216,6 +48279,450 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-270f56a7", module.exports)
+  }
+}
+
+/***/ }),
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(40)
+/* script */
+var __vue_script__ = __webpack_require__(56)
+/* template */
+var __vue_template__ = __webpack_require__(57)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/InvoiceSelling.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-78feede4", Component.options)
+  } else {
+    hotAPI.reload("data-v-78feede4", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            invoice: {},
+            loading: false
+        };
+    },
+
+    methods: {
+        tabClicked: function tabClicked() {
+            $(this.$el).tab('show');
+        }
+    },
+    mounted: function mounted() {
+        console.log('Component <invoice-selling> mounted.');
+    }
+});
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "containerX" }, [
+    _c(
+      "div",
+      { staticClass: "tab-content", attrs: { id: "v-pills-tabContent" } },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "tab-pane fade show active",
+            attrs: { id: "invoiceRecords", role: "tabpanel" }
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("records"),
+            _vm._v(" "),
+            _c("hr")
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm._m(2)
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "ul",
+      {
+        staticClass: "nav nav-pills nav-fill TABS-bottom",
+        attrs: { role: "tablist" }
+      },
+      [
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: {
+                id: "invoiceRecords",
+                "data-toggle": "pill",
+                role: "tab",
+                href: "#invoiceRecords"
+              },
+              on: { click: _vm.tabClicked }
+            },
+            [_vm._v("حفظ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "invoiceDetails",
+                "data-toggle": "pill",
+                role: "tab",
+                href: "#invoiceDetails"
+              },
+              on: { click: _vm.tabClicked }
+            },
+            [_vm._v("المزيد")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link",
+              attrs: {
+                id: "invoiceClear",
+                "data-toggle": "pill",
+                role: "tab",
+                href: "#"
+              },
+              on: {
+                click: function($event) {
+                  _vm.$emit("ClearInvoice")
+                }
+              }
+            },
+            [_vm._v("إلغاء الفاتورة")]
+          )
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row form-group" }, [
+      _c("div", { staticClass: "col-sm-6 px-0" }, [
+        _c("div", { staticClass: "row form-group" }, [
+          _c("label", { staticClass: "col-sm-2 d-flex" }, [_vm._v("العميل")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control col-sm-10",
+            attrs: {
+              type: "text",
+              name: "",
+              id: "",
+              placeholder: "أدخل قيمة..."
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row form-group" }, [
+          _c("div", { staticClass: "col-sm-6 px-0" }, [
+            _c("div", { staticClass: "row form-group mb-0" }, [
+              _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                _vm._v("العملة")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control col-sm-8",
+                attrs: {
+                  type: "text",
+                  name: "",
+                  id: "",
+                  placeholder: "أدخل قيمة..."
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6 px-0" }, [
+            _c("div", { staticClass: "row form-group mb-0" }, [
+              _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                _vm._v("التعادل")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control col-sm-8",
+                attrs: {
+                  type: "text",
+                  name: "",
+                  id: "",
+                  placeholder: "أدخل قيمة..."
+                }
+              })
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row form-group" }, [
+          _c("div", { staticClass: "col-sm-6 px-0" }, [
+            _c("div", { staticClass: "row form-group mb-0" }, [
+              _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                _vm._v("التاريخ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control col-sm-8",
+                attrs: {
+                  type: "text",
+                  name: "",
+                  id: "",
+                  placeholder: "أدخل قيمة..."
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6 px-0" }, [
+            _c("div", { staticClass: "row form-group mb-0" }, [
+              _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                _vm._v("الدفع")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control col-sm-8",
+                attrs: {
+                  type: "text",
+                  name: "",
+                  id: "",
+                  placeholder: "أدخل قيمة..."
+                }
+              })
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 px-0" }, [
+        _c("div", { staticClass: "row form-group" }, [
+          _c("label", { staticClass: "col-sm-4 d-flex" }, [
+            _vm._v("درجة السرية")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control col-sm-8",
+            attrs: {
+              type: "text",
+              name: "",
+              id: "",
+              placeholder: "أدخل قيمة..."
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row form-group" }, [
+          _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("المستودع")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control col-sm-8",
+            attrs: {
+              type: "text",
+              name: "",
+              id: "",
+              placeholder: "أدخل قيمة..."
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row form-group" }, [
+          _c("label", { staticClass: "col-sm-4 d-flex" }, [
+            _vm._v("حساب العميل")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control col-sm-8",
+            attrs: {
+              type: "text",
+              name: "",
+              id: "",
+              placeholder: "أدخل قيمة..."
+            }
+          })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row form-group" }, [
+      _c("label", { staticClass: "col-sm-1 d-flex" }, [_vm._v("البيان")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control col-sm-11",
+        attrs: { type: "text", name: "", id: "", placeholder: "أدخل قيمة..." }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { id: "invoiceDetails", role: "tabpanel" }
+      },
+      [_c("h1", [_vm._v("حقول الفاتورة")])]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-78feede4", module.exports)
   }
 }
 

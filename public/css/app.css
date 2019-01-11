@@ -11464,6 +11464,8 @@ input[type="number"]::-webkit-inner-spin-button {
 .form-group label {
   line-height: 36px;
   margin-bottom: 0;
+  direction: ltr !important;
+  padding: 0 0 0 3px !important;
 }
 
 /******************** CUSTOM ********************/
@@ -11554,10 +11556,6 @@ ul#NAVBAR li.nav-item .nav-link::after {
 }
 
 /******************** CARD ********************/
-
-.card {
-  min-height: 80vh;
-}
 
 .card .card-header {
   padding: 5px 15px;

@@ -21,9 +21,9 @@
 @endsection
 
 @section('scripts')
-    <script>
+    {{-- <script>
         $(document).ready(function(){
             
         });
-    </script>
+    </script>-- }}
 @endsection
