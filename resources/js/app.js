@@ -1,10 +1,9 @@
 require('./bootstrap');
-window.Vue = require('vue');
-window.Store = require('./store');
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+
 Vue.component('records', require('./components/Records.vue'));
 Vue.component('invoice-selling', require('./components/InvoiceSelling.vue'));
+
 
 const app = new Vue({
     el: '#app',
@@ -19,6 +18,10 @@ const app = new Vue({
         }
     },
     mounted() {
-        console.log(this.msg);
+        console.log(Store.state);
+        this.Msg.success({
+            title:'my head',
+            message:'my body...'
+        })
     }
 });

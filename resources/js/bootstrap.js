@@ -10,7 +10,6 @@ window.Popper = require('popper.js').default;
 
 try {
     window.$ = window.jQuery = require('jquery');
-
     require('bootstrap');
 } catch (e) {}
 
@@ -21,8 +20,23 @@ try {
  */
 
 window.axios = require('axios');
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+
+window.Vue = require('vue');
+window.Store = require('./store');
+
+/******** TOASTR ********/
+import toastr from 'cxlt-vue2-toastr'
+var toastrConfigs = {
+    position: 'top right', showDuration: 500,
+    timeOut: 3000
+}
+Vue.use(toastr, toastrConfigs)
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
+// visit: https://vuejsexamples.com/toast-notification-component-for-vue2/
+/************************/
+
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that

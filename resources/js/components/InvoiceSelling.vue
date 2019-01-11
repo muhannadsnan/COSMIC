@@ -76,7 +76,7 @@
                 <a class="nav-link" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="invoiceClear" data-toggle="pill" role="tab" href="#" @click="$emit('ClearInvoice')">إلغاء الفاتورة</a>
+                <a class="nav-link" id="invoiceClear" href="#" @click="$emit('ClearInvoice')">إلغاء الفاتورة</a>
             </li>
         </ul>
     </div>
