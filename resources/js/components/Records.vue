@@ -29,9 +29,9 @@
         <div class="form-group d-flex">
             <button class="btn btn-primary align-self-start" @click="addRec()" :disabled="newREC.mat=='' || newREC.qty==0 || newREC.single==0">اضافة</button>
             <div class="flex-grow-1 px-3 pt-5" v-if="records.length > 0">
-                <h4 class="align-self-start">المواد</h4>
+                <h4 class="align-self-start">المواد ({{records.length}})</h4>
                 <ul>
-                    <li v-for="item in records">
+                    <li v-for="item,i in records">
                         {{item.mat}} : {{item.qty}} × {{item.single}} = {{item.qty*item.single}}
                     </li>
                 </ul>

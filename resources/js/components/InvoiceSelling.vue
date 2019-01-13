@@ -70,13 +70,16 @@
 
         <ul class="nav nav-pills nav-fill TABS-bottom" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="invoiceRecords" data-toggle="pill" role="tab" href="#invoiceRecords" @click="tabClicked">حفظ</a>
+                <button class="nav-link btn border-primary active px-5" id="invoiceRecords" data-toggle="pill" role="tab" href="#invoiceRecords" @click="tabClicked">الفاتورة</button>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</a>
+                <button class="nav-link btn border-primary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="invoiceClear" href="#" @click="$emit('ClearInvoice')">إلغاء الفاتورة</a>
+                <button class="nav-link btn border-success text-success px-5" id="invoiceSave" @click="tabClicked">حفظ</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="$emit('ClearInvoice')">إلغاء الفاتورة</button>
             </li>
         </ul>
     </div>
@@ -100,3 +103,7 @@
         }
     }
 </script>
+
+<style scoped>
+.tab-content .tab-pane{min-height: 270px;}
+</style>

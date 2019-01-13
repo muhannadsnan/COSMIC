@@ -19,9 +19,6 @@ const app = new Vue({
     },
     mounted() {
         console.log(Store.state);
-        this.Msg.success({
-            title:'my head',
-            message:'my body...'
-        })
+        ///this.Msg.success({ })
     }
 });
