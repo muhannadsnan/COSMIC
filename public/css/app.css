@@ -11458,7 +11458,7 @@ input[type="checkbox"] {
 }
 
 input[type="number"]::-webkit-inner-spin-button {
-  color: red;
+  display: none;
 }
 
 hr {
@@ -11476,7 +11476,7 @@ hr {
 
 main.master {
   background: #555;
-  min-height: 500px;
+  min-height: 80vh;
 }
 
 .tab-content .tab-pane {

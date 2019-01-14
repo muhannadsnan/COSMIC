@@ -1,14 +1,14 @@
 /******************** INITIALS ********************/
 html, body, div, ul, li, a{direction: rtl !important; text-align: right !important;}
 input[type="radio"], input[type="checkbox"]{vertical-align: middle; margin-left: 5px;}
-input[type="number"]::-webkit-inner-spin-button {color: red;} 
+input[type="number"]::-webkit-inner-spin-button {display: none;} 
 hr{border-color: darkseagreen;}
 .form-group {
     label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important;}
 }
 
 /******************** CUSTOM ********************/
-main.master{background: #555; min-height: 500px;}
+main.master{background: #555; min-height: 80vh;}
 .tab-content .tab-pane{min-height: 350px}
 nav .navbar-brand{margin-left: 1rem; margin-right: unset;}
 .dropdown-menu{padding: 0 !important; 

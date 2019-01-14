@@ -1,74 +1,133 @@
 <template>
     <div class="xxx">
-        <div class="row form-group d-flex justify-content-around">
-            <div class="col-sm-6 col-md-4 px-0">
-                <div class="row form-group mb-0">
-                    <label class="col-sm-3 d-flex">المادة</label>
-                    <input type="text" v-model="newREC.mat" class="form-control col-sm-9" placeholder="أدخل قيمة..."  @keyup.enter="addRec()">
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-2 px-0">
-                <div class="row form-group mb-0">
-                    <label class="col-sm-3 d-flex">الكمية</label>
-                    <input type="number" v-model="newREC.qty" class="form-control col-sm-9" placeholder="أدخل قيمة..." @keyup.enter="addRec()">
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-2 px-0">
-                <div class="row form-group mb-0">
-                    <label class="col-sm-3 d-flex">الافرادي</label>
-                    <input type="number" v-model="newREC.single" class="form-control col-sm-9" placeholder="أدخل قيمة..." @keyup.enter="addRec()">
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-2 px-0">
-                <div class="row form-group mb-0 mr-auto">
-                    <label class="col-sm-3 d-flex">الاجمالي</label>
-                    <input type="number" v-model="newTotal" class="form-control col-sm-9" placeholder="أدخل قيمة..." disabled="disabled" @keyup.enter="addRec()">
-                </div>
-            </div>
-        </div>
-        <div class="form-group d-flex">
-            <button class="btn btn-primary align-self-start" @click="addRec()" :disabled="newREC.mat=='' || newREC.qty==0 || newREC.single==0">اضافة</button>
-            <div class="flex-grow-1 px-3 pt-5" v-if="records.length > 0">
-                <h4 class="align-self-start">المواد ({{records.length}})</h4>
-                <ul>
-                    <li v-for="item,i in records">
-                        {{item.mat}} : {{item.qty}} × {{item.single}} = {{item.qty*item.single}}
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <table class="table table-striped table-dark table-bordered table-hover table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">المادة</th>
+                    <th scope="col">الكمية</th>
+                    <th scope="col">الافرادي</th>
+                    <th scope="col">الاجمالي</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item,i in records">
+                    <th scope="row">{{i+1}}</th>
+                    <td><input type="text" v-model="records[i].mat" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
+                    <td><input type="number" v-model.number="records[i].qty" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
+                    <td><input type="number" v-model.number="records[i].single" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
+                    <td><input type="number" v-model.number="records[i].total" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
+                </tr>
+                <tr>
+                    <th scope="row">{{records.length+1}}</th>
+                    <td><input type="text" v-model="newRECS[0].mat" class="form-control col-sm-9" @keyup.enter="addRec(0)" ref="firstInput"></td>
+                    <td><input type="number" v-model.number="newRECS[0].qty" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
+                    <td><input type="number" v-model.number="newRECS[0].single" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
+                    <td><input type="number" v-model.number="newRECS[0].total" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
+                </tr>
+                <!-- <tr>
+                    <th scope="row">{{records.length+2}}</th>
+                    <td><input type="text" v-model="newRECS[1].mat" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
+                    <td><input type="number" v-model="newRECS[1].qty" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
+                    <td><input type="number" v-model="newRECS[1].single" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
+                    <td><input type="number" v-model="newRECS[1].total" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
+                </tr>
+                <tr>
+                    <th scope="row">{{records.length+3}}</th>
+                    <td><input type="text" v-model="newRECS[2].mat" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
+                    <td><input type="number" v-model="newRECS[2].qty" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
+                    <td><input type="number" v-model="newRECS[2].single" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
+                    <td><input type="number" v-model="newRECS[2].total" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
+                </tr>
+                <tr>
+                    <th scope="row">{{records.length+4}}</th>
+                    <td><input type="text" v-model="newRECS[3].mat" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
+                    <td><input type="number" v-model="newRECS[3].qty" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
+                    <td><input type="number" v-model="newRECS[3].single" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
+                    <td><input type="number" v-model="newRECS[3].total" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
+                </tr>
+                <tr>
+                    <th scope="row">{{records.length+5}}</th>
+                    <td><input type="text" v-model="newRECS[4].mat" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
+                    <td><input type="number" v-model="newRECS[4].qty" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
+                    <td><input type="number" v-model="newRECS[4].single" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
+                    <td><input type="number" v-model="newRECS[4].total" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
+                </tr> -->
+            </tbody>
+        </table>
     </div>
 </template>
 
 <script>
+    class REC {
+        constructor(mat='', qty=0, single=0, total=0) {
+            this.mat = mat;
+            this.qty = qty;
+            this.single = single;
+            this.total = total;
+        }
+    }
     export default {
+        props: ['value'],
         data(){
             return {
-                newREC: {mat: '', qty: 0, single: 0, total: 0},
+                newRECS: [
+                    new REC(), new REC(), new REC(), new REC(), new REC(), 
+                ],
                 records: []
             }
         },
         methods: {
-            addRec(){
-                if(!(this.newREC.mat=='' || this.newREC.qty==0 || this.newREC.single==0)){
-                    this.records.unshift(this.newREC);
-                    this.newREC = {mat: '', qty: 0, single: 0, total: 0};
+            addRec(i){ 
+                if(!(this.newRECS[0].mat=='' || +this.newRECS[0].qty==0 || +this.newRECS[0].single==0)){
+                    this.records.push(this.newRECS[0]);
+                    this.newRECS[0] = new REC();
+                    this.$refs.firstInput.focus();
                 }
             },
             clear(){
-                alert('clear');
+                if(confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')){
+                    this.records = []
+                }
             }
         },
         computed: {
             newTotal(){
-                return this.newREC.single*this.newREC.qty;
+                return this.newREC1.single*this.newREC1.qty;
             }
         },
         watch: {
             // if the values are negative
+            newRECS: {
+                handler: function(newValue) {
+                    if(newValue[0].qty < 0){ 
+                        this.newRECS[0].qty = 0
+                    }
+                    if(newValue[0].single < 0){ 
+                        this.newRECS[0].single = 0
+                    }
+                    if(newValue[0].total < 0){ 
+                        this.newRECS[0].total = 0
+                    }
+                }, deep: true
+            }
         },
         created() {
             this.$parent.$on('ClearInvoice', this.clear)
         }
     }
 </script>
+
+<style lang="scss" scoped>
+table{
+    tr{
+        td{
+            padding: 0; height: 20px !important;
+            input.form-control{
+                background: transparent; border: 0; border-radius: 0; max-width: unset; width: 100%; color: #fff; padding: 0px 5px; line-height: 20px; height: 31px;
+            } 
+        }
+    }
+    
+}  
+</style>

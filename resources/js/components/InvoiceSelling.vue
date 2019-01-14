@@ -79,7 +79,7 @@
                 <button class="nav-link btn border-success text-success px-5" id="invoiceSave" @click="tabClicked">حفظ</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="$emit('ClearInvoice')">إلغاء الفاتورة</button>
+                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="$emit('ClearInvoice')">حذف</button>
             </li>
         </ul>
     </div>
