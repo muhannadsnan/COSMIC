@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Invoice;
+use App\Currency;
 use App\Base;
 use App\Profile;
 
@@ -21,16 +22,9 @@ class InvoiceController extends Controller
         return view('invoices.index', ['invoices' => Invoice::all()]);
     }
     
-    public function create()
+    public function create(Base $basis, Profile $profile)
     {
-        $invoice = new Invoice([
-            'title' => 't1',
-            'desc' => 'd1',
-            'code' => 'c1',
-            'group_id' => '1',
-        ]);
-        $invoice->save();
-        return $invoice;
+        return view('invoices.index', ['currencies' => Currency::all(), 'pay' => config('func.pay')]); 
     }
     
     public function store(Request $request)

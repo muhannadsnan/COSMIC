@@ -6,19 +6,21 @@
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0">
                             <label class="col-sm-2 d-flex">العميل</label>
-                            <input type="text" name="" id="" class="form-control col-sm-10" placeholder="أدخل قيمة...">
+                            <input type="text" v-model="invoice.client_id" id="" class="form-control col-sm-10" placeholder="أدخل قيمة...">
                         </div>
                         <div class="row form-group my-0">
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">العملة</label>
-                                    <input type="text" name="" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                                    <select v-model="invoice.currency_id" class="form-control col-md-8" @change="selectCurr()">
+                                        <option v-for="curr,i in currencies" :value="curr.id" :key="i">{{curr.title}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">التعادل</label>
-                                    <input type="text" name="" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                                    <input type="text" v-model="selectedCurrency.buy" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                                 </div>
                             </div>
                         </div>
@@ -26,38 +28,40 @@
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">التاريخ</label>
-                                    <input type="text" name="" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                                    <input type="date" v-model="invoice.NDate" value="2018-09-29" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                                 </div>
                             </div>
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">الدفع</label>
-                                    <input type="text" name="" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                                    <select v-model="invoice.payment_id" id="" class="form-control col-md-8">
+                                        <option v-for="val,i in pay" :value="i" :key="i">{{val}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0">
-                            <label class="col-sm-4 d-flex">درجة السرية</label>
-                            <input type="text" name="" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                            <label class="col-sm-4 d-flex">الرقم التسلسلي</label>
+                            <input type="text" v-model="invoice.serial" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                         </div>
                         <div class="row form-group my-00">
                             <label class="col-sm-4 d-flex">المستودع</label>
-                            <input type="text" name="" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                            <input type="text" v-model="invoice.warehouse_id" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                         </div>
                         <div class="row form-group my-00">
                             <label class="col-sm-4 d-flex">حساب العميل</label>
-                            <input type="text" name="" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                            <input type="text" v-model="invoice.client_acc" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                         </div>
                     </div>
                 </div>
 
                 <div class="row form-group mb-4">
                     <label class="col-sm-1 d-flex">البيان</label>
-                    <input type="text" name="" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
+                    <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
-
+                <!--------------- RECORDS ---------------->
                 <records></records>
             </div>
 
@@ -74,30 +78,92 @@
                 <button class="nav-link btn border-primary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-success text-success px-5" id="invoiceSave" @click="tabClicked">حفظ</button>
+                <button class="nav-link btn border-success text-success px-5" id="invoiceSave" @click="submitInvoice()">حفظ</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="$emit('ClearInvoice')">حذف</button>
+                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="clearInvoice()">حذف</button>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+    class Invoice {
+        constructor(id=0, serial='', payment_id=0, currency_id=0, title='', desc='',  client_acc=0, NType=1, NDate='', ext_num='', int_num='', sum=0, remaining=0, client_id=0, warehouse_id=0) {
+            this.id = id;
+            this.serial = serial;
+            this.payment_id = payment_id;
+            this.currency_id = currency_id;
+            this.title = title;
+            this.desc = desc;
+            this.client_acc = client_acc;
+            this.NType = NType;
+            this.NDate = NDate;
+            this.ext_num = ext_num;
+            this.int_num = int_num;
+            this.sum = sum;
+            this.remaining = remaining;
+            this.client_id = client_id;
+            this.warehouse_id = warehouse_id;
+        }
+    }
     export default {
+        props: ['currencies', 'pay'],
         data(){
             return {
-                invoice: {},
+                invoice: new Invoice,
+                selectedCurrency: {buy: ''},
                 loading: false
             }
         },
         methods: {
-            tabClicked(){
+            tabClicked(){ // JQuery tab funcionality 
                 $(this.$el).tab('show')
+            },
+            selectCurr(curr){
+                this.selectedCurrency = curr;
+            },
+            formatDate(date) {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+
+                return [year, month, day].join('-');
+            },
+            clearInvoice(){
+                if(confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')){
+                    this.$emit('ClearInvoice')
+                    this.invoice = new Invoice; console.log("invoice cleared!");
+                    this.init()
+                }
+            },
+            submitInvoice(){
+                this.$emit('SubmitInvoice')
+                // this.invoice = new Invoice
+            },
+            init(){
+                this.invoice.currency_id = this.currencies.find(function(el){ return true; }).id;
+                let ArrPay = Array.from(Object.keys(this.pay), k=>this.pay[k]); //console.log(ArrPay);
+                this.invoice.payment_id = ArrPay.indexOf(ArrPay[0]); //console.log(this.invoice.payment_id);
+                this.invoice.NDate = this.formatDate(Date.now())
+            }
+        },        
+        watch: {
+            invoice: { 
+                handler: function(newValue) { 
+                    this.selectedCurrency = this.currencies.find(function(el){ 
+                        return el.id == newValue.currency_id;
+                    });
+                }, deep: true
             }
         },
         mounted() {
             console.log('Component <invoice-selling> mounted.')
+            this.init()
         }
     }
 </script>

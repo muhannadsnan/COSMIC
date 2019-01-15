@@ -86,9 +86,7 @@
                 }
             },
             clear(){
-                if(confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')){
-                    this.records = []
-                }
+                this.records = []; console.log("recoreds cleared !");
             }
         },
         computed: {
@@ -114,6 +112,7 @@
         },
         created() {
             this.$parent.$on('ClearInvoice', this.clear)
+            this.$parent.$on('SubmitInvoice', this.clear)
         }
     }
 </script>

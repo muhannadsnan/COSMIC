@@ -48818,9 +48818,7 @@ var REC = function REC() {
             }
         },
         clear: function clear() {
-            if (confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')) {
-                this.records = [];
-            }
+            this.records = [];console.log("recoreds cleared !");
         }
     },
     computed: {
@@ -48846,6 +48844,7 @@ var REC = function REC() {
     },
     created: function created() {
         this.$parent.$on('ClearInvoice', this.clear);
+        this.$parent.$on('SubmitInvoice', this.clear);
     }
 });
 
@@ -49351,6 +49350,12 @@ exports.push([module.i, "\n.tab-content .tab-pane[data-v-78feede4]{min-height: 2
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+//
+//
+//
+//
 //
 //
 //
@@ -49437,21 +49442,107 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+var Invoice = function Invoice() {
+    var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var serial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+    var payment_id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var currency_id = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+    var title = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
+    var desc = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
+    var client_acc = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
+    var NType = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
+    var NDate = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : '';
+    var ext_num = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : '';
+    var int_num = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
+    var sum = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : 0;
+    var remaining = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : 0;
+    var client_id = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
+    var warehouse_id = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
+
+    _classCallCheck(this, Invoice);
+
+    this.id = id;
+    this.serial = serial;
+    this.payment_id = payment_id;
+    this.currency_id = currency_id;
+    this.title = title;
+    this.desc = desc;
+    this.client_acc = client_acc;
+    this.NType = NType;
+    this.NDate = NDate;
+    this.ext_num = ext_num;
+    this.int_num = int_num;
+    this.sum = sum;
+    this.remaining = remaining;
+    this.client_id = client_id;
+    this.warehouse_id = warehouse_id;
+};
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['currencies', 'pay'],
     data: function data() {
         return {
-            invoice: {},
+            invoice: new Invoice(),
+            selectedCurrency: { buy: '' },
             loading: false
         };
     },
 
     methods: {
         tabClicked: function tabClicked() {
+            // JQuery tab funcionality 
             $(this.$el).tab('show');
+        },
+        selectCurr: function selectCurr(curr) {
+            this.selectedCurrency = curr;
+        },
+        formatDate: function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        },
+        clearInvoice: function clearInvoice() {
+            if (confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')) {
+                this.$emit('ClearInvoice');
+                this.invoice = new Invoice();console.log("invoice cleared!");
+                this.init();
+            }
+        },
+        submitInvoice: function submitInvoice() {
+            this.$emit('SubmitInvoice');
+            // this.invoice = new Invoice
+        },
+        init: function init() {
+            var _this = this;
+
+            this.invoice.currency_id = this.currencies.find(function (el) {
+                return true;
+            }).id;
+            var ArrPay = Array.from(Object.keys(this.pay), function (k) {
+                return _this.pay[k];
+            }); //console.log(ArrPay);
+            this.invoice.payment_id = ArrPay.indexOf(ArrPay[0]); //console.log(this.invoice.payment_id);
+            this.invoice.NDate = this.formatDate(Date.now());
+        }
+    },
+    watch: {
+        invoice: {
+            handler: function handler(newValue) {
+                this.selectedCurrency = this.currencies.find(function (el) {
+                    return el.id == newValue.currency_id;
+                });
+            }, deep: true
         }
     },
     mounted: function mounted() {
         console.log('Component <invoice-selling> mounted.');
+        this.init();
     }
 });
 
@@ -49474,11 +49565,361 @@ var render = function() {
             staticClass: "tab-pane fade show active",
             attrs: { id: "invoiceRecords", role: "tabpanel" }
           },
-          [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("records")],
+          [
+            _c("div", { staticClass: "row form-group" }, [
+              _c("div", { staticClass: "col-sm-6 px-0" }, [
+                _c("div", { staticClass: "row form-group my-0" }, [
+                  _c("label", { staticClass: "col-sm-2 d-flex" }, [
+                    _vm._v("العميل")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.invoice.client_id,
+                        expression: "invoice.client_id"
+                      }
+                    ],
+                    staticClass: "form-control col-sm-10",
+                    attrs: {
+                      type: "text",
+                      id: "",
+                      placeholder: "أدخل قيمة..."
+                    },
+                    domProps: { value: _vm.invoice.client_id },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.invoice, "client_id", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row form-group my-0" }, [
+                  _c("div", { staticClass: "col-sm-6 px-0" }, [
+                    _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                        _vm._v("العملة")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.invoice.currency_id,
+                              expression: "invoice.currency_id"
+                            }
+                          ],
+                          staticClass: "form-control col-md-8",
+                          on: {
+                            change: [
+                              function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.invoice,
+                                  "currency_id",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                              function($event) {
+                                _vm.selectCurr()
+                              }
+                            ]
+                          }
+                        },
+                        _vm._l(_vm.currencies, function(curr, i) {
+                          return _c(
+                            "option",
+                            { key: i, domProps: { value: curr.id } },
+                            [_vm._v(_vm._s(curr.title))]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6 px-0" }, [
+                    _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                        _vm._v("التعادل")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedCurrency.buy,
+                            expression: "selectedCurrency.buy"
+                          }
+                        ],
+                        staticClass: "form-control col-sm-8",
+                        attrs: {
+                          type: "text",
+                          id: "",
+                          placeholder: "أدخل قيمة..."
+                        },
+                        domProps: { value: _vm.selectedCurrency.buy },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.selectedCurrency,
+                              "buy",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row form-group my-0" }, [
+                  _c("div", { staticClass: "col-sm-6 px-0" }, [
+                    _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                        _vm._v("التاريخ")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.invoice.NDate,
+                            expression: "invoice.NDate"
+                          }
+                        ],
+                        staticClass: "form-control col-sm-8",
+                        attrs: {
+                          type: "date",
+                          value: "2018-09-29",
+                          placeholder: "أدخل قيمة..."
+                        },
+                        domProps: { value: _vm.invoice.NDate },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.invoice, "NDate", $event.target.value)
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6 px-0" }, [
+                    _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                        _vm._v("الدفع")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.invoice.payment_id,
+                              expression: "invoice.payment_id"
+                            }
+                          ],
+                          staticClass: "form-control col-md-8",
+                          attrs: { id: "" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.invoice,
+                                "payment_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        _vm._l(_vm.pay, function(val, i) {
+                          return _c(
+                            "option",
+                            { key: i, domProps: { value: i } },
+                            [_vm._v(_vm._s(val))]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6 px-0" }, [
+                _c("div", { staticClass: "row form-group my-0" }, [
+                  _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                    _vm._v("الرقم التسلسلي")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.invoice.serial,
+                        expression: "invoice.serial"
+                      }
+                    ],
+                    staticClass: "form-control col-sm-8",
+                    attrs: {
+                      type: "text",
+                      id: "",
+                      placeholder: "أدخل قيمة..."
+                    },
+                    domProps: { value: _vm.invoice.serial },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.invoice, "serial", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row form-group my-00" }, [
+                  _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                    _vm._v("المستودع")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.invoice.warehouse_id,
+                        expression: "invoice.warehouse_id"
+                      }
+                    ],
+                    staticClass: "form-control col-sm-8",
+                    attrs: {
+                      type: "text",
+                      id: "",
+                      placeholder: "أدخل قيمة..."
+                    },
+                    domProps: { value: _vm.invoice.warehouse_id },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.invoice,
+                          "warehouse_id",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row form-group my-00" }, [
+                  _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                    _vm._v("حساب العميل")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.invoice.client_acc,
+                        expression: "invoice.client_acc"
+                      }
+                    ],
+                    staticClass: "form-control col-sm-8",
+                    attrs: {
+                      type: "text",
+                      id: "",
+                      placeholder: "أدخل قيمة..."
+                    },
+                    domProps: { value: _vm.invoice.client_acc },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.invoice, "client_acc", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row form-group mb-4" }, [
+              _c("label", { staticClass: "col-sm-1 d-flex" }, [
+                _vm._v("البيان")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.invoice.desc,
+                    expression: "invoice.desc"
+                  }
+                ],
+                staticClass: "form-control col-sm-11",
+                attrs: { type: "text", id: "", placeholder: "أدخل قيمة..." },
+                domProps: { value: _vm.invoice.desc },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.invoice, "desc", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("records")
+          ],
           1
         ),
         _vm._v(" "),
-        _vm._m(2)
+        _vm._m(0)
       ]
     ),
     _vm._v(" "),
@@ -49529,7 +49970,11 @@ var render = function() {
             {
               staticClass: "nav-link btn border-success text-success px-5",
               attrs: { id: "invoiceSave" },
-              on: { click: _vm.tabClicked }
+              on: {
+                click: function($event) {
+                  _vm.submitInvoice()
+                }
+              }
             },
             [_vm._v("حفظ")]
           )
@@ -49543,7 +49988,7 @@ var render = function() {
               attrs: { id: "invoiceClear" },
               on: {
                 click: function($event) {
-                  _vm.$emit("ClearInvoice")
+                  _vm.clearInvoice()
                 }
               }
             },
@@ -49555,165 +50000,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row form-group" }, [
-      _c("div", { staticClass: "col-sm-6 px-0" }, [
-        _c("div", { staticClass: "row form-group my-0" }, [
-          _c("label", { staticClass: "col-sm-2 d-flex" }, [_vm._v("العميل")]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control col-sm-10",
-            attrs: {
-              type: "text",
-              name: "",
-              id: "",
-              placeholder: "أدخل قيمة..."
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row form-group my-0" }, [
-          _c("div", { staticClass: "col-sm-6 px-0" }, [
-            _c("div", { staticClass: "row form-group mb-0" }, [
-              _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                _vm._v("العملة")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control col-sm-8",
-                attrs: {
-                  type: "text",
-                  name: "",
-                  id: "",
-                  placeholder: "أدخل قيمة..."
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6 px-0" }, [
-            _c("div", { staticClass: "row form-group mb-0" }, [
-              _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                _vm._v("التعادل")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control col-sm-8",
-                attrs: {
-                  type: "text",
-                  name: "",
-                  id: "",
-                  placeholder: "أدخل قيمة..."
-                }
-              })
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row form-group my-0" }, [
-          _c("div", { staticClass: "col-sm-6 px-0" }, [
-            _c("div", { staticClass: "row form-group mb-0" }, [
-              _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                _vm._v("التاريخ")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control col-sm-8",
-                attrs: {
-                  type: "text",
-                  name: "",
-                  id: "",
-                  placeholder: "أدخل قيمة..."
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-6 px-0" }, [
-            _c("div", { staticClass: "row form-group mb-0" }, [
-              _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                _vm._v("الدفع")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control col-sm-8",
-                attrs: {
-                  type: "text",
-                  name: "",
-                  id: "",
-                  placeholder: "أدخل قيمة..."
-                }
-              })
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-6 px-0" }, [
-        _c("div", { staticClass: "row form-group my-0" }, [
-          _c("label", { staticClass: "col-sm-4 d-flex" }, [
-            _vm._v("درجة السرية")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control col-sm-8",
-            attrs: {
-              type: "text",
-              name: "",
-              id: "",
-              placeholder: "أدخل قيمة..."
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row form-group my-00" }, [
-          _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("المستودع")]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control col-sm-8",
-            attrs: {
-              type: "text",
-              name: "",
-              id: "",
-              placeholder: "أدخل قيمة..."
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row form-group my-00" }, [
-          _c("label", { staticClass: "col-sm-4 d-flex" }, [
-            _vm._v("حساب العميل")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control col-sm-8",
-            attrs: {
-              type: "text",
-              name: "",
-              id: "",
-              placeholder: "أدخل قيمة..."
-            }
-          })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row form-group mb-4" }, [
-      _c("label", { staticClass: "col-sm-1 d-flex" }, [_vm._v("البيان")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control col-sm-11",
-        attrs: { type: "text", name: "", id: "", placeholder: "أدخل قيمة..." }
-      })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

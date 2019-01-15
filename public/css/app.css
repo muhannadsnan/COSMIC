@@ -11457,7 +11457,8 @@ input[type="checkbox"] {
   margin-left: 5px;
 }
 
-input[type="number"]::-webkit-inner-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-inner-spin-button {
   display: none;
 }
 

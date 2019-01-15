@@ -23,7 +23,7 @@ $factory->define(App\Currency::class, function (Faker $faker) {
     return [               
         'title' => $faker->name,
         'country' => $faker->ean13,
-        'nDate' => now(),
+        'NDate' => now(),
         'sell' => $faker->randomFloat(null, 0, 1000),
         'buy' => $faker->randomFloat(null, 0, 1000),
         'sell_black' => $faker->randomFloat(null, 0, 1000),
@@ -92,6 +92,7 @@ $factory->define(App\Invoice::class, function (Faker $faker) {
     $currencies = App\Profile::all()->pluck('id')->toArray();
     $payments = App\Payment::all()->pluck('id')->toArray();
     return [ 
+        'serial' => $faker->ean8,
         'title' => $faker->name,
         'desc' => $faker->sentence,
         'client_acc' => $faker->randomElement([1,2,3]), // 1=cash, 2=remaining, 3=xxx 
@@ -122,7 +123,7 @@ $factory->define(App\Currency::class, function (Faker $faker) {
         'buy' => $faker->randomFloat(null, 0, 10000),
         'sell_black' => $faker->randomFloat(null, 0, 10000),
         'buy_black' => $faker->randomFloat(null, 0, 10000),
-        'nDate' => $faker->date(),
+        'NDate' => $faker->date(),
         'country' => $faker->country,
         'title' => $faker->currencyCode,
     ];

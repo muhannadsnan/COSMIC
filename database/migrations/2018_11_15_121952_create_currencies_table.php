@@ -19,7 +19,7 @@ class CreateCurrenciesTable extends Migration
             $table->string('country');
             $table->float('sell');
             $table->float('buy');
-            $table->date('nDate');
+            $table->date('NDate');
             $table->float('sell_black');
             $table->float('buy_black');
             $table->timestamps();

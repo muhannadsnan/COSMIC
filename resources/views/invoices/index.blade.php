@@ -12,7 +12,7 @@
 
 @section('content')
 <div id="app" class="d-flexX justify-content-centerX">
-    <invoice-selling></invoice-selling>
+    <invoice-selling :currencies="{{json_encode($currencies)}}" :pay="{{json_encode($pay)}}"></invoice-selling>
 </div>
 @endsection
 

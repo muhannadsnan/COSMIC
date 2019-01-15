@@ -16,7 +16,7 @@ class BelongToMe
             $base = $request->route()->parameter('basis');
             $profile = $request->route()->parameter('profile');
 
-            if(!empty($base)){
+            if(!empty($base)){ //dd($base);
                 if($base->_user->id != auth()->id()){
                     return false;
                 }

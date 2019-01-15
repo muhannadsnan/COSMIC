@@ -24,7 +24,7 @@ Route::resource('/users', 'UserController');
 Route::resource('/clients', 'ClientController');
 
 Route::resource('/invoices', 'InvoiceController');
-Route::get('/bases/{basis}/profiles/{profile}/invoices', 'InvoiceController@index');
+Route::get('/bases/{basis}/profiles/{profile}/invoices', 'InvoiceController@create');
 
 Route::resource('/entries', 'EntryController');
 Route::resource('/currencies', 'CurrencyController');

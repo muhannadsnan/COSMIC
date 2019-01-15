@@ -64,7 +64,7 @@
 @endsection
 
 @section('scripts')
-<script>
+<!-- <script>
 
-</script>
+</script> -->
 @endsection
