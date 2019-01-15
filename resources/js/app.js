@@ -19,6 +19,6 @@ const app = new Vue({
     },
     mounted() {
         console.log(Store.state);
-        ///this.Msg.success({ })
+        ///this.Msg.success({"title": "aaa", "message": "bbbb"})
     }
 });

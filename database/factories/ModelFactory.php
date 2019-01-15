@@ -149,11 +149,11 @@ $factory->define(App\Invoicetype::class, function (Faker $faker) {
         'title' => $faker->sentence,
     ];
 });
-$factory->define(App\Payment::class, function (Faker $faker) { 
-    return [
-        'title' => $faker->word,
-    ];
-});
+// $factory->define(App\Payment::class, function (Faker $faker) { 
+//     return [
+//         'title' => $faker->word,
+//     ];
+// });
 
 
 /*

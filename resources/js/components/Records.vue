@@ -84,9 +84,18 @@
                     this.newRECS[0] = new REC();
                     this.$refs.firstInput.focus();
                 }
+                this.checkCanSaveInvoice()
             },
             clear(){
                 this.records = []; console.log("recoreds cleared !");
+                this.checkCanSaveInvoice()
+            },
+            checkCanSaveInvoice(){
+                if(this.records.length > 0){
+                    this.$emit('canSaveInvoice', true)
+                }else{
+                    this.$emit('canSaveInvoice', false)
+                }
             }
         },
         computed: {

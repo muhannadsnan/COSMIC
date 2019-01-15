@@ -14363,7 +14363,7 @@ var app = new Vue({
     },
     mounted: function mounted() {
         console.log(Store.state);
-        ///this.Msg.success({ })
+        ///this.Msg.success({"title": "aaa", "message": "bbbb"})
     }
 });
 
@@ -48816,9 +48816,18 @@ var REC = function REC() {
                 this.newRECS[0] = new REC();
                 this.$refs.firstInput.focus();
             }
+            this.checkCanSaveInvoice();
         },
         clear: function clear() {
             this.records = [];console.log("recoreds cleared !");
+            this.checkCanSaveInvoice();
+        },
+        checkCanSaveInvoice: function checkCanSaveInvoice() {
+            if (this.records.length > 0) {
+                this.$emit('canSaveInvoice', true);
+            } else {
+                this.$emit('canSaveInvoice', false);
+            }
         }
     },
     computed: {
@@ -49484,7 +49493,8 @@ var Invoice = function Invoice() {
         return {
             invoice: new Invoice(),
             selectedCurrency: { buy: '' },
-            loading: false
+            loading: false,
+            canSave: false
         };
     },
 
@@ -49510,25 +49520,25 @@ var Invoice = function Invoice() {
         clearInvoice: function clearInvoice() {
             if (confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')) {
                 this.$emit('ClearInvoice');
-                this.invoice = new Invoice();console.log("invoice cleared!");
                 this.init();
+                this.Msg.success({ "title": "deleted !", "message": "deleted" });
             }
         },
         submitInvoice: function submitInvoice() {
             this.$emit('SubmitInvoice');
-            // this.invoice = new Invoice
+            this.init();
+            this.Msg.success({ "title": "تم بنجاح", "message": "حفظ الفاتورة" });
         },
         init: function init() {
-            var _this = this;
-
+            this.invoice = new Invoice();console.log("invoice cleared!");
             this.invoice.currency_id = this.currencies.find(function (el) {
                 return true;
             }).id;
-            var ArrPay = Array.from(Object.keys(this.pay), function (k) {
-                return _this.pay[k];
-            }); //console.log(ArrPay);
-            this.invoice.payment_id = ArrPay.indexOf(ArrPay[0]); //console.log(this.invoice.payment_id);
             this.invoice.NDate = this.formatDate(Date.now());
+        },
+        OnCanSave: function OnCanSave(val) {
+            console.log("can", val);
+            this.canSave = val;
         }
     },
     watch: {
@@ -49543,6 +49553,7 @@ var Invoice = function Invoice() {
     mounted: function mounted() {
         console.log('Component <invoice-selling> mounted.');
         this.init();
+        // this.$on('canSaveInvoice', this.OnCanSave)
     }
 });
 
@@ -49773,7 +49784,7 @@ var render = function() {
                           return _c(
                             "option",
                             { key: i, domProps: { value: i } },
-                            [_vm._v(_vm._s(val))]
+                            [_vm._v(_vm._s(val.title))]
                           )
                         }),
                         0
@@ -49914,7 +49925,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("records")
+            _c("records", { on: { canSaveInvoice: _vm.OnCanSave } })
           ],
           1
         ),
@@ -49969,7 +49980,7 @@ var render = function() {
             "button",
             {
               staticClass: "nav-link btn border-success text-success px-5",
-              attrs: { id: "invoiceSave" },
+              attrs: { id: "invoiceSave", disabled: !_vm.canSave },
               on: {
                 click: function($event) {
                   _vm.submitInvoice()
@@ -49985,7 +49996,7 @@ var render = function() {
             "button",
             {
               staticClass: "nav-link btn border-dark text-secondary px-5",
-              attrs: { id: "invoiceClear" },
+              attrs: { id: "invoiceClear", disabled: !_vm.canSave },
               on: {
                 click: function($event) {
                   _vm.clearInvoice()

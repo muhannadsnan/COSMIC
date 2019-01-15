@@ -1,16 +1,10 @@
 <?php
 
 return [
-    'pay' => [
-        0 => 'cash',
-        1 => 'xxx',
-        2 => 'yyy',
-    ],
-
     'invType' => [
-        1 => 'sell',
-        2 => 'buy',
-        3 => 'returnSell',
-        4 => 'returnBuy',
+        0 => 'sell',
+        1 => 'buy',
+        2 => 'returnSell',
+        3 => 'returnBuy',
     ],
 ];

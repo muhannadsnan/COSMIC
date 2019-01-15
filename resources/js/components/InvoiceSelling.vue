@@ -35,7 +35,7 @@
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">الدفع</label>
                                     <select v-model="invoice.payment_id" id="" class="form-control col-md-8">
-                                        <option v-for="val,i in pay" :value="i" :key="i">{{val}}</option>
+                                        <option v-for="val,i in pay" :value="i" :key="i">{{val.title}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                     <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
                 <!--------------- RECORDS ---------------->
-                <records></records>
+                <records @canSaveInvoice="OnCanSave"></records>
             </div>
 
             <div id="invoiceDetails" class="tab-pane fade" role="tabpanel">
@@ -78,10 +78,10 @@
                 <button class="nav-link btn border-primary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-success text-success px-5" id="invoiceSave" @click="submitInvoice()">حفظ</button>
+                <button class="nav-link btn border-success text-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!canSave">حفظ</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="clearInvoice()">حذف</button>
+                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!canSave">حذف</button>
             </li>
         </ul>
     </div>
@@ -113,7 +113,8 @@
             return {
                 invoice: new Invoice,
                 selectedCurrency: {buy: ''},
-                loading: false
+                loading: false,
+                canSave: false
             }
         },
         methods: {
@@ -137,19 +138,22 @@
             clearInvoice(){
                 if(confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')){
                     this.$emit('ClearInvoice')
-                    this.invoice = new Invoice; console.log("invoice cleared!");
                     this.init()
+                    this.Msg.success({"title": "deleted !", "message": "deleted"})
                 }
             },
             submitInvoice(){
                 this.$emit('SubmitInvoice')
-                // this.invoice = new Invoice
+                this.init()
+                this.Msg.success({"title": "تم بنجاح", "message": "حفظ الفاتورة"})
             },
             init(){
+                this.invoice = new Invoice; console.log("invoice cleared!");
                 this.invoice.currency_id = this.currencies.find(function(el){ return true; }).id;
-                let ArrPay = Array.from(Object.keys(this.pay), k=>this.pay[k]); //console.log(ArrPay);
-                this.invoice.payment_id = ArrPay.indexOf(ArrPay[0]); //console.log(this.invoice.payment_id);
                 this.invoice.NDate = this.formatDate(Date.now())
+            },
+            OnCanSave(val){ console.log("can", val);
+                this.canSave = val
             }
         },        
         watch: {
@@ -164,6 +168,7 @@
         mounted() {
             console.log('Component <invoice-selling> mounted.')
             this.init()
+            // this.$on('canSaveInvoice', this.OnCanSave)
         }
     }
 </script>

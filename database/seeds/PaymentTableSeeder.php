@@ -12,6 +12,15 @@ class PaymentTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Payment::class, 5)->create();
+        // factory(Payment::class, 5)->create();
+        Payment::create([
+            'title' => 'كاش'
+        ]);
+        Payment::create([
+            'title' => 'آجل'
+        ]);
+        Payment::create([
+            'title' => 'سند قبض'
+        ]);
     }
 }
