@@ -9,8 +9,8 @@ class GroupController extends Controller
 {
     public function __construct()
     {
-        config(['app.breadcrumb' => @explode('.', $_GET['from'])]);
         $this->middleware('auth', ['except' => []]);
+        $this->middleware('belongstome', ['except' => []]);
     }
 
     public function index()
