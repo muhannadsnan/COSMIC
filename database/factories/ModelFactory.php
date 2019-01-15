@@ -94,7 +94,8 @@ $factory->define(App\Invoice::class, function (Faker $faker) {
     return [ 
         'title' => $faker->name,
         'desc' => $faker->sentence,
-        'client_acc' => $faker->randomElement(['cash', 'remaining', 'x_client_acc']),
+        'client_acc' => $faker->randomElement([1,2,3]), // 1=cash, 2=remaining, 3=xxx 
+        'NType' => $faker->randomElement([1,2,3,4]), // 1=sell, 2=but, 3=returnSell, 4=returnBuy
         'ext_num' => $faker->ean8,
         'int_num' => $faker->ean8,
         'sum' => $faker->randomFloat(null, 0, 1000),

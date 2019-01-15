@@ -49436,8 +49436,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -49476,17 +49474,7 @@ var render = function() {
             staticClass: "tab-pane fade show active",
             attrs: { id: "invoiceRecords", role: "tabpanel" }
           },
-          [
-            _vm._m(0),
-            _vm._v(" "),
-            _vm._m(1),
-            _vm._v(" "),
-            _c("hr"),
-            _vm._v(" "),
-            _c("records"),
-            _vm._v(" "),
-            _c("hr")
-          ],
+          [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("records")],
           1
         ),
         _vm._v(" "),
@@ -49573,7 +49561,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row form-group" }, [
       _c("div", { staticClass: "col-sm-6 px-0" }, [
-        _c("div", { staticClass: "row form-group" }, [
+        _c("div", { staticClass: "row form-group my-0" }, [
           _c("label", { staticClass: "col-sm-2 d-flex" }, [_vm._v("العميل")]),
           _vm._v(" "),
           _c("input", {
@@ -49587,7 +49575,7 @@ var staticRenderFns = [
           })
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "row form-group" }, [
+        _c("div", { staticClass: "row form-group my-0" }, [
           _c("div", { staticClass: "col-sm-6 px-0" }, [
             _c("div", { staticClass: "row form-group mb-0" }, [
               _c("label", { staticClass: "col-sm-4 d-flex" }, [
@@ -49625,7 +49613,7 @@ var staticRenderFns = [
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "row form-group" }, [
+        _c("div", { staticClass: "row form-group my-0" }, [
           _c("div", { staticClass: "col-sm-6 px-0" }, [
             _c("div", { staticClass: "row form-group mb-0" }, [
               _c("label", { staticClass: "col-sm-4 d-flex" }, [
@@ -49665,7 +49653,7 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-sm-6 px-0" }, [
-        _c("div", { staticClass: "row form-group" }, [
+        _c("div", { staticClass: "row form-group my-0" }, [
           _c("label", { staticClass: "col-sm-4 d-flex" }, [
             _vm._v("درجة السرية")
           ]),
@@ -49681,7 +49669,7 @@ var staticRenderFns = [
           })
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "row form-group" }, [
+        _c("div", { staticClass: "row form-group my-00" }, [
           _c("label", { staticClass: "col-sm-4 d-flex" }, [_vm._v("المستودع")]),
           _vm._v(" "),
           _c("input", {
@@ -49695,7 +49683,7 @@ var staticRenderFns = [
           })
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "row form-group" }, [
+        _c("div", { staticClass: "row form-group my-00" }, [
           _c("label", { staticClass: "col-sm-4 d-flex" }, [
             _vm._v("حساب العميل")
           ]),
@@ -49717,7 +49705,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row form-group" }, [
+    return _c("div", { staticClass: "row form-group mb-4" }, [
       _c("label", { staticClass: "col-sm-1 d-flex" }, [_vm._v("البيان")]),
       _vm._v(" "),
       _c("input", {

@@ -17,7 +17,8 @@ class CreateInvoicesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('desc')->nullable(); 
-            $table->string('client_acc'); // cash, x, y
+            $table->integer('client_acc'); // 1=cash, 2=xxx, 3=yyy
+            $table->integer('NType'); // 1=sell, 2=but, 3=returnSell, 4=returnBuy
             $table->string('ext_num');
             $table->string('int_num');
             $table->float('sum');
