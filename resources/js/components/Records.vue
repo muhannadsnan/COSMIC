@@ -20,39 +20,11 @@
                 </tr>
                 <tr>
                     <th scope="row">{{records.length+1}}</th>
-                    <td><input type="text" v-model="newRECS[0].mat" class="form-control col-sm-9" @keyup.enter="addRec(0)" ref="firstInput"></td>
-                    <td><input type="number" v-model.number="newRECS[0].qty" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
-                    <td><input type="number" v-model.number="newRECS[0].single" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
-                    <td><input type="number" v-model.number="newRECS[0].total" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
-                </tr>
-                <!-- <tr>
-                    <th scope="row">{{records.length+2}}</th>
-                    <td><input type="text" v-model="newRECS[1].mat" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
-                    <td><input type="number" v-model="newRECS[1].qty" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
-                    <td><input type="number" v-model="newRECS[1].single" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
-                    <td><input type="number" v-model="newRECS[1].total" class="form-control col-sm-9" @keyup.enter="addRec(1)"></td>
-                </tr>
-                <tr>
-                    <th scope="row">{{records.length+3}}</th>
-                    <td><input type="text" v-model="newRECS[2].mat" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
-                    <td><input type="number" v-model="newRECS[2].qty" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
-                    <td><input type="number" v-model="newRECS[2].single" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
-                    <td><input type="number" v-model="newRECS[2].total" class="form-control col-sm-9" @keyup.enter="addRec(2)"></td>
-                </tr>
-                <tr>
-                    <th scope="row">{{records.length+4}}</th>
-                    <td><input type="text" v-model="newRECS[3].mat" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
-                    <td><input type="number" v-model="newRECS[3].qty" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
-                    <td><input type="number" v-model="newRECS[3].single" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
-                    <td><input type="number" v-model="newRECS[3].total" class="form-control col-sm-9" @keyup.enter="addRec(3)"></td>
-                </tr>
-                <tr>
-                    <th scope="row">{{records.length+5}}</th>
-                    <td><input type="text" v-model="newRECS[4].mat" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
-                    <td><input type="number" v-model="newRECS[4].qty" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
-                    <td><input type="number" v-model="newRECS[4].single" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
-                    <td><input type="number" v-model="newRECS[4].total" class="form-control col-sm-9" @keyup.enter="addRec(4)"></td>
-                </tr> -->
+                    <td><input type="text" v-model="newREC.mat" class="form-control col-sm-9" @keyup.enter="addRec(0)" ref="firstInput"></td>
+                    <td><input type="number" v-model.number="newREC.qty" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
+                    <td><input type="number" v-model.number="newREC.single" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
+                    <td><input type="number" v-model.number="compTotal" class="form-control col-sm-9" @keyup.enter="addRec(0)"></td>
+                </tr> 
             </tbody>
         </table>
     </div>
@@ -68,21 +40,20 @@
         }
     }
     export default {
-        props: ['value'],
+        // props: ['value'],
         data(){
             return {
-                newRECS: [
-                    new REC(), new REC(), new REC(), new REC(), new REC(), 
-                ],
+                newREC: new REC(),
                 records: []
             }
         },
         methods: {
             addRec(i){ 
-                if(!(this.newRECS[0].mat=='' || +this.newRECS[0].qty==0 || +this.newRECS[0].single==0)){
-                    this.records.push(this.newRECS[0]);
-                    this.newRECS[0] = new REC();
-                    this.$refs.firstInput.focus();
+                if(!(this.newREC.mat=='' || +this.newREC.qty==0 || +this.newREC.single==0)){
+                    this.newREC.total = this.compTotal
+                    this.records.push(this.newREC)
+                    this.newREC = new REC()
+                    this.$refs.firstInput.focus()
                 }
                 this.checkCanSaveInvoice()
             },
@@ -99,22 +70,22 @@
             }
         },
         computed: {
-            newTotal(){
-                return this.newREC1.single*this.newREC1.qty;
+            compTotal(){
+                return this.newREC.single*this.newREC.qty
             }
         },
         watch: {
             // if the values are negative
-            newRECS: {
+            newREC: {
                 handler: function(newValue) {
                     if(newValue[0].qty < 0){ 
-                        this.newRECS[0].qty = 0
+                        this.newREC.qty = 0
                     }
                     if(newValue[0].single < 0){ 
-                        this.newRECS[0].single = 0
+                        this.newREC.single = 0
                     }
                     if(newValue[0].total < 0){ 
-                        this.newRECS[0].total = 0
+                        this.newREC.total = 0
                     }
                 }, deep: true
             }

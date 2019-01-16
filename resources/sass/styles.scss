@@ -23,8 +23,8 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
     :hover{display: block;}
 }
 .sub-menu-btn:hover + .sub-menu{display: block;}
-.sub-menu-btn .dropdown-toggle::before{    float: left; margin-top: 7px; margin-left: -17px; }
-
+.sub-menu-btn .dropdown-toggle::before{ float: left; margin-top: 7px; margin-left: -17px; }
+*:disabled{ cursor: not-allowed;}
 /******************** MODAL ********************/
 #createBaseModal {
     .modal-footer .btn{margin-right: 10px;}
@@ -34,9 +34,9 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 
 /******************** BREADCRUMB ********************/
 .breadcrumb {
-    .breadcrumb-item{padding-right: 0 !important; padding-left: 0 !important;}
-    &:before{padding-left: .5rem !important; padding-right: .5rem !important;}
-}
+    .breadcrumb-item{ padding-right: 0 !important; padding-left: 0 !important;}
+    .breadcrumb-item + .breadcrumb-item::before { padding: 0px 5px;}
+} 
 
 /******************** CARD ********************/
 .card{

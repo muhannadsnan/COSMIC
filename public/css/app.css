@@ -11532,6 +11532,10 @@ ul#NAVBAR li.nav-item .nav-link::after {
   margin-left: -17px;
 }
 
+*:disabled {
+  cursor: not-allowed;
+}
+
 /******************** MODAL ********************/
 
 #createBaseModal .modal-footer .btn {
@@ -11555,9 +11559,8 @@ ul#NAVBAR li.nav-item .nav-link::after {
   padding-left: 0 !important;
 }
 
-.breadcrumb:before {
-  padding-left: .5rem !important;
-  padding-right: .5rem !important;
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  padding: 0px 5px;
 }
 
 /******************** CARD ********************/

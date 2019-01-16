@@ -48757,34 +48757,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var REC = function REC() {
     var mat = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
@@ -48801,19 +48773,20 @@ var REC = function REC() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['value'],
+    // props: ['value'],
     data: function data() {
         return {
-            newRECS: [new REC(), new REC(), new REC(), new REC(), new REC()],
+            newREC: new REC(),
             records: []
         };
     },
 
     methods: {
         addRec: function addRec(i) {
-            if (!(this.newRECS[0].mat == '' || +this.newRECS[0].qty == 0 || +this.newRECS[0].single == 0)) {
-                this.records.push(this.newRECS[0]);
-                this.newRECS[0] = new REC();
+            if (!(this.newREC.mat == '' || +this.newREC.qty == 0 || +this.newREC.single == 0)) {
+                this.newREC.total = this.compTotal;
+                this.records.push(this.newREC);
+                this.newREC = new REC();
                 this.$refs.firstInput.focus();
             }
             this.checkCanSaveInvoice();
@@ -48831,22 +48804,22 @@ var REC = function REC() {
         }
     },
     computed: {
-        newTotal: function newTotal() {
-            return this.newREC1.single * this.newREC1.qty;
+        compTotal: function compTotal() {
+            return this.newREC.single * this.newREC.qty;
         }
     },
     watch: {
         // if the values are negative
-        newRECS: {
+        newREC: {
             handler: function handler(newValue) {
                 if (newValue[0].qty < 0) {
-                    this.newRECS[0].qty = 0;
+                    this.newREC.qty = 0;
                 }
                 if (newValue[0].single < 0) {
-                    this.newRECS[0].single = 0;
+                    this.newREC.single = 0;
                 }
                 if (newValue[0].total < 0) {
-                    this.newRECS[0].total = 0;
+                    this.newREC.total = 0;
                 }
             }, deep: true
         }
@@ -49075,14 +49048,14 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.newRECS[0].mat,
-                      expression: "newRECS[0].mat"
+                      value: _vm.newREC.mat,
+                      expression: "newREC.mat"
                     }
                   ],
                   ref: "firstInput",
                   staticClass: "form-control col-sm-9",
                   attrs: { type: "text" },
-                  domProps: { value: _vm.newRECS[0].mat },
+                  domProps: { value: _vm.newREC.mat },
                   on: {
                     keyup: function($event) {
                       if (
@@ -49097,7 +49070,7 @@ var render = function() {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.newRECS[0], "mat", $event.target.value)
+                      _vm.$set(_vm.newREC, "mat", $event.target.value)
                     }
                   }
                 })
@@ -49109,14 +49082,14 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model.number",
-                      value: _vm.newRECS[0].qty,
-                      expression: "newRECS[0].qty",
+                      value: _vm.newREC.qty,
+                      expression: "newREC.qty",
                       modifiers: { number: true }
                     }
                   ],
                   staticClass: "form-control col-sm-9",
                   attrs: { type: "number" },
-                  domProps: { value: _vm.newRECS[0].qty },
+                  domProps: { value: _vm.newREC.qty },
                   on: {
                     keyup: function($event) {
                       if (
@@ -49131,11 +49104,7 @@ var render = function() {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(
-                        _vm.newRECS[0],
-                        "qty",
-                        _vm._n($event.target.value)
-                      )
+                      _vm.$set(_vm.newREC, "qty", _vm._n($event.target.value))
                     },
                     blur: function($event) {
                       _vm.$forceUpdate()
@@ -49150,14 +49119,14 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model.number",
-                      value: _vm.newRECS[0].single,
-                      expression: "newRECS[0].single",
+                      value: _vm.newREC.single,
+                      expression: "newREC.single",
                       modifiers: { number: true }
                     }
                   ],
                   staticClass: "form-control col-sm-9",
                   attrs: { type: "number" },
-                  domProps: { value: _vm.newRECS[0].single },
+                  domProps: { value: _vm.newREC.single },
                   on: {
                     keyup: function($event) {
                       if (
@@ -49173,7 +49142,7 @@ var render = function() {
                         return
                       }
                       _vm.$set(
-                        _vm.newRECS[0],
+                        _vm.newREC,
                         "single",
                         _vm._n($event.target.value)
                       )
@@ -49191,14 +49160,14 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model.number",
-                      value: _vm.newRECS[0].total,
-                      expression: "newRECS[0].total",
+                      value: _vm.compTotal,
+                      expression: "compTotal",
                       modifiers: { number: true }
                     }
                   ],
                   staticClass: "form-control col-sm-9",
                   attrs: { type: "number" },
-                  domProps: { value: _vm.newRECS[0].total },
+                  domProps: { value: _vm.compTotal },
                   on: {
                     keyup: function($event) {
                       if (
@@ -49213,11 +49182,7 @@ var render = function() {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(
-                        _vm.newRECS[0],
-                        "total",
-                        _vm._n($event.target.value)
-                      )
+                      _vm.compTotal = _vm._n($event.target.value)
                     },
                     blur: function($event) {
                       _vm.$forceUpdate()
@@ -49494,7 +49459,8 @@ var Invoice = function Invoice() {
             invoice: new Invoice(),
             selectedCurrency: { buy: '' },
             loading: false,
-            canSave: false
+            canSave: false,
+            saved: false
         };
     },
 
@@ -49521,13 +49487,18 @@ var Invoice = function Invoice() {
             if (confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')) {
                 this.$emit('ClearInvoice');
                 this.init();
-                this.Msg.success({ "title": "deleted !", "message": "deleted" });
+                this.Msg.success({ "title": "تم بنجاح!", "message": "حذف الفاتورة" });
             }
         },
         submitInvoice: function submitInvoice() {
-            this.$emit('SubmitInvoice');
-            this.init();
-            this.Msg.success({ "title": "تم بنجاح", "message": "حفظ الفاتورة" });
+            if (!this.saved) {
+                this.$emit('SubmitInvoice');
+                this.init();
+                this.saved = true;
+                this.Msg.success({ "title": "تم بنجاح!", "message": "حفظ الفاتورة" });
+            } else {
+                // do something else
+            }
         },
         init: function init() {
             this.invoice = new Invoice();console.log("invoice cleared!");
@@ -49553,7 +49524,6 @@ var Invoice = function Invoice() {
     mounted: function mounted() {
         console.log('Component <invoice-selling> mounted.');
         this.init();
-        // this.$on('canSaveInvoice', this.OnCanSave)
     }
 });
 

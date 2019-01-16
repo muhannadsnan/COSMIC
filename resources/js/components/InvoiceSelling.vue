@@ -114,7 +114,8 @@
                 invoice: new Invoice,
                 selectedCurrency: {buy: ''},
                 loading: false,
-                canSave: false
+                canSave: false,
+                saved: false
             }
         },
         methods: {
@@ -139,13 +140,18 @@
                 if(confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')){
                     this.$emit('ClearInvoice')
                     this.init()
-                    this.Msg.success({"title": "deleted !", "message": "deleted"})
+                    this.Msg.success({"title": "تم بنجاح!", "message": "حذف الفاتورة"})
                 }
             },
             submitInvoice(){
-                this.$emit('SubmitInvoice')
-                this.init()
-                this.Msg.success({"title": "تم بنجاح", "message": "حفظ الفاتورة"})
+                if(!this.saved){
+                    this.$emit('SubmitInvoice')
+                    this.init()
+                    this.saved = true
+                    this.Msg.success({"title": "تم بنجاح!", "message": "حفظ الفاتورة"})
+                }else{
+                    // do something else
+                }
             },
             init(){
                 this.invoice = new Invoice; console.log("invoice cleared!");
@@ -168,7 +174,6 @@
         mounted() {
             console.log('Component <invoice-selling> mounted.')
             this.init()
-            // this.$on('canSaveInvoice', this.OnCanSave)
         }
     }
 </script>
