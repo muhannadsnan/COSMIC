@@ -48812,13 +48812,13 @@ var REC = function REC() {
         // if the values are negative
         newREC: {
             handler: function handler(newValue) {
-                if (newValue[0].qty < 0) {
+                if (newValue.qty < 0) {
                     this.newREC.qty = 0;
                 }
-                if (newValue[0].single < 0) {
+                if (newValue.single < 0) {
                     this.newREC.single = 0;
                 }
-                if (newValue[0].total < 0) {
+                if (newValue.total < 0) {
                     this.newREC.total = 0;
                 }
             }, deep: true
@@ -49915,7 +49915,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "nav-link btn border-primary active px-5",
+              staticClass: "nav-link btn btn-light active px-5",
               attrs: {
                 id: "invoiceRecords",
                 "data-toggle": "pill",
@@ -49932,7 +49932,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "nav-link btn border-primary px-5",
+              staticClass: "nav-link btn btn-light px-5",
               attrs: {
                 id: "invoiceDetails",
                 "data-toggle": "pill",
@@ -49949,7 +49949,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "nav-link btn border-success text-success px-5",
+              staticClass: "nav-link btn btn-success px-5",
               attrs: { id: "invoiceSave", disabled: !_vm.canSave },
               on: {
                 click: function($event) {
@@ -49965,7 +49965,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "nav-link btn border-dark text-secondary px-5",
+              staticClass: "nav-link btn btn-dark px-5",
               attrs: { id: "invoiceClear", disabled: !_vm.canSave },
               on: {
                 click: function($event) {

@@ -72,16 +72,16 @@
 
         <ul class="nav nav-pills nav-fill TABS-bottom" role="tablist">
             <li class="nav-item">
-                <button class="nav-link btn border-primary active px-5" id="invoiceRecords" data-toggle="pill" role="tab" href="#invoiceRecords" @click="tabClicked">الفاتورة</button>
+                <button class="nav-link btn btn-light active px-5" id="invoiceRecords" data-toggle="pill" role="tab" href="#invoiceRecords" @click="tabClicked">الفاتورة</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-primary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
+                <button class="nav-link btn btn-light px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-success text-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!canSave">حفظ</button>
+                <button class="nav-link btn btn-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!canSave">حفظ</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn border-dark text-secondary px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!canSave">حذف</button>
+                <button class="nav-link btn btn-dark px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!canSave">حذف</button>
             </li>
         </ul>
     </div>

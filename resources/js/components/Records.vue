@@ -78,13 +78,13 @@
             // if the values are negative
             newREC: {
                 handler: function(newValue) {
-                    if(newValue[0].qty < 0){ 
+                    if(newValue.qty < 0){ 
                         this.newREC.qty = 0
                     }
-                    if(newValue[0].single < 0){ 
+                    if(newValue.single < 0){ 
                         this.newREC.single = 0
                     }
-                    if(newValue[0].total < 0){ 
+                    if(newValue.total < 0){ 
                         this.newREC.total = 0
                     }
                 }, deep: true

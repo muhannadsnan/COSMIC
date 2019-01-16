@@ -25,7 +25,7 @@ class InvoiceController extends Controller
     
     public function create(Base $basis, Profile $profile)
     {
-        return view('invoices.index', ['currencies' => Currency::all(), 'payment' => Payment::all()]); 
+        return view('invoices.create', ['currencies' => Currency::all(), 'payment' => Payment::all()]); 
     }
     
     public function store(Request $request)
