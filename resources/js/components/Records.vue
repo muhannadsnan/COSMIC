@@ -55,17 +55,15 @@
                     this.newREC = new REC()
                     this.$refs.firstInput.focus()
                 }
-                this.checkCanSaveInvoice()
+                this.enableSaveInvoice()
             },
             clear(){
                 this.records = []; console.log("recoreds cleared !");
-                this.checkCanSaveInvoice()
+                this.enableSaveInvoice()
             },
-            checkCanSaveInvoice(){
+            enableSaveInvoice(){
                 if(this.records.length > 0){
                     this.$emit('canSaveInvoice', true)
-                }else{
-                    this.$emit('canSaveInvoice', false)
                 }
             }
         },

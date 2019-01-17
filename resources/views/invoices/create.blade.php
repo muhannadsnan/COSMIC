@@ -20,7 +20,11 @@
                 <h1>case: 1</h1>
                 @break
             @case (2)
-                <invoice-selling :currencies="{{json_encode($currencies)}}" :pay="{{json_encode($payment)}}"></invoice-selling>
+                <invoice-selling 
+                        :currencies="{{json_encode($currencies)}}" 
+                        :pay="{{json_encode($payment)}}"
+                        :base="{{request('base')->id}}" :profile="{{request('profile')->id}}">
+                </invoice-selling>
                 @break
             @default
                 <h1>default</h1>

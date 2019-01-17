@@ -1,24 +1,32 @@
-export default  {
-    store: {
-        debug: true,
-        state: {
-            message: 'Hello!',
-            text: 'haha'
-        },
-        setMessageAction (newValue) {
-            if (this.debug) console.log('setMessageAction triggered with', newValue)
-            this.state.message = newValue
-        },
-        clearMessageAction () {
-            if (this.debug) console.log('clearMessageAction triggered')
-            this.state.message = ''
-        },
-        getData() {
-            axios.get('https://jsonplaceholder.typicode.com/todos/1')
-                .then(response => (this.info = response))
-                .catch(function (error) {
-                    console.log(error);
-                })
-        }
-    }
+var store = {
+    debug: true,
+    url: 'http://localhost:8000',
+    options: {
+        // headers: {
+        //     'Accept': 'application/json',
+        //     'Content-Type': 'application/json',
+        //   },
+        //   withCredentials: false
+    },
+    state: {
+        message: 'Hello!',
+        text: 'haha'
+    },
+    setMessageAction (newValue) {
+        if (this.debug) console.log('setMessageAction triggered with', newValue)
+        this.state.message = newValue
+    },
+    get(url1) {
+        return axios.get(this.url+url1)
+    },
+    save(url1, data) { 
+        return axios.post(this.url+url1, data, this.options)
+    },
+    delete(url1, data) {
+        return axios.delete(this.url+url1, data)
+    },
+    update(url1, data) {
+        return axios.put(this.url+url1, data)
+    },
 }
+module.exports = store

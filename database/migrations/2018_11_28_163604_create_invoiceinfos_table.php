@@ -15,9 +15,15 @@ class CreateInvoiceinfosTable extends Migration
     {
         Schema::create('invoiceinfos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('d1');
-            $table->string('d2');
+            $table->string('mat');
+            $table->string('qty');
+            $table->string('single');
+            $table->string('total');
             $table->timestamps();
+            $table->unsignedInteger('invoice_id');
+            $table->foreign('invoice_id')
+                    ->references('id')
+                    ->on('invoices');
         });
     }
 
@@ -28,6 +34,9 @@ class CreateInvoiceinfosTable extends Migration
      */
     public function down()
     {
+        Schema::table('invoiceinfos', function (Blueprint $table){
+            $table->dropForeign(['invoice_id']);
+        });
         Schema::dropIfExists('invoiceinfos');
     }
 }

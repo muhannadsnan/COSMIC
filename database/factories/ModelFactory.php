@@ -138,17 +138,17 @@ $factory->define(App\Entryinfo::class, function (Faker $faker) {
         'd2' => $faker->word,
     ];
 });
-$factory->define(App\Invoiceinfo::class, function (Faker $faker) { 
-    return [
-        'd1' => $faker->word,
-        'd2' => $faker->word,
-    ];
-});
-$factory->define(App\Invoicetype::class, function (Faker $faker) { 
-    return [
-        'title' => $faker->sentence,
-    ];
-});
+// $factory->define(App\Invoiceinfo::class, function (Faker $faker) { 
+//     return [
+//         'd1' => $faker->word,
+//         'd2' => $faker->word,
+//     ];
+// });
+// $factory->define(App\Invoicetype::class, function (Faker $faker) { 
+//     return [
+//         'title' => $faker->sentence,
+//     ];
+// });
 // $factory->define(App\Payment::class, function (Faker $faker) { 
 //     return [
 //         'title' => $faker->word,

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(InvoiceTableSeeder::class);
         $this->call(EntryTableSeeder::class);
         $this->call(EntryinfoTableSeeder::class);
-        $this->call(InvoiceinfoTableSeeder::class);
-        $this->call(InvoicetypeTableSeeder::class);
+        // $this->call(InvoiceinfoTableSeeder::class);
+        // $this->call(InvoicetypeTableSeeder::class);
     }
 }

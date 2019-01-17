@@ -18,14 +18,14 @@ class BelongToMe
 
             if(!empty($base)){ //dd($base);
                 if($base->_user->id != auth()->id()){
-                    return false;
+                    return redirect('home');
                 }
                 $request->request->add(['base' => $base]);
             }
             
-            if($profile != null){
-                if($profile->_base->_user->id != auth()->id() && $profile->_base->id == $base->id){
-                    return false;
+            if($profile != null){ //dd($profile->_base->_user->id != auth()->id() || $profile->_base->id != $base->id);
+                if($profile->_base->_user->id != auth()->id() || $profile->_base->id != $base->id){
+                    return redirect('home');
                 }
                 $request->request->add(['profile' => $profile]);
             }                

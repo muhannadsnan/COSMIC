@@ -14362,8 +14362,8 @@ var app = new Vue({
         xxx: function xxx() {}
     },
     mounted: function mounted() {
-        console.log(Store.state);
-        ///this.Msg.success({"title": "aaa", "message": "bbbb"})
+        // console.log("Store.state", Store.state);
+        // Msg.success({"title": "aaa", "message": "bbbb"})
     }
 });
 
@@ -14411,6 +14411,7 @@ var toastrConfigs = {
   timeOut: 3000
 };
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_cxlt_vue2_toastr___default.a, toastrConfigs);
+
 
 // visit: https://vuejsexamples.com/toast-notification-component-for-vue2/
 /************************/
@@ -48094,36 +48095,40 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 /* 42 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = ({
-    store: {
-        debug: true,
-        state: {
-            message: 'Hello!',
-            text: 'haha'
-        },
-        setMessageAction: function setMessageAction(newValue) {
-            if (this.debug) console.log('setMessageAction triggered with', newValue);
-            this.state.message = newValue;
-        },
-        clearMessageAction: function clearMessageAction() {
-            if (this.debug) console.log('clearMessageAction triggered');
-            this.state.message = '';
-        },
-        getData: function getData() {
-            var _this = this;
-
-            axios.get('https://jsonplaceholder.typicode.com/todos/1').then(function (response) {
-                return _this.info = response;
-            }).catch(function (error) {
-                console.log(error);
-            });
-        }
+var store = {
+    debug: true,
+    url: 'http://localhost:8000',
+    options: {
+        // headers: {
+        //     'Accept': 'application/json',
+        //     'Content-Type': 'application/json',
+        //   },
+        //   withCredentials: false
+    },
+    state: {
+        message: 'Hello!',
+        text: 'haha'
+    },
+    setMessageAction: function setMessageAction(newValue) {
+        if (this.debug) console.log('setMessageAction triggered with', newValue);
+        this.state.message = newValue;
+    },
+    get: function get(url1) {
+        return axios.get(this.url + url1);
+    },
+    save: function save(url1, data) {
+        return axios.post(this.url + url1, data, this.options);
+    },
+    delete: function _delete(url1, data) {
+        return axios.delete(this.url + url1, data);
+    },
+    update: function update(url1, data) {
+        return axios.put(this.url + url1, data);
     }
-});
+};
+module.exports = store;
 
 /***/ }),
 /* 43 */
@@ -48789,17 +48794,15 @@ var REC = function REC() {
                 this.newREC = new REC();
                 this.$refs.firstInput.focus();
             }
-            this.checkCanSaveInvoice();
+            this.enableSaveInvoice();
         },
         clear: function clear() {
             this.records = [];console.log("recoreds cleared !");
-            this.checkCanSaveInvoice();
+            this.enableSaveInvoice();
         },
-        checkCanSaveInvoice: function checkCanSaveInvoice() {
+        enableSaveInvoice: function enableSaveInvoice() {
             if (this.records.length > 0) {
                 this.$emit('canSaveInvoice', true);
-            } else {
-                this.$emit('canSaveInvoice', false);
             }
         }
     },
@@ -49417,21 +49420,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 
 var Invoice = function Invoice() {
-    var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    var serial = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-    var payment_id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-    var currency_id = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-    var title = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
-    var desc = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
-    var client_acc = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
-    var NType = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 1;
-    var NDate = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : '';
-    var ext_num = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : '';
-    var int_num = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
-    var sum = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : 0;
-    var remaining = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : 0;
-    var client_id = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
-    var warehouse_id = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
+    var base_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var profile_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+    var payment_id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+    var currency_id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+    var title = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : '';
+    var desc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : '';
+    var client_acc = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
+    var NType = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
+    var NDate = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
+    var ext_num = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : '';
+    var int_num = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : '';
+    var sum = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
+    var remaining = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
+    var client_id = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : 0;
+    var warehouse_id = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : 0;
+    var records = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : [];
 
     _classCallCheck(this, Invoice);
 
@@ -49450,17 +49456,20 @@ var Invoice = function Invoice() {
     this.remaining = remaining;
     this.client_id = client_id;
     this.warehouse_id = warehouse_id;
+    this.base_id = base_id;
+    this.profile_id = profile_id;
+    this.records = records;
 };
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['currencies', 'pay'],
+    props: ['currencies', 'pay', 'base', 'profile'],
     data: function data() {
         return {
-            invoice: new Invoice(),
+            invoice: new Invoice(this.base, this.profile),
             selectedCurrency: { buy: '' },
             loading: false,
-            canSave: false,
-            saved: false
+            canSave: false
+            // saved: false
         };
     },
 
@@ -49491,24 +49500,36 @@ var Invoice = function Invoice() {
             }
         },
         submitInvoice: function submitInvoice() {
-            if (!this.saved) {
-                this.$emit('SubmitInvoice');
-                this.init();
-                this.saved = true;
-                this.Msg.success({ "title": "تم بنجاح!", "message": "حفظ الفاتورة" });
-            } else {
-                // do something else
-            }
+            var _this = this;
+
+            // if(!this.saved || true){
+            this.invoice.records = this.$children[0]._data.records;
+            Store.save('/invoices', this.invoice).then(function (resp) {
+                console.log(resp);
+                _this.$emit('SubmitInvoice');
+                _this.init();
+                // this.saved = true
+                _this.Msg.success({ "title": "تم بنجاح!", "message": "حفظ الفاتورة" });
+            }).catch(function (error) {
+                _this.Msg.error({ "title": "error!", "message": error.message });
+                console.log("error", error);
+            });
+            // }else{
+            // do something else
+            // }
         },
         init: function init() {
-            this.invoice = new Invoice();console.log("invoice cleared!");
+            this.invoice = new Invoice(this.base, this.profile);console.log("invoice cleared!");
             this.invoice.currency_id = this.currencies.find(function (el) {
+                return true;
+            }).id;
+            this.invoice.payment_id = this.pay.find(function (el) {
                 return true;
             }).id;
             this.invoice.NDate = this.formatDate(Date.now());
         },
         OnCanSave: function OnCanSave(val) {
-            console.log("can", val);
+            console.log("can save invoice", val);
             this.canSave = val;
         }
     },
@@ -49753,7 +49774,7 @@ var render = function() {
                         _vm._l(_vm.pay, function(val, i) {
                           return _c(
                             "option",
-                            { key: i, domProps: { value: i } },
+                            { key: i, domProps: { value: val.id } },
                             [_vm._v(_vm._s(val.title))]
                           )
                         }),

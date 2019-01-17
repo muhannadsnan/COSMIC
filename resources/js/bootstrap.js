@@ -22,7 +22,6 @@ try {
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-
 window.Vue = require('vue');
 window.Store = require('./store');
 
@@ -34,6 +33,7 @@ var toastrConfigs = {
 }
 Vue.use(toastr, toastrConfigs)
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
+
 // visit: https://vuejsexamples.com/toast-notification-component-for-vue2/
 /************************/
 

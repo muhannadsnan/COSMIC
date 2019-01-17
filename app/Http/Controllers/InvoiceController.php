@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Invoice;
+use App\InvoiceInfo;
 use App\Currency;
 use App\Payment;
 use App\Base;
@@ -13,7 +14,7 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => []]);
+        $this->middleware('auth', ['except' => ['store']]);
         $this->middleware('belongstome', ['except' => []]);
     }
 
@@ -29,8 +30,14 @@ class InvoiceController extends Controller
     }
     
     public function store(Request $request)
-    {
-        //
+    {  //return $request->base;
+        $base = Base::find($request->base_id);
+        $profile = $base->_profiles->find($request->profile_id);
+        $newInvoice = Invoice::insert($request->all());
+        if(!$newInvoice)
+            return ['ok' => false, 'msg' => 'خطأ أثناء إضافة الفاتورة'];
+        $newRecords = InvoiceInfo::insertMany($request->records, $newInvoice->id);
+        return ['ok' => true, 'msg' => 'تم إضافة الفاتورة بنجاح!', 'data' => $newInvoice];
     }
     
     public function show(Invoice $invoice)

@@ -1,9 +1,7 @@
 require('./bootstrap');
 
-
 Vue.component('records', require('./components/Records.vue'));
 Vue.component('invoice-selling', require('./components/InvoiceSelling.vue'));
-
 
 const app = new Vue({
     el: '#app',
@@ -17,8 +15,8 @@ const app = new Vue({
 
         }
     },
-    mounted() {
-        console.log(Store.state);
-        ///this.Msg.success({"title": "aaa", "message": "bbbb"})
+    mounted() {       
+        // console.log("Store.state", Store.state);
+        // Msg.success({"title": "aaa", "message": "bbbb"})
     }
 });

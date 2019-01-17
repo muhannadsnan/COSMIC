@@ -35,7 +35,7 @@
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">الدفع</label>
                                     <select v-model="invoice.payment_id" id="" class="form-control col-md-8">
-                                        <option v-for="val,i in pay" :value="i" :key="i">{{val.title}}</option>
+                                        <option v-for="val,i in pay" :value="val.id" :key="i">{{val.title}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
 
 <script>
     class Invoice {
-        constructor(id=0, serial='', payment_id=0, currency_id=0, title='', desc='',  client_acc=0, NType=1, NDate='', ext_num='', int_num='', sum=0, remaining=0, client_id=0, warehouse_id=0) {
+        constructor(base_id=0, profile_id=0, id=0, serial='', payment_id=0, currency_id=0, title='', desc='',  client_acc=0, NType=1, NDate='', ext_num='', int_num='', sum=0, remaining=0, client_id=0, warehouse_id=0, records=[]) {
             this.id = id;
             this.serial = serial;
             this.payment_id = payment_id;
@@ -105,17 +105,20 @@
             this.remaining = remaining;
             this.client_id = client_id;
             this.warehouse_id = warehouse_id;
+            this.base_id = base_id;
+            this.profile_id = profile_id;
+            this.records = records;
         }
     }
     export default {
-        props: ['currencies', 'pay'],
+        props: ['currencies', 'pay', 'base', 'profile'],
         data(){
             return {
-                invoice: new Invoice,
+                invoice: new Invoice(this.base, this.profile),
                 selectedCurrency: {buy: ''},
                 loading: false,
                 canSave: false,
-                saved: false
+                // saved: false
             }
         },
         methods: {
@@ -144,21 +147,31 @@
                 }
             },
             submitInvoice(){
-                if(!this.saved){
-                    this.$emit('SubmitInvoice')
-                    this.init()
-                    this.saved = true
-                    this.Msg.success({"title": "تم بنجاح!", "message": "حفظ الفاتورة"})
-                }else{
+                // if(!this.saved || true){
+                    this.invoice.records = this.$children[0]._data.records
+                    Store.save('/invoices', this.invoice)
+                        .then(resp => {
+                            console.log(resp)
+                            this.$emit('SubmitInvoice')
+                            this.init()
+                            // this.saved = true
+                            this.Msg.success({"title": "تم بنجاح!", "message": "حفظ الفاتورة"})
+                        })
+                        .catch(error => {
+                            this.Msg.error({"title": "error!", "message": error.message}) 
+                            console.log("error", error)
+                        })
+                // }else{
                     // do something else
-                }
+                // }
             },
             init(){
-                this.invoice = new Invoice; console.log("invoice cleared!");
+                this.invoice = new Invoice(this.base, this.profile); console.log("invoice cleared!");
                 this.invoice.currency_id = this.currencies.find(function(el){ return true; }).id;
+                this.invoice.payment_id = this.pay.find(function(el){ return true; }).id;
                 this.invoice.NDate = this.formatDate(Date.now())
             },
-            OnCanSave(val){ console.log("can", val);
+            OnCanSave(val){ console.log("can save invoice", val);
                 this.canSave = val
             }
         },        

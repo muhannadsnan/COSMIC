@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Invoice;
+use App\InvoiceInfo;
 
 class Invoice extends _Model
 {
@@ -44,5 +46,27 @@ class Invoice extends _Model
     public function _payment()
     {
         return $this->belongsTo(Payment::class, 'payment_id');
+    }
+
+    /**************************************** */
+    public static function insert($request){ //return $request;
+        // insert all invoiceInfo 
+
+        // insert inoivce
+        return Invoice::create([
+                'payment_id' => $request['payment_id'],
+                'currency_id' => $request['currency_id'],
+                'profile_id' => $request['profile_id'],
+                'serial' => $request['serial'],
+                'title' => $request['title'] == ''? 'TEST': $request['title'],
+                'desc' => $request['desc'],
+                'client_acc' => $request['client_acc'],
+                'NType' => $request['NType'],
+                'NDate' => $request['NDate'],
+                'ext_num' => $request['ext_num'] == ''? 'TEST': $request['ext_num'],
+                'int_num' => $request['int_num'] == ''? 'TEST': $request['int_num'],
+                'sum' => $request['sum'],
+                'remaining' => $request['remaining'],
+            ]);
     }
 }
