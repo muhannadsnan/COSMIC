@@ -44,7 +44,7 @@
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0">
                             <label class="col-sm-4 d-flex">الرقم التسلسلي</label>
-                            <input type="text" v-model="invoice.serial" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                            <input type="text" v-model="invoice.serial" id="" class="form-control col-sm-8" placeholder="أدخل قيمة..." @keyup.enter="readInvoice()">
                         </div>
                         <div class="row form-group my-00">
                             <label class="col-sm-4 d-flex">المستودع</label>
@@ -173,6 +173,18 @@
             },
             OnCanSave(val){ console.log("can save invoice", val);
                 this.canSave = val
+            },
+            readInvoice(){
+                if(!this.canSave || confirm('هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة')){
+                    Store.get('/api/invoices') //?ser='+this.invoice.serial
+                        .then(resp => {
+                            console.log(resp)
+                        })
+                        .catch(error => {
+                            this.Msg.error({"title": "error!", "message": error.message}) 
+                            console.log("error", error)
+                        })
+                }
             }
         },        
         watch: {
@@ -187,6 +199,7 @@
         mounted() {
             console.log('Component <invoice-selling> mounted.')
             this.init()
+            console.log("cookie", axios.defaults.headers.common['Authorization'])
         }
     }
 </script>

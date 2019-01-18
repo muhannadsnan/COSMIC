@@ -38,12 +38,15 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\BelongToMe::class,
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
         'api' => [
             'throttle:60,1',
             'bindings',
-            \Barryvdh\Cors\HandleCors::class,
+            // \Barryvdh\Cors\HandleCors::class,
+            \App\Http\Middleware\EncryptCookies::class,          // <------- ADD THIS
+            \Illuminate\Session\Middleware\StartSession::class, // <------ ADD THIS
         ],
     ];
 
@@ -67,6 +70,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // 'cors' => \App\Http\Middleware\Cors::class,
+        'client_credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class,
     ];
 
     /**

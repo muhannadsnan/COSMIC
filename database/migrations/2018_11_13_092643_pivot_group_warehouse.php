@@ -36,7 +36,7 @@ class PivotGroupWarehouse extends Migration
         Schema::table('group_warehouse', function (Blueprint $table) {
             $table->dropForeign(['group_id']);
             $table->dropForeign(['warehouse_id']);
-            $table->dropIfExists('material_warehouse');
+            $table->dropIfExists('group_warehouse');
         });
     }
 }

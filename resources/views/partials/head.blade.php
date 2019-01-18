@@ -19,4 +19,12 @@
 <!-- Styles -->
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-@yield('styles')
+@yield('styles') 
+
+
+<script>
+    window.Laravel = {!! json_encode([
+        "apiToken" => auth()->user()->api_token ?? null,
+        'csrfToken' => csrf_token(),
+]) !!};
+</script>

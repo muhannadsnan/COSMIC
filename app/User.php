@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
+use Cookie;
 
 class User extends Authenticatable
 {
@@ -60,5 +62,15 @@ class User extends Authenticatable
     public function _bases()
     {
         return $this->hasMany(Base::class);
+    }
+    
+    /**
+    * Roll API Key
+    */
+    public function rollApiKey(){
+        do{
+            $this->api_token = str_random(60); // Cookie::get("cosmic_session")
+        } while($this->where('api_token', $this->api_token)->exists());
+        $this->save();
     }
 }

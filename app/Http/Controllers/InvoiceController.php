@@ -9,6 +9,7 @@ use App\Currency;
 use App\Payment;
 use App\Base;
 use App\Profile;
+use Cookie;
 
 class InvoiceController extends Controller
 {
@@ -18,7 +19,6 @@ class InvoiceController extends Controller
         $this->middleware('belongstome', ['except' => []]);
     }
 
-
     public function index(Base $basis, Profile $profile)
     {        
         return view('invoices.index', ['invoices' => Invoice::all()]);
@@ -26,6 +26,7 @@ class InvoiceController extends Controller
     
     public function create(Base $basis, Profile $profile)
     {
+        // dd(auth()->user()->api_token); // or cosmic_session
         return view('invoices.create', ['currencies' => Currency::all(), 'payment' => Payment::all()]); 
     }
     
@@ -43,14 +44,6 @@ class InvoiceController extends Controller
     public function show(Invoice $invoice)
     { 
         return $invoice;
-        return $invoice->_payment;
-        return $invoice->_entry;
-        return $invoice->_currency;
-        return $invoice->_profile;
-        return $invoice->_accounts;
-        return $invoice->_users;
-        return $invoice->_materials;
-        return $invoice->_clients;
     }
     
     public function edit(Invoice $invoice)
@@ -68,5 +61,10 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         //
+    }
+
+    public function apiIndex(Request $request)
+    {
+        return response()->json(['data' => 'hahaaaaaaaaaaaa'], 200);
     }
 }

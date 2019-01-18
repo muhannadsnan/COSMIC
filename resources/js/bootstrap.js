@@ -20,7 +20,16 @@ try {
  */
 
 window.axios = require('axios');
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Laravel.apiToken;
+
+window.axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': Laravel.csrfToken,
+    'Authorization': 'Bearer ' + Laravel.apiToken,
+    'X-Requested-With': 'XMLHttpRequest',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+};
 
 window.Vue = require('vue');
 window.Store = require('./store');

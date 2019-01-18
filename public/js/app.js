@@ -14388,8 +14388,8 @@ window.Popper = __webpack_require__(4).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(5);
-  __webpack_require__(19);
+    window.$ = window.jQuery = __webpack_require__(5);
+    __webpack_require__(19);
 } catch (e) {}
 
 /**
@@ -14399,7 +14399,16 @@ try {
  */
 
 window.axios = __webpack_require__(20);
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Laravel.apiToken;
+
+window.axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': Laravel.csrfToken,
+    'Authorization': 'Bearer ' + Laravel.apiToken,
+    'X-Requested-With': 'XMLHttpRequest',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+};
 
 window.Vue = __webpack_require__(39);
 window.Store = __webpack_require__(42);
@@ -14407,8 +14416,8 @@ window.Store = __webpack_require__(42);
 /******** TOASTR ********/
 
 var toastrConfigs = {
-  position: 'top right', showDuration: 500,
-  timeOut: 3000
+    position: 'top right', showDuration: 500,
+    timeOut: 3000
 };
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_cxlt_vue2_toastr___default.a, toastrConfigs);
 
@@ -14425,9 +14434,9 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_cxlt_vue2_toastr___default.a, toastrConfigs)
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -48098,28 +48107,23 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /***/ (function(module, exports) {
 
 var store = {
-    debug: true,
+    token: '',
     url: 'http://localhost:8000',
     options: {
         // headers: {
         //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json',
-        //   },
-        //   withCredentials: false
+        //     'Content-Type': 'application/json'
+        // }
     },
-    state: {
-        message: 'Hello!',
-        text: 'haha'
-    },
-    setMessageAction: function setMessageAction(newValue) {
-        if (this.debug) console.log('setMessageAction triggered with', newValue);
-        this.state.message = newValue;
+    state: { message: 'Hello!', text: 'haha' },
+    initCookie: function initCookie() {
+        this.token = $.cookie("cosmic_session");
     },
     get: function get(url1) {
         return axios.get(this.url + url1);
     },
     save: function save(url1, data) {
-        return axios.post(this.url + url1, data, this.options);
+        return axios.post(this.url + url1, data);
     },
     delete: function _delete(url1, data) {
         return axios.delete(this.url + url1, data);
@@ -48129,6 +48133,9 @@ var store = {
     }
 };
 module.exports = store;
+
+/* axios.interceptors : Request interceptors can be used to do things such as retrieve a token from local storage and send with all requests, 
+while a response interceptor could be used to catch 401 responses and redirect to a login page for authorization. */
 
 /***/ }),
 /* 43 */
@@ -48643,7 +48650,7 @@ module.exports = function (css) {
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(61)
+  __webpack_require__(49)
 }
 var normalizeComponent = __webpack_require__(13)
 /* script */
@@ -48688,8 +48695,46 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 49 */,
-/* 50 */,
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(50);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(12)("2dcb8aac", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-270f56a7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Records.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-270f56a7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Records.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\ntable tr td[data-v-270f56a7] {\n  padding: 0;\n  height: 20px !important;\n}\ntable tr td input.form-control[data-v-270f56a7] {\n    background: transparent;\n    border: 0;\n    border-radius: 0;\n    max-width: unset;\n    width: 100%;\n    color: #fff;\n    padding: 0px 5px;\n    line-height: 20px;\n    height: 31px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
 /* 51 */
 /***/ (function(module, exports) {
 
@@ -49531,6 +49576,19 @@ var Invoice = function Invoice() {
         OnCanSave: function OnCanSave(val) {
             console.log("can save invoice", val);
             this.canSave = val;
+        },
+        readInvoice: function readInvoice() {
+            var _this2 = this;
+
+            if (!this.canSave || confirm('هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة')) {
+                Store.get('/api/invoices') //?ser='+this.invoice.serial
+                .then(function (resp) {
+                    console.log(resp);
+                }).catch(function (error) {
+                    _this2.Msg.error({ "title": "error!", "message": error.message });
+                    console.log("error", error);
+                });
+            }
         }
     },
     watch: {
@@ -49545,6 +49603,7 @@ var Invoice = function Invoice() {
     mounted: function mounted() {
         console.log('Component <invoice-selling> mounted.');
         this.init();
+        console.log("cookie", axios.defaults.headers.common['Authorization']);
     }
 });
 
@@ -49808,6 +49867,21 @@ var render = function() {
                     },
                     domProps: { value: _vm.invoice.serial },
                     on: {
+                      keyup: function($event) {
+                        if (
+                          !("button" in $event) &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        _vm.readInvoice()
+                      },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
@@ -50030,47 +50104,6 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 60 */,
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(62);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(12)("2dcb8aac", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-270f56a7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Records.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-270f56a7\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Records.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\ntable tr td[data-v-270f56a7] {\n  padding: 0;\n  height: 20px !important;\n}\ntable tr td input.form-control[data-v-270f56a7] {\n    background: transparent;\n    border: 0;\n    border-radius: 0;\n    max-width: unset;\n    width: 100%;\n    color: #fff;\n    padding: 0px 5px;\n    line-height: 20px;\n    height: 31px;\n}\n", ""]);
-
-// exports
-
 
 /***/ })
 /******/ ]);
