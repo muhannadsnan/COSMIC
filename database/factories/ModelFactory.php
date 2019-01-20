@@ -156,6 +156,7 @@ $factory->define(App\Entryinfo::class, function (Faker $faker) {
 // });
 
 
+
 /*
   >  php artisan migrate:refresh --seed
 

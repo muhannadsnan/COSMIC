@@ -24,8 +24,8 @@ window.axios = require('axios');
 // window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Laravel.apiToken;
 
 window.axios.defaults.headers.common = {
-    'X-CSRF-TOKEN': Laravel.csrfToken,
-    'Authorization': 'Bearer ' + Laravel.apiToken,
+    'X-CSRF-TOKEN': Laravel.csrf_token,
+    'Authorization': 'Bearer ' + Laravel.api_token,
     'X-Requested-With': 'XMLHttpRequest',
     'Accept': 'application/json',
     'Content-Type': 'application/json'

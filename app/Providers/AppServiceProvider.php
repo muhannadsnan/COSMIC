@@ -30,6 +30,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        \Laravel\Passport\Passport::withoutCookieSerialization();
+        //\Laravel\Passport\Passport::withoutCookieSerialization();
     }
 }

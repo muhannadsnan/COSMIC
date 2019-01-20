@@ -6,47 +6,29 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => []]);
-        $this->middleware('belongstome', ['except' => []]);
+        $this->middleware('auth');
     }
-    
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function index()
     {
         return redirect()->route('bases');
-        return view('bases');
+        return view('home');
     }
-    
-    public function create()
+
+    public function dashboard()
     {
-        //
-    }
-    
-    public function store(Request $request)
-    {
-        //
-    }
-    
-    public function show(About $about)
-    {
-        return redirect('bases');
-        return view('bases');
-    }
-    
-    public function edit(About $about)
-    {
-        return redirect()->route('bases');
-        return view('bases');
-    }
-    
-    public function update(Request $request, About $about)
-    {
-        //
-    }
-    
-    public function destroy(About $about)
-    {
-        //
+        return view('dashboard');
     }
 }

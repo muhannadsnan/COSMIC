@@ -170,18 +170,19 @@
                 this.invoice.currency_id = this.currencies.find(function(el){ return true; }).id;
                 this.invoice.payment_id = this.pay.find(function(el){ return true; }).id;
                 this.invoice.NDate = this.formatDate(Date.now())
+                Store.getToken()
             },
             OnCanSave(val){ console.log("can save invoice", val);
                 this.canSave = val
             },
             readInvoice(){
                 if(!this.canSave || confirm('هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة')){
-                    Store.get('/api/invoices') //?ser='+this.invoice.serial
+                    Store.get('/invoices') //?ser='+this.invoice.serial
                         .then(resp => {
                             console.log(resp)
                         })
                         .catch(error => {
-                            this.Msg.error({"title": "error!", "message": error.message}) 
+                            this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
                             console.log("error", error)
                         })
                 }
@@ -199,7 +200,15 @@
         mounted() {
             console.log('Component <invoice-selling> mounted.')
             this.init()
-            console.log("cookie", axios.defaults.headers.common['Authorization'])
+            console.log("axios.defaults.headers.common", axios.defaults.headers.common)
+                    axios.get('/api/user') //?ser='+this.invoice.serial
+                        .then(resp => {
+                            console.log(resp)
+                        })
+                        .catch(error => {
+                            this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
+                            console.log("error", error)
+                        })
         }
     }
 </script>

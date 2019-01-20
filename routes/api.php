@@ -17,4 +17,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/invoices', 'InvoiceController@apiIndex');
+Route::get('/inv', 'InvoiceController@apiIndex')->middleware('auth:api')->middleware('client');

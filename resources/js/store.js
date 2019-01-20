@@ -22,6 +22,36 @@ var store = {
     },
     update(url1, data) {
         return axios.put(this.url+url1, data)
+    },
+    getToken() {
+        if (this.token == '') {
+            axios.get(this.url+'/oauth/clients')
+                .then(response => {
+                    console.log(response.data)
+                    if (response.data.length == 0) {
+                        this.requestToken()
+                    } else {
+                        this.token[0] = response                        
+                    }
+                });
+        } else {
+            return this.token
+        }
+        
+    },
+    requestToken() {
+        const data = {
+            name: Laravel.user_name,
+            redirect: this.url+'/callback'
+        };
+
+        axios.post('/oauth/clients', data)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(response => {
+                // List errors on response...
+            });
     }
 }
 module.exports = store

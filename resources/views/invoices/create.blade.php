@@ -11,6 +11,8 @@
 @endsection
 
 @section('content')
+
+
     <div id="app" class="d-flexX justify-content-centerX">
     @if(!isset($_GET['type'])) 
         @alert(['type'=>'danger']) Invoice without type!! @endalert() 

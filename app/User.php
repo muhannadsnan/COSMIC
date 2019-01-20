@@ -10,14 +10,10 @@ use Cookie;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $fillable = ['name', 'email', 'password'];
+    protected $hidden = ['password', 'remember_token'];
 
     public function _accounts()
     {
@@ -63,14 +59,27 @@ class User extends Authenticatable
     {
         return $this->hasMany(Base::class);
     }
-    
-    /**
-    * Roll API Key
-    */
-    public function rollApiKey(){
-        do{
-            $this->api_token = str_random(60); // Cookie::get("cosmic_session")
-        } while($this->where('api_token', $this->api_token)->exists());
-        $this->save();
+
+    /******************************************/
+
+    public static function create_oauth_client($user)
+    {
+        $oauth_client = new \App\oAuthClient();
+        $oauth_client->user_id = $user->id;
+        // $oauth_client->id=$user->email;
+        $oauth_client->name = $user->name;
+        $oauth_client->secret = base64_encode(hash_hmac('sha256', $user->password, 'secret', true));
+        $oauth_client->password_client = 1;
+        $oauth_client->personal_access_client = 1;
+        $oauth_client->redirect = '';
+        $oauth_client->revoked = 0;
+        $oauth_client->save(); 
+    }
+
+    public static function createApiToken($user)
+    {
+        $user->api_token = $user->createToken(/*'Token Name'*/ 'name')->accessToken;
+        $user->save();
+        // dd($user->api_token);
     }
 }
