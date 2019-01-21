@@ -48116,17 +48116,20 @@ var store = {
     initCookie: function initCookie() {
         this.token = $.cookie("cosmic_session");
     },
-    get: function get(url1) {
-        return axios.get(this.url + url1);
+    urlParam: function urlParam(param) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
     },
-    save: function save(url1, data) {
-        return axios.post(this.url + url1, data);
-    },
-    delete: function _delete(url1, data) {
-        return axios.delete(this.url + url1, data);
-    },
-    update: function update(url1, data) {
-        return axios.put(this.url + url1, data);
+    formatDate: function formatDate(date) {
+        var d = new Date(date),
+            month = "" + (d.getMonth() + 1),
+            day = "" + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = "0" + month;
+        if (day.length < 2) day = "0" + day;
+
+        return [year, month, day].join("-");
     }
 };
 module.exports = store;
@@ -48804,75 +48807,139 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 var REC = function REC() {
-    var mat = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    var qty = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-    var single = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-    var total = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+  var mat = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var qty = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  var single = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var total = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
-    _classCallCheck(this, REC);
+  _classCallCheck(this, REC);
 
-    this.mat = mat;
-    this.qty = qty;
-    this.single = single;
-    this.total = total;
+  this.mat = mat;
+  this.qty = qty;
+  this.single = single;
+  this.total = total;
 };
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    // props: ['value'],
-    data: function data() {
-        return {
-            newREC: new REC(),
-            records: []
-        };
-    },
+  // props: ['value'],
+  data: function data() {
+    return {
+      newREC: new REC(),
+      records: []
+    };
+  },
 
-    methods: {
-        addRec: function addRec(i) {
-            if (!(this.newREC.mat == '' || +this.newREC.qty == 0 || +this.newREC.single == 0)) {
-                this.newREC.total = this.compTotal;
-                this.records.push(this.newREC);
-                this.newREC = new REC();
-                this.$refs.firstInput.focus();
-            }
-            this.enableSaveInvoice();
-        },
-        clear: function clear() {
-            this.records = [];console.log("recoreds cleared !");
-            this.enableSaveInvoice();
-        },
-        enableSaveInvoice: function enableSaveInvoice() {
-            if (this.records.length > 0) {
-                this.$emit('hasRecords', true);
-            }
-        }
+  methods: {
+    addRec: function addRec(i) {
+      if (!(this.newREC.mat == "" || +this.newREC.qty == 0 || +this.newREC.single == 0)) {
+        this.newREC.total = this.compTotal;
+        this.records.push(this.newREC);
+        this.newREC = new REC();
+        this.$refs.firstInput.focus();
+      }
+      this.enableSaveInvoice();
     },
-    computed: {
-        compTotal: function compTotal() {
-            return this.newREC.single * this.newREC.qty;
-        }
+    clear: function clear() {
+      this.records = [];
+      console.log("recoreds cleared !");
+      this.enableSaveInvoice();
     },
-    watch: {
-        // if the values are negative
-        newREC: {
-            handler: function handler(newValue) {
-                if (newValue.qty < 0) {
-                    this.newREC.qty = 0;
-                }
-                if (newValue.single < 0) {
-                    this.newREC.single = 0;
-                }
-                if (newValue.total < 0) {
-                    this.newREC.total = 0;
-                }
-            }, deep: true
-        }
-    },
-    created: function created() {
-        this.$parent.$on('ClearInvoice', this.clear);
-        this.$parent.$on('SubmitInvoice', this.clear);
+    enableSaveInvoice: function enableSaveInvoice() {
+      if (this.records.length > 0) {
+        this.$emit("hasRecords", true);
+      }
     }
+  },
+  computed: {
+    compTotal: function compTotal() {
+      return this.newREC.single * this.newREC.qty;
+    }
+  },
+  watch: {
+    // if the values are negative
+    newREC: {
+      handler: function handler(newValue) {
+        if (newValue.qty < 0) {
+          this.newREC.qty = 0;
+        }
+        if (newValue.single < 0) {
+          this.newREC.single = 0;
+        }
+        if (newValue.total < 0) {
+          this.newREC.total = 0;
+        }
+      },
+      deep: true
+    }
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$parent.$on("ClearInvoice", this.clear);
+    this.$parent.$on("SubmitInvoice", this.clear);
+    this.$parent.$on("gotRecords", function (data) {
+      _this.records = data;
+    });
+  }
 });
 
 /***/ }),
@@ -49358,7 +49425,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.tab-content .tab-pane[data-v-78feede4]{min-height: 270px;\n}\r\n", ""]);
+exports.push([module.i, "\n.tab-content .tab-pane[data-v-78feede4] {\r\n    min-height: 270px\n}\r\n", ""]);
 
 // exports
 
@@ -49460,21 +49527,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //
 //
+//
+//
+//
 
 var Invoice = function Invoice() {
     var base_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
     var profile_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
     var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-    var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+    var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "";
     var payment_id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
     var currency_id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
-    var title = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : '';
-    var desc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : '';
+    var title = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : "";
+    var desc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : "";
     var client_acc = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
     var NType = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
-    var NDate = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
-    var ext_num = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : '';
-    var int_num = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : '';
+    var NDate = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : "";
+    var ext_num = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : "";
+    var int_num = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : "";
     var sum = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
     var remaining = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
     var client_id = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : 0;
@@ -49504,61 +49574,47 @@ var Invoice = function Invoice() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['currencies', 'pay', 'base', 'profile'],
+    props: ["currencies", "pay", "base", "profile"],
     data: function data() {
         return {
             invoice: new Invoice(this.base, this.profile),
-            selectedCurrency: { buy: '' },
+            selectedCurrency: { buy: "" },
             loading: false,
-            canSave: false
+            canSave: false,
+            edit: false
             // saved: false
         };
     },
 
     methods: {
         tabClicked: function tabClicked() {
-            // JQuery tab funcionality 
-            $(this.$el).tab('show');
+            // JQuery tab funcionality
+            $(this.$el).tab("show");
         },
         selectCurr: function selectCurr(curr) {
             this.selectedCurrency = curr;
         },
-        formatDate: function formatDate(date) {
-            var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
-                year = d.getFullYear();
-
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-
-            return [year, month, day].join('-');
-        },
         clearInvoice: function clearInvoice() {
-            if (confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')) {
-                this.$emit('ClearInvoice');
+            if (confirm("هل أنت متأكد من أنك تريد حذف الفاتورة؟")) {
+                this.$emit("ClearInvoice");
                 this.init();
-                this.Msg.success({ "title": "تم بنجاح!", "message": "حذف الفاتورة" });
+                this.Msg.success({ title: "تم بنجاح!", message: "حذف الفاتورة" });
             }
         },
         submitInvoice: function submitInvoice() {
             var _this = this;
 
-            // if(!this.saved || true){
             this.invoice.records = this.$children[0]._data.records;
-            Store.save('/api/invoices', this.invoice).then(function (resp) {
+            axios.post("/api/invoices", this.invoice).then(function (resp) {
                 console.log(resp);
-                _this.$emit('SubmitInvoice');
+                _this.$emit("SubmitInvoice");
                 _this.init();
                 // this.saved = true
-                _this.Msg.success({ "title": "تم بنجاح!", "message": "حفظ الفاتورة" });
+                _this.Msg.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" });
             }).catch(function (error) {
-                _this.Msg.error({ "title": "error!", "message": error.message });
+                _this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" });
                 console.log("error", error);
             });
-            // }else{
-            // do something else
-            // }
         },
         init: function init() {
             var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -49571,11 +49627,16 @@ var Invoice = function Invoice() {
                 this.invoice.payment_id = this.pay.find(function (el) {
                     return true;
                 }).id;
-                this.invoice.NDate = this.formatDate(Date.now());
+                this.invoice.NDate = Store.formatDate(Date.now());
+                this.invoice.NType = +Store.urlParam('type');
+                this.invoice.client_id = +this.invoice.client_id;
                 this.canSave = false;
+                this.edit = false;
             } else {
                 this.invoice = data;
+                this.$emit('gotRecords', data._records);
                 this.canSave = true;
+                this.edit = true;
             }
         },
         OnCanSave: function OnCanSave(val) {
@@ -49585,28 +49646,43 @@ var Invoice = function Invoice() {
         readInvoice: function readInvoice() {
             var _this2 = this;
 
-            if (!this.canSave || confirm('هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة')) {
-                Store.get('/api/invoices?serial=' + this.invoice.serial) //?ser='+this.invoice.serial
+            // after reading, edit mode will become active        
+            if (!this.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
+                axios.get("/api/invoices?serial=" + this.invoice.serial + '&NType=' + Store.urlParam('type')) //?ser='+this.invoice.serial
                 .then(function (resp) {
-                    console.log(resp);
+                    //console.log("resp", resp)            console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
                         case 200:
-                            if (Array.isArray(resp.data.data)) _this2.invoice = resp.data.data[0];else if (resp.data.data != null) _this2.invoice = resp.data.data;
-                            _this2.init();
-                            _this2.Msg.success({ "title": "نجاح الطلب", "message": resp.data.msg });
+                            if (Array.isArray(resp.data.data)) _this2.init(resp.data.data[0]);else if (resp.data.data != null) _this2.init(resp.data.data);
+                            _this2.Msg.success({ title: "نجاح الطلب", message: resp.data.msg });
                             break;
                         case 204:
-                            _this2.Msg.info({ "title": "لا يوجد فاتورة", "message": "لم يتم ايجاد فاتورة" });
+                            _this2.Msg.info({ title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة" });
                             break;
                         default:
-                            _this2.Msg.error({ "title": "حدث خطأ!", "message": "حدث خطأ أثناء البحث عن الفاتورة" });
+                            _this2.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
                             break;
                     }
                 }).catch(function (error) {
-                    // this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
+                    _this2.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
                     console.log("error", error);
                 });
             }
+        },
+        editInvoice: function editInvoice() {
+            var _this3 = this;
+
+            this.invoice.records = this.$children[0]._data.records;
+            axios.put("/api/invoices", this.invoice).then(function (resp) {
+                console.log(resp);
+                _this3.$emit("SubmitInvoice");
+                _this3.init();
+                // this.saved = true
+                _this3.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" });
+            }).catch(function (error) {
+                _this3.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة" });
+                console.log("error", error);
+            });
         }
     },
     watch: {
@@ -49615,22 +49691,13 @@ var Invoice = function Invoice() {
                 this.selectedCurrency = this.currencies.find(function (el) {
                     return el.id == newValue.currency_id;
                 });
-            }, deep: true
+            },
+            deep: true
         }
     },
     mounted: function mounted() {
-        console.log('Component <invoice-selling> mounted.');
+        console.log("Component <invoice-selling> mounted.");
         this.init();
-        // console.log("axios.defaults.headers.common", axios.defaults.headers.common)
-
-        // axios.get('/api/user') //?ser='+this.invoice.serial
-        //     .then(resp => {
-        //         console.log(resp)
-        //     })
-        //     .catch(error => {
-        //         this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
-        //         console.log("error", error)
-        //     })
     }
 });
 
@@ -50067,21 +50134,41 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "button",
-            {
-              staticClass: "nav-link btn btn-success px-5",
-              attrs: { id: "invoiceSave", disabled: !_vm.canSave },
-              on: {
-                click: function($event) {
-                  _vm.submitInvoice()
-                }
-              }
-            },
-            [_vm._v("حفظ")]
-          )
-        ]),
+        !_vm.edit
+          ? _c("li", { staticClass: "nav-item" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "nav-link btn btn-success px-5",
+                  attrs: { id: "invoiceSave", disabled: !_vm.canSave },
+                  on: {
+                    click: function($event) {
+                      _vm.submitInvoice()
+                    }
+                  }
+                },
+                [_vm._v("حفظ")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.edit
+          ? _c("li", { staticClass: "nav-item" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "nav-link btn btn-info px-5",
+                  attrs: { id: "invoiceEdit" },
+                  on: {
+                    click: function($event) {
+                      _vm.submitInvoice()
+                    }
+                  }
+                },
+                [_vm._v("تعديل")]
+              )
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("li", { staticClass: "nav-item" }, [
           _c(

@@ -77,8 +77,11 @@
             <li class="nav-item">
                 <button class="nav-link btn btn-light px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="!edit">
                 <button class="nav-link btn btn-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!canSave">حفظ</button>
+            </li>
+            <li class="nav-item" v-if="edit">
+                <button class="nav-link btn btn-info px-5" id="invoiceEdit" @click="submitInvoice()">تعديل</button>
             </li>
             <li class="nav-item">
                 <button class="nav-link btn btn-dark px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!canSave">حذف</button>
@@ -88,154 +91,171 @@
 </template>
 
 <script>
-    class Invoice {
-        constructor(base_id=0, profile_id=0, id=0, serial='', payment_id=0, currency_id=0, title='', desc='',  client_acc=0, NType=1, NDate='', ext_num='', int_num='', sum=0, remaining=0, client_id=0, warehouse_id=0, records=[]) {
-            this.id = id;
-            this.serial = serial;
-            this.payment_id = payment_id;
-            this.currency_id = currency_id;
-            this.title = title;
-            this.desc = desc;
-            this.client_acc = client_acc;
-            this.NType = NType;
-            this.NDate = NDate;
-            this.ext_num = ext_num;
-            this.int_num = int_num;
-            this.sum = sum;
-            this.remaining = remaining;
-            this.client_id = client_id;
-            this.warehouse_id = warehouse_id;
-            this.base_id = base_id;
-            this.profile_id = profile_id;
-            this.records = records;
-        }
+class Invoice {
+    constructor(
+        base_id = 0,
+        profile_id = 0,
+        id = 0,
+        serial = "",
+        payment_id = 0,
+        currency_id = 0,
+        title = "",
+        desc = "",
+        client_acc = 0,
+        NType = 1,
+        NDate = "",
+        ext_num = "",
+        int_num = "",
+        sum = 0,
+        remaining = 0,
+        client_id = 0,
+        warehouse_id = 0,
+        records = []
+    ) {
+        this.id = id
+        this.serial = serial
+        this.payment_id = payment_id
+        this.currency_id = currency_id
+        this.title = title
+        this.desc = desc
+        this.client_acc = client_acc
+        this.NType = NType
+        this.NDate = NDate
+        this.ext_num = ext_num
+        this.int_num = int_num
+        this.sum = sum
+        this.remaining = remaining
+        this.client_id = client_id
+        this.warehouse_id = warehouse_id
+        this.base_id = base_id
+        this.profile_id = profile_id
+        this.records = records
     }
-    export default {
-        props: ['currencies', 'pay', 'base', 'profile'],
-        data(){
-            return {
-                invoice: new Invoice(this.base, this.profile),
-                selectedCurrency: {buy: ''},
-                loading: false,
-                canSave: false,
-                // saved: false
-            }
+}
+export default {
+    props: ["currencies", "pay", "base", "profile"],
+    data() {
+        return {
+            invoice: new Invoice(this.base, this.profile),
+            selectedCurrency: { buy: "" },
+            loading: false,
+            canSave: false,
+            edit: false,
+            // saved: false
+        }
+    },
+    methods: {
+        tabClicked() {
+            // JQuery tab funcionality
+            $(this.$el).tab("show")
         },
-        methods: {
-            tabClicked(){ // JQuery tab funcionality 
-                $(this.$el).tab('show')
-            },
-            selectCurr(curr){
-                this.selectedCurrency = curr;
-            },
-            formatDate(date) {
-                var d = new Date(date),
-                    month = '' + (d.getMonth() + 1),
-                    day = '' + d.getDate(),
-                    year = d.getFullYear();
-
-                if (month.length < 2) month = '0' + month;
-                if (day.length < 2) day = '0' + day;
-
-                return [year, month, day].join('-');
-            },
-            clearInvoice(){
-                if(confirm('هل أنت متأكد من أنك تريد حذف الفاتورة؟')){
-                    this.$emit('ClearInvoice')
-                    this.init()
-                    this.Msg.success({"title": "تم بنجاح!", "message": "حذف الفاتورة"})
-                }
-            },
-            submitInvoice(){
-                // if(!this.saved || true){
-                    this.invoice.records = this.$children[0]._data.records
-                    Store.save('/api/invoices', this.invoice)
-                        .then(resp => {
-                            console.log(resp)
-                            this.$emit('SubmitInvoice')
-                            this.init()
-                            // this.saved = true
-                            this.Msg.success({"title": "تم بنجاح!", "message": "حفظ الفاتورة"})
-                        })
-                        .catch(error => {
-                            this.Msg.error({"title": "error!", "message": error.message}) 
-                            console.log("error", error)
-                        })
-                // }else{
-                    // do something else
-                // }
-            },
-            init(data = null){
-                if(data == null){
-                    this.invoice = new Invoice(this.base, this.profile)
-                    this.invoice.currency_id = this.currencies.find(function(el){ return true; }).id;
-                    this.invoice.payment_id = this.pay.find(function(el){ return true; }).id;
-                    this.invoice.NDate = this.formatDate(Date.now())
-                    this.canSave = false
-                }
-                else{
-                    this.invoice = data
-                    this.canSave = true
-                }
-            },
-            OnCanSave(val){ console.log("can save invoice", val);
-                this.canSave = val
-            },
-            readInvoice(){
-                if(!this.canSave || confirm('هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة')){
-                    Store.get('/api/invoices?serial='+this.invoice.serial) //?ser='+this.invoice.serial
-                        .then(resp => {
-                            console.log(resp)
-                            switch(resp.status){
-                                case 200:
-                                    if(Array.isArray(resp.data.data))
-                                        this.invoice = resp.data.data[0]
-                                    else if(resp.data.data != null)
-                                        this.invoice = resp.data.data
-                                        this.init()
-                                    this.Msg.success({"title": "نجاح الطلب", "message": resp.data.msg}) 
-                                    break
-                                case 204:
-                                    this.Msg.info({"title": "لا يوجد فاتورة", "message": "لم يتم ايجاد فاتورة"}) 
-                                    break
-                                default:
-                                    this.Msg.error({"title": "حدث خطأ!", "message": "حدث خطأ أثناء البحث عن الفاتورة"}) 
-                                    break
-                            }
-                        })
-                        .catch(error => {
-                            // this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
-                            console.log("error", error)
-                        })
-                }
-            }
+        selectCurr(curr) {
+            this.selectedCurrency = curr
         },        
-        watch: {
-            invoice: { 
-                handler: function(newValue) { 
-                    this.selectedCurrency = this.currencies.find(function(el){ 
-                        return el.id == newValue.currency_id;
-                    });
-                }, deep: true
+        clearInvoice() {
+            if (confirm("هل أنت متأكد من أنك تريد حذف الفاتورة؟")) {
+                this.$emit("ClearInvoice")
+                this.init()
+                this.Msg.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
             }
         },
-        mounted() {
-            console.log('Component <invoice-selling> mounted.')
-            this.init()
-            // console.log("axios.defaults.headers.common", axios.defaults.headers.common)
-
-            // axios.get('/api/user') //?ser='+this.invoice.serial
-            //     .then(resp => {
-            //         console.log(resp)
-            //     })
-            //     .catch(error => {
-            //         this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
-            //         console.log("error", error)
-            //     })
+        submitInvoice() {
+            this.invoice.records = this.$children[0]._data.records
+            axios.post("/api/invoices", this.invoice)
+                .then(resp => {
+                    console.log(resp)
+                    this.$emit("SubmitInvoice")
+                    this.init()
+                    // this.saved = true
+                    this.Msg.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" })
+                })
+                .catch(error => {
+                    this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" })
+                    console.log("error", error)
+                })
+        },
+        init(data = null) { 
+            if (data == null) {
+                this.invoice = new Invoice(this.base, this.profile)
+                this.invoice.currency_id = this.currencies.find(function(el) {return true}).id
+                this.invoice.payment_id = this.pay.find(function(el) {return true}).id
+                this.invoice.NDate = Store.formatDate(Date.now())
+                this.invoice.NType = +Store.urlParam('type')
+                this.invoice.client_id = +this.invoice.client_id
+                this.canSave = false
+                this.edit = false
+            } else {
+                this.invoice = data
+                this.$emit('gotRecords', data._records);
+                this.canSave = true
+                this.edit = true
+            }
+        },
+        OnCanSave(val) {
+            console.log("can save invoice", val)
+            this.canSave = val
+        },
+        readInvoice() { // after reading, edit mode will become active        
+            if ( !this.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
+                axios.get("/api/invoices?serial=" + this.invoice.serial+'&NType='+Store.urlParam('type')) //?ser='+this.invoice.serial
+                    .then(resp => { //console.log("resp", resp)            console.log("resp.data.data[0]", resp.data.data[0])
+                        switch (resp.status) {
+                            case 200:
+                                if (Array.isArray(resp.data.data))
+                                    this.init(resp.data.data[0])
+                                else if (resp.data.data != null) 
+                                    this.init(resp.data.data)
+                                    this.Msg.success({title: "نجاح الطلب", message: resp.data.msg})
+                                break
+                            case 204:
+                                this.Msg.info({title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة"})
+                                break
+                            default:
+                                this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                                break
+                        }
+                    })
+                    .catch(error => {
+                        this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                        console.log("error", error)
+                    })
+            }
+        },
+        editInvoice() {
+            this.invoice.records = this.$children[0]._data.records
+            axios.put("/api/invoices", this.invoice)
+                .then(resp => {
+                    console.log(resp)
+                    this.$emit("SubmitInvoice")
+                    this.init()
+                    // this.saved = true
+                    this.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" })
+                })
+                .catch(error => {
+                    this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة"})
+                    console.log("error", error)
+                })
         }
+    },
+    watch: {
+        invoice: {
+            handler: function(newValue) {
+                this.selectedCurrency = this.currencies.find(function(el) {
+                    return el.id == newValue.currency_id
+                })
+            },
+            deep: true
+        }
+    },
+    mounted() {
+        console.log("Component <invoice-selling> mounted.")
+        this.init()
     }
+}
 </script>
 
 <style scoped>
-.tab-content .tab-pane{min-height: 270px;}
+.tab-content .tab-pane {
+    min-height: 270px
+}
 </style>

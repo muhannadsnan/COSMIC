@@ -43,9 +43,6 @@ class InvoiceController extends Controller
         $oauth_client->save(); 
         
         $user->createToken($user->name)->accessToken->save();
-        dd($user->createToken($user->name)->accessToken);
-
-
     }
     
     public function store(Request $request)
@@ -82,22 +79,23 @@ class InvoiceController extends Controller
     }
 /***************** API ******************/
     public function apiIndex(Request $request)
-    {
-        $data = Invoice::where('serial', $request->serial)->get(); 
-        if(!$data || count($data) == 0){
-            return response()->json(['data' => $data, 'msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204
-        }
-        return response()->json(['data' => $data, 'msg' => 'تم ايجاد الفاتورة'], 200);
+    { 
+        $inv = Invoice::where('serial', $request->serial)->where('NType', $request->NType)->with('_payment', '_currency', '_accounts', '_records')->get(); 
+
+        if(!$inv || count($inv) == 0)
+            return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204
+        return response()->json(['data' => $inv, 'msg' => 'تم ايجاد الفاتورة'], 200);
     }
 
     public function apiStore(Request $request)
     { 
         $base = Base::find($request->base_id);
         $profile = $base->_profiles->find($request->profile_id);
-        $newInvoice = Invoice::insert($request->all());
+
+        $newInvoice = Invoice::insertFull($request->all());
+
         if(!$newInvoice)
-            return response()->json(['msg' => 'خطأ أثناء إضافة الفاتورة'], 404);
-        $newRecords = InvoiceInfo::insertMany($request->records, $newInvoice->id);
+            return response()->json(['msg' => 'خطأ أثناء إضافة الفاتورة'], 404);        
         return response()->json(['data' => $newInvoice, 'msg' => 'تم إضافة الفاتورة بنجاح!'], 200);
     }
 }

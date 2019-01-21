@@ -48,25 +48,45 @@ class Invoice extends _Model
         return $this->belongsTo(Payment::class, 'payment_id');
     }
 
-    /**************************************** */
-    public static function insert($request){ //return $request;
-        // insert all invoiceInfo 
-
-        // insert inoivce
-        return Invoice::create([
-                'payment_id' => $request['payment_id'],
-                'currency_id' => $request['currency_id'],
-                'profile_id' => $request['profile_id'],
-                'serial' => $request['serial'],
-                'title' => $request['title'] == ''? 'TEST': $request['title'],
-                'desc' => $request['desc'],
-                'client_acc' => $request['client_acc'],
-                'NType' => $request['NType'],
-                'NDate' => $request['NDate'],
-                'ext_num' => $request['ext_num'] == ''? 'TEST': $request['ext_num'],
-                'int_num' => $request['int_num'] == ''? 'TEST': $request['int_num'],
-                'sum' => $request['sum'],
-                'remaining' => $request['remaining'],
-            ]);
+    public function _records()
+    {
+        return $this->hasMany(Invoiceinfo::class, 'invoice_id');
     }
+    /**************************************** */
+    public static function insertFull($request)
+    {
+        if( !$newInvoice = Invoice::insert($request)) return false;
+        if( !Invoice::insertRecords($request['records'], $newInvoice->id)) return false;
+        
+        $newInvoice->_clients()->sync([ $request['client_id'] ]);
+        return $newInvoice;
+    }
+
+    public static function insert($request)
+    {
+        return Invoice::create([
+            'payment_id' => $request['payment_id'],
+            'currency_id' => $request['currency_id'],
+            'profile_id' => $request['profile_id'],
+            'serial' => $request['serial'],
+            'title' => $request['title'] == ''? 'TEST': $request['title'],
+            'desc' => $request['desc'],
+            'client_acc' => $request['client_acc'],
+            'NType' => $request['NType'],
+            'NDate' => $request['NDate'],
+            'ext_num' => $request['ext_num'] == ''? 'TEST': $request['ext_num'],
+            'int_num' => $request['int_num'] == ''? 'TEST': $request['int_num'],
+            'sum' => $request['sum'],
+            'remaining' => $request['remaining'],
+        ]);
+    }
+
+    public static function insertRecords($records, $invID)
+    {
+        if(!InvoiceInfo::insertMany($records, $invID)) return false;
+        return true;
+    }
+    
+
+
 }

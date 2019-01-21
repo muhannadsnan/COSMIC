@@ -4,17 +4,20 @@ var store = {
     initCookie(){
         this.token = $.cookie("cosmic_session")
     },
-    get(url1) {
-        return axios.get(this.url+url1)
+    urlParam(param) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param)
     },
-    save(url1, data) { 
-        return axios.post(this.url+url1, data)
-    },
-    delete(url1, data) {
-        return axios.delete(this.url+url1, data)
-    },
-    update(url1, data) {
-        return axios.put(this.url+url1, data)
+    formatDate(date) {
+        var d = new Date(date),
+            month = "" + (d.getMonth() + 1),
+            day = "" + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) month = "0" + month;
+        if (day.length < 2) day = "0" + day;
+
+        return [ year, month, day ].join("-");
     },
 }
 module.exports = store
