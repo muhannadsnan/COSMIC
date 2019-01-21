@@ -48111,14 +48111,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /***/ (function(module, exports) {
 
 var store = {
-    token: '',
     url: 'http://localhost:8000',
-    options: {
-        // headers: {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json'
-        // }
-    },
     state: { message: 'Hello!', text: 'haha' },
     initCookie: function initCookie() {
         this.token = $.cookie("cosmic_session");
@@ -48134,34 +48127,6 @@ var store = {
     },
     update: function update(url1, data) {
         return axios.put(this.url + url1, data);
-    },
-    getToken: function getToken() {
-        var _this = this;
-
-        if (this.token == '') {
-            axios.get(this.url + '/oauth/clients').then(function (response) {
-                console.log(response.data);
-                if (response.data.length == 0) {
-                    _this.requestToken();
-                } else {
-                    _this.token[0] = response;
-                }
-            });
-        } else {
-            return this.token;
-        }
-    },
-    requestToken: function requestToken() {
-        var data = {
-            name: Laravel.user_name,
-            redirect: this.url + '/callback'
-        };
-
-        axios.post('/oauth/clients', data).then(function (response) {
-            console.log(response.data);
-        }).catch(function (response) {
-            // List errors on response...
-        });
     }
 };
 module.exports = store;
@@ -48879,7 +48844,7 @@ var REC = function REC() {
         },
         enableSaveInvoice: function enableSaveInvoice() {
             if (this.records.length > 0) {
-                this.$emit('canSaveInvoice', true);
+                this.$emit('hasRecords', true);
             }
         }
     },
@@ -49581,7 +49546,7 @@ var Invoice = function Invoice() {
 
             // if(!this.saved || true){
             this.invoice.records = this.$children[0]._data.records;
-            Store.save('/invoices', this.invoice).then(function (resp) {
+            Store.save('/api/invoices', this.invoice).then(function (resp) {
                 console.log(resp);
                 _this.$emit('SubmitInvoice');
                 _this.init();
@@ -49596,15 +49561,22 @@ var Invoice = function Invoice() {
             // }
         },
         init: function init() {
-            this.invoice = new Invoice(this.base, this.profile);console.log("invoice cleared!");
-            this.invoice.currency_id = this.currencies.find(function (el) {
-                return true;
-            }).id;
-            this.invoice.payment_id = this.pay.find(function (el) {
-                return true;
-            }).id;
-            this.invoice.NDate = this.formatDate(Date.now());
-            Store.getToken();
+            var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (data == null) {
+                this.invoice = new Invoice(this.base, this.profile);
+                this.invoice.currency_id = this.currencies.find(function (el) {
+                    return true;
+                }).id;
+                this.invoice.payment_id = this.pay.find(function (el) {
+                    return true;
+                }).id;
+                this.invoice.NDate = this.formatDate(Date.now());
+                this.canSave = false;
+            } else {
+                this.invoice = data;
+                this.canSave = true;
+            }
         },
         OnCanSave: function OnCanSave(val) {
             console.log("can save invoice", val);
@@ -49614,11 +49586,24 @@ var Invoice = function Invoice() {
             var _this2 = this;
 
             if (!this.canSave || confirm('هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة')) {
-                Store.get('/invoices') //?ser='+this.invoice.serial
+                Store.get('/api/invoices?serial=' + this.invoice.serial) //?ser='+this.invoice.serial
                 .then(function (resp) {
                     console.log(resp);
+                    switch (resp.status) {
+                        case 200:
+                            if (Array.isArray(resp.data.data)) _this2.invoice = resp.data.data[0];else if (resp.data.data != null) _this2.invoice = resp.data.data;
+                            _this2.init();
+                            _this2.Msg.success({ "title": "نجاح الطلب", "message": resp.data.msg });
+                            break;
+                        case 204:
+                            _this2.Msg.info({ "title": "لا يوجد فاتورة", "message": "لم يتم ايجاد فاتورة" });
+                            break;
+                        default:
+                            _this2.Msg.error({ "title": "حدث خطأ!", "message": "حدث خطأ أثناء البحث عن الفاتورة" });
+                            break;
+                    }
                 }).catch(function (error) {
-                    _this2.Msg.error({ "title": "حدث خطأ!", "message": error.message });
+                    // this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
                     console.log("error", error);
                 });
             }
@@ -49634,18 +49619,18 @@ var Invoice = function Invoice() {
         }
     },
     mounted: function mounted() {
-        var _this3 = this;
-
         console.log('Component <invoice-selling> mounted.');
         this.init();
-        console.log("axios.defaults.headers.common", axios.defaults.headers.common);
-        axios.get('/api/user') //?ser='+this.invoice.serial
-        .then(function (resp) {
-            console.log(resp);
-        }).catch(function (error) {
-            _this3.Msg.error({ "title": "حدث خطأ!", "message": error.message });
-            console.log("error", error);
-        });
+        // console.log("axios.defaults.headers.common", axios.defaults.headers.common)
+
+        // axios.get('/api/user') //?ser='+this.invoice.serial
+        //     .then(resp => {
+        //         console.log(resp)
+        //     })
+        //     .catch(error => {
+        //         this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
+        //         console.log("error", error)
+        //     })
     }
 });
 
@@ -50032,7 +50017,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("records", { on: { canSaveInvoice: _vm.OnCanSave } })
+            _c("records", { on: { hasRecords: _vm.OnCanSave } })
           ],
           1
         ),

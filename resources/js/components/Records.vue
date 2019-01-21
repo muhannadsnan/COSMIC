@@ -63,7 +63,7 @@
             },
             enableSaveInvoice(){
                 if(this.records.length > 0){
-                    this.$emit('canSaveInvoice', true)
+                    this.$emit('hasRecords', true)
                 }
             }
         },

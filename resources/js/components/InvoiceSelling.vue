@@ -62,7 +62,7 @@
                     <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
                 <!--------------- RECORDS ---------------->
-                <records @canSaveInvoice="OnCanSave"></records>
+                <records @hasRecords="OnCanSave"></records>
             </div>
 
             <div id="invoiceDetails" class="tab-pane fade" role="tabpanel">
@@ -149,7 +149,7 @@
             submitInvoice(){
                 // if(!this.saved || true){
                     this.invoice.records = this.$children[0]._data.records
-                    Store.save('/invoices', this.invoice)
+                    Store.save('/api/invoices', this.invoice)
                         .then(resp => {
                             console.log(resp)
                             this.$emit('SubmitInvoice')
@@ -165,24 +165,46 @@
                     // do something else
                 // }
             },
-            init(){
-                this.invoice = new Invoice(this.base, this.profile); console.log("invoice cleared!");
-                this.invoice.currency_id = this.currencies.find(function(el){ return true; }).id;
-                this.invoice.payment_id = this.pay.find(function(el){ return true; }).id;
-                this.invoice.NDate = this.formatDate(Date.now())
-                Store.getToken()
+            init(data = null){
+                if(data == null){
+                    this.invoice = new Invoice(this.base, this.profile)
+                    this.invoice.currency_id = this.currencies.find(function(el){ return true; }).id;
+                    this.invoice.payment_id = this.pay.find(function(el){ return true; }).id;
+                    this.invoice.NDate = this.formatDate(Date.now())
+                    this.canSave = false
+                }
+                else{
+                    this.invoice = data
+                    this.canSave = true
+                }
             },
             OnCanSave(val){ console.log("can save invoice", val);
                 this.canSave = val
             },
             readInvoice(){
                 if(!this.canSave || confirm('هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة')){
-                    Store.get('/invoices') //?ser='+this.invoice.serial
+                    Store.get('/api/invoices?serial='+this.invoice.serial) //?ser='+this.invoice.serial
                         .then(resp => {
                             console.log(resp)
+                            switch(resp.status){
+                                case 200:
+                                    if(Array.isArray(resp.data.data))
+                                        this.invoice = resp.data.data[0]
+                                    else if(resp.data.data != null)
+                                        this.invoice = resp.data.data
+                                        this.init()
+                                    this.Msg.success({"title": "نجاح الطلب", "message": resp.data.msg}) 
+                                    break
+                                case 204:
+                                    this.Msg.info({"title": "لا يوجد فاتورة", "message": "لم يتم ايجاد فاتورة"}) 
+                                    break
+                                default:
+                                    this.Msg.error({"title": "حدث خطأ!", "message": "حدث خطأ أثناء البحث عن الفاتورة"}) 
+                                    break
+                            }
                         })
                         .catch(error => {
-                            this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
+                            // this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
                             console.log("error", error)
                         })
                 }
@@ -200,15 +222,16 @@
         mounted() {
             console.log('Component <invoice-selling> mounted.')
             this.init()
-            console.log("axios.defaults.headers.common", axios.defaults.headers.common)
-                    axios.get('/api/user') //?ser='+this.invoice.serial
-                        .then(resp => {
-                            console.log(resp)
-                        })
-                        .catch(error => {
-                            this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
-                            console.log("error", error)
-                        })
+            // console.log("axios.defaults.headers.common", axios.defaults.headers.common)
+
+            // axios.get('/api/user') //?ser='+this.invoice.serial
+            //     .then(resp => {
+            //         console.log(resp)
+            //     })
+            //     .catch(error => {
+            //         this.Msg.error({"title": "حدث خطأ!", "message": error.message}) 
+            //         console.log("error", error)
+            //     })
         }
     }
 </script>

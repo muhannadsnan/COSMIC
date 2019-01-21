@@ -80,9 +80,24 @@ class InvoiceController extends Controller
     {
         //
     }
-
+/***************** API ******************/
     public function apiIndex(Request $request)
     {
-        return response()->json(['data' => 'hahaaaaaaaaaaaa'], 200);
+        $data = Invoice::where('serial', $request->serial)->get(); 
+        if(!$data || count($data) == 0){
+            return response()->json(['data' => $data, 'msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204
+        }
+        return response()->json(['data' => $data, 'msg' => 'تم ايجاد الفاتورة'], 200);
+    }
+
+    public function apiStore(Request $request)
+    { 
+        $base = Base::find($request->base_id);
+        $profile = $base->_profiles->find($request->profile_id);
+        $newInvoice = Invoice::insert($request->all());
+        if(!$newInvoice)
+            return response()->json(['msg' => 'خطأ أثناء إضافة الفاتورة'], 404);
+        $newRecords = InvoiceInfo::insertMany($request->records, $newInvoice->id);
+        return response()->json(['data' => $newInvoice, 'msg' => 'تم إضافة الفاتورة بنجاح!'], 200);
     }
 }
