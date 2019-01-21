@@ -11,11 +11,6 @@ class Entry extends _model
         return $this->belongsToMany(User::class, 'user_entry', 'entry_id', 'user_id');
     }
 
-    public function _warehouses()
-    {
-        return $this->belongsToMany(Warehouse::class, 'warehouse_entry', 'entry_id', 'warehouse_id');
-    }
-
     public function _profile()
     {
         return $this->belongsTo(Profile::class, 'profile_id');

@@ -26,8 +26,8 @@ class Warehouse extends _Model
         return $this->belongsTo(Profile::class, 'profile_id');
     }
 
-    public function _entries()
+    public function _invoices()
     {
-        return $this->belongsToMany(Entry::class, 'warehouse_entry', 'warehouse_id', 'entry_id');
+        return $this->belongsToMany(Invoice::class, 'warehouse_invoice', 'warehouse_id', 'invoice_id');
     }
 }

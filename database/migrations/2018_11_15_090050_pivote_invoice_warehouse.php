@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class PivoteWarehouseEntry extends Migration
+class PivoteInvoiceWarehouse extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class PivoteWarehouseEntry extends Migration
      */
     public function up()
     {
-        Schema::create('warehouse_entry', function (Blueprint $table) {
+        Schema::create('warehouse_invoice', function (Blueprint $table) {
             $table->unsignedInteger('warehouse_id');
-            $table->unsignedInteger('entry_id');
+            $table->unsignedInteger('invoice_id');
 
             $table->foreign('warehouse_id')
                     ->references('id')
-                    ->on('users');
+                    ->on('warehouses');
             
-            $table->foreign('entry_id')
+            $table->foreign('invoice_id')
                     ->references('id')
-                    ->on('entries');
+                    ->on('invoices');
       
             $table->timestamps();
         });
@@ -36,10 +36,10 @@ class PivoteWarehouseEntry extends Migration
      */
     public function down()
     {
-        Schema::table('warehouse_entry', function(Blueprint $table) {
-            $table->dropForeign(['entry_id']);
+        Schema::table('warehouse_invoice', function(Blueprint $table) {
+            $table->dropForeign(['invoice_id']);
             $table->dropForeign(['warehouse_id']);
-            $table->dropIfExists('warehouse_entry');
+            $table->dropIfExists('warehouse_invoice');
         });
     }
 }

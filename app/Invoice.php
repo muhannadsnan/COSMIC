@@ -42,6 +42,11 @@ class Invoice extends _Model
     {
         return $this->belongsToMany(Entry::class, 'entry_invoice', 'invoice_id', 'entry_id');
     }
+    
+    public function _warehouses()
+    {
+        return $this->belongsToMany(Warehouse::class, 'warehouse_invoice', 'invoice_id', 'warehouse_id');
+    }
 
     public function _payment()
     {
@@ -56,28 +61,29 @@ class Invoice extends _Model
     public static function insertFull($request)
     {
         if( !$newInvoice = Invoice::insert($request)) return false;
-        if( !Invoice::insertRecords($request['records'], $newInvoice->id)) return false;
+        if( !Invoice::insertRecords($request->records, $newInvoice->id)) return false;
         
-        $newInvoice->_clients()->sync([ $request['client_id'] ]);
+        $newInvoice->_clients()->sync([ $request->client_id ]);
+        $newInvoice->_warehouses()->sync([ $request->warehouse_id ]);
         return $newInvoice;
     }
 
     public static function insert($request)
     {
         return Invoice::create([
-            'payment_id' => $request['payment_id'],
-            'currency_id' => $request['currency_id'],
-            'profile_id' => $request['profile_id'],
-            'serial' => $request['serial'],
-            'title' => $request['title'] == ''? 'TEST': $request['title'],
-            'desc' => $request['desc'],
-            'client_acc' => $request['client_acc'],
-            'NType' => $request['NType'],
-            'NDate' => $request['NDate'],
-            'ext_num' => $request['ext_num'] == ''? 'TEST': $request['ext_num'],
-            'int_num' => $request['int_num'] == ''? 'TEST': $request['int_num'],
-            'sum' => $request['sum'],
-            'remaining' => $request['remaining'],
+            'payment_id' => $request->payment_id,
+            'currency_id' => $request->currency_id,
+            'profile_id' => $request->profile_id,
+            'serial' => $request->serial,
+            'title' => $request->title == ''? 'TEST': $request->title,
+            'desc' => $request->desc,
+            'client_acc' => $request->client_acc,
+            'NType' => $request->NType,
+            'NDate' => $request->NDate,
+            'ext_num' => $request->ext_num == ''? 'TEST': $request->ext_num,
+            'int_num' => $request->int_num == ''? 'TEST': $request->int_num,
+            'sum' => $request->sum,
+            'remaining' => $request->remaining,
         ]);
     }
 

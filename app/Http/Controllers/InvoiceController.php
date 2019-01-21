@@ -80,7 +80,7 @@ class InvoiceController extends Controller
 /***************** API ******************/
     public function apiIndex(Request $request)
     { 
-        $inv = Invoice::where('serial', $request->serial)->where('NType', $request->NType)->with('_payment', '_currency', '_accounts', '_records')->get(); 
+        $inv = Invoice::where('serial', $request->serial)->where('NType', $request->NType)->with('_payment', '_currency', '_records', '_clients', '_warehouses')->get(); 
 
         if(!$inv || count($inv) == 0)
             return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204
@@ -92,7 +92,7 @@ class InvoiceController extends Controller
         $base = Base::find($request->base_id);
         $profile = $base->_profiles->find($request->profile_id);
 
-        $newInvoice = Invoice::insertFull($request->all());
+        $newInvoice = Invoice::insertFull($request);
 
         if(!$newInvoice)
             return response()->json(['msg' => 'خطأ أثناء إضافة الفاتورة'], 404);        
