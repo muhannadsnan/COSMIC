@@ -2,12 +2,15 @@
     <div class="containerX">
         <div class="tab-content" id="v-pills-tabContent">
             <div id="invoiceRecords" class="tab-pane fade show active" role="tabpanel">
-                <div class="row form-group">
+                <div class="row form-group my-0">
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0" id="client">
                             <label class="col-sm-2 d-flex">العميل</label>
                             <!-- <input type="text" v-model="invoice.client_id" id="" class="form-control col-sm-10" placeholder="أدخل قيمة..."> -->
-                            <Select2 v-model="invoice.client_id" :options="options.clients" option-key="id" option-label="text" placeholder="..." :classes="{input: 'form-control', wrapper: 'select-wrapper', icons: 'glyphicon', required: 'required'}"></Select2>
+                            <div class="Select2 col-sm-10 px-0">
+                                <Select2 v-model="invoice.client_id" :options="options.clients" option-key="id" option-label="text" placeholder="..." 
+                                    :classes="{input: 'form-control', wrapper: 'select-wrapper', icons: 'glyphicon', required: 'required'}" @change="xxx"></Select2>
+                            </div>
                         </div>
                         <div class="row form-group my-0">
                             <div class="col-sm-6 px-0">
@@ -58,7 +61,7 @@
                     </div>
                 </div>
 
-                <div class="row form-group mb-4">
+                <div class="row form-group mb-3 mt-0">
                     <label class="col-sm-1 d-flex">البيان</label>
                     <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
@@ -105,7 +108,12 @@ export default {
             edit: false,
             // saved: false
             options: {
-                clients: [{ id: "AU", text: "Australia" }]
+                clients: [
+                    { id: "AU", text: "Australia" },
+                    { id: "AU", text: "Australia" },
+                    { id: "AU", text: "Australia" },
+                    { id: "AU", text: "Australia" },
+                ]
             },            
         }
     },
@@ -206,6 +214,9 @@ export default {
                     console.log("error", error)
                 })
         },
+        xxx(){
+            alert('neiiii');
+        },
 
 
         onSearch(search, loading) {
@@ -237,14 +248,6 @@ export default {
 }
 </script>
 
-<style scopedX lang="scss">
+<style scoped lang="scss">
 .tab-content .tab-pane { min-height: 270px } 
-.cursor-pointer.absolute.flex.items-center.icons{float: left !important;}
-.list-reset{
-    border: 1px solid #777; border-radius: 5px;  background: #fff; border-top: 0;
-    li{text-align: center !important; text-align: center !important; padding: 3px 0px;
-        &:hover{background: #777; color: #fff;}
-    }
-}
-
 </style>

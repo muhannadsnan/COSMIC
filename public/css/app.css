@@ -11616,3 +11616,33 @@ ul#NAVBAR li.nav-item .nav-link::after {
   background: #fff !important;
 }
 
+/******************** SELECT2 ********************/
+
+.list-reset {
+  border: 1px solid #777;
+  border-radius: 0 0 5px 5px;
+  background: #fff;
+  border-top: 0;
+  margin-top: -3px;
+}
+
+.list-reset input {
+  border-color: red !important;
+}
+
+.list-reset .glyphicon {
+  color: red !important;
+}
+
+.list-reset li {
+  text-align: center !important;
+  text-align: center !important;
+  padding: 3px 0px;
+  color: #777;
+}
+
+.list-reset li:hover {
+  background: #777;
+  color: #fff;
+}
+

@@ -56,3 +56,12 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 .tree-expando{float: right !important; }
 .tree-child-leaves{margin-right: 30px; border-right: 1px solid #ccc; padding-right: 20px; margin-right: 5px; padding-bottom: 10px;}
 .tree-expando{margin-left: 4px; width: 12px !important; height: 12px !important; text-align: center !important; border: 1px solid #ccc !important; background: #fff !important; }
+/******************** SELECT2 ********************/
+.list-reset{ 
+    input{border-color: red !important;}
+    .glyphicon{color: red !important;}
+    border: 1px solid #777; border-radius: 0 0 5px 5px;  background: #fff; border-top: 0; margin-top: -3px;
+    li{text-align: center !important; text-align: center !important; padding: 3px 0px; color: #777;
+        &:hover{background: #777; color: #fff;}
+    }
+}
