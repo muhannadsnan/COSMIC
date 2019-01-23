@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "cxlt-vue2-toastr": "^1.1.0",
-        "toastr": "^2.1.4"
+        "toastr": "^2.1.4",
+        "vue-single-select": "^1.0.29"
     }
 }

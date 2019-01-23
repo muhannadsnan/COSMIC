@@ -4,9 +4,10 @@
             <div id="invoiceRecords" class="tab-pane fade show active" role="tabpanel">
                 <div class="row form-group">
                     <div class="col-sm-6 px-0">
-                        <div class="row form-group my-0">
+                        <div class="row form-group my-0" id="client">
                             <label class="col-sm-2 d-flex">العميل</label>
-                            <input type="text" v-model="invoice.client_id" id="" class="form-control col-sm-10" placeholder="أدخل قيمة...">
+                            <!-- <input type="text" v-model="invoice.client_id" id="" class="form-control col-sm-10" placeholder="أدخل قيمة..."> -->
+                            <Select2 v-model="invoice.client_id" :options="options.clients" option-key="id" option-label="text" placeholder="..." :classes="{input: 'form-control', wrapper: 'select-wrapper', icons: 'glyphicon', required: 'required'}"></Select2>
                         </div>
                         <div class="row form-group my-0">
                             <div class="col-sm-6 px-0">
@@ -92,6 +93,7 @@
 
 <script>
 import Invoice from '../Invoice.class';
+// import Select2 from 'v-select2-component';
 export default {
     props: ["currencies", "pay", "base", "profile"],
     data() {
@@ -102,6 +104,9 @@ export default {
             canSave: false,
             edit: false,
             // saved: false
+            options: {
+                clients: [{ id: "AU", text: "Australia" }]
+            },            
         }
     },
     methods: {
@@ -200,7 +205,20 @@ export default {
                     this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة"})
                     console.log("error", error)
                 })
-        }
+        },
+
+
+        onSearch(search, loading) {
+                loading(true);
+                this.search(loading, search, this);
+        },
+        search: _.debounce((loading, search, vm) => {
+            fetch( `https://api.github.com/search/repositories?q=${escape(search)}` )
+                .then(res => {
+                    res.json().then(json => (vm.options = json.items));
+                    loading(false);
+                });
+        }, 200)
     },
     watch: {
         invoice: {
@@ -219,8 +237,14 @@ export default {
 }
 </script>
 
-<style scoped>
-.tab-content .tab-pane {
-    min-height: 270px
+<style scopedX lang="scss">
+.tab-content .tab-pane { min-height: 270px } 
+.cursor-pointer.absolute.flex.items-center.icons{float: left !important;}
+.list-reset{
+    border: 1px solid #777; border-radius: 5px;  background: #fff; border-top: 0;
+    li{text-align: center !important; text-align: center !important; padding: 3px 0px;
+        &:hover{background: #777; color: #fff;}
+    }
 }
+
 </style>
