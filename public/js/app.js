@@ -14385,27 +14385,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 window._ = __webpack_require__(17);
 window.Popper = __webpack_require__(6).default;
 
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
+/** We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
+ * code may be modified to fit the specific needs of your application. */
 
 try {
     window.$ = window.jQuery = __webpack_require__(7);
     __webpack_require__(19);
 } catch (e) {}
 
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
+/** We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
+ * CSRF token as a header based on the value of the "XSRF" token cookie.*/
 
 window.axios = __webpack_require__(20);
-// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-// window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Laravel.apiToken;
-
 window.axios.defaults.headers.common = {
     'X-CSRF-TOKEN': Laravel.csrf_token,
     'Authorization': 'Bearer ' + Laravel.api_token,
@@ -14429,11 +14422,9 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_cxlt_vue2_toastr___default.a, toastrConfigs)
 // visit: https://vuejsexamples.com/toast-notification-component-for-vue2/
 /************************/
 
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
+/** Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
+ * a simple convenience so we don't have to attach every token manually. */
 
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
@@ -14443,11 +14434,9 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
+/** Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+ * allows your team to easily build robust real-time web applications. */
 
 // import Echo from 'laravel-echo'
 
@@ -48108,11 +48097,14 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 /* 42 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__) {
+
+"use strict";
 
 var store = {
     url: 'http://localhost:8000',
     state: { message: 'Hello!', text: 'haha' },
+
     initCookie: function initCookie() {
         this.token = $.cookie("cosmic_session");
     },
@@ -48773,8 +48765,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Record_class__ = __webpack_require__(79);
 //
 //
 //
@@ -48808,25 +48799,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //
 
-var REC = function REC() {
-    var mat = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-    var qty = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-    var single = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-    var total = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-
-    _classCallCheck(this, REC);
-
-    this.mat = mat;
-    this.qty = qty;
-    this.single = single;
-    this.total = total;
-};
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     // props: ['value'],
     data: function data() {
         return {
-            newREC: new REC(),
+            newREC: new __WEBPACK_IMPORTED_MODULE_0__Record_class__["a" /* default */](),
             records: []
         };
     },
@@ -48836,7 +48814,7 @@ var REC = function REC() {
             if (!(this.newREC.mat == '' || +this.newREC.qty == 0 || +this.newREC.single == 0)) {
                 this.newREC.total = this.compTotal;
                 this.records.push(this.newREC);
-                this.newREC = new REC();
+                this.newREC = new __WEBPACK_IMPORTED_MODULE_0__Record_class__["a" /* default */]();
                 this.$refs.firstInput.focus();
             }
             this.enableSaveInvoice();
@@ -48852,8 +48830,13 @@ var REC = function REC() {
         }
     },
     computed: {
-        compTotal: function compTotal() {
-            return this.newREC.single * this.newREC.qty;
+        compTotal: {
+            get: function get() {
+                return this.newREC.single * this.newREC.qty;
+            },
+            set: function set(value) {
+                this.newREC.total = value;
+            }
         }
     },
     watch: {
@@ -49377,10 +49360,7 @@ exports.push([module.i, "\n.tab-content .tab-pane[data-v-78feede4] {\r\n    min-
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Invoice_class__ = __webpack_require__(77);
 //
 //
 //
@@ -49474,66 +49454,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //
 
-var Invoice = function () {
-    function Invoice() {
-        var base_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        var profile_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-        var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
-        var payment_id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
-        var currency_id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
-        var title = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : '';
-        var desc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : '';
-        var client_acc = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
-        var NType = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
-        var NDate = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
-        var ext_num = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : '';
-        var int_num = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : '';
-        var sum = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
-        var remaining = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
-        var client_id = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : 0;
-        var warehouse_id = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : 0;
-        var records = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : [];
-
-        _classCallCheck(this, Invoice);
-
-        this.id = id;
-        this.serial = serial;
-        this.payment_id = payment_id;
-        this.currency_id = currency_id;
-        this.title = title;
-        this.desc = desc;
-        this.client_acc = client_acc;
-        this.NType = NType;
-        this.NDate = NDate;
-        this.ext_num = ext_num;
-        this.int_num = int_num;
-        this.sum = sum;
-        this.remaining = remaining;
-        this.client_id = client_id;
-        this.warehouse_id = warehouse_id;
-        this.base_id = base_id;
-        this.profile_id = profile_id;
-        this.records = records;
-    }
-
-    _createClass(Invoice, [{
-        key: 'fill',
-        value: function fill(obj) {
-            this.id = obj.id;this.serial = obj.serial;this.payment_id = obj.payment_id;this.currency_id = obj.currency_id;this.title = obj.title;this.desc = obj.desc;
-            this.client_acc = obj.client_acc;this.NType = obj.NType;this.NDate = obj.NDate;this.ext_num = obj.ext_num;this.int_num = obj.int_num;this.sum = obj.sum;
-            this.remaining = obj.remaining;this.client_id = obj.client_id;this.warehouse_id = obj.warehouse_id;
-        }
-    }]);
-
-    return Invoice;
-}();
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ["currencies", "pay", "base", "profile"],
     data: function data() {
         return {
-            invoice: new Invoice(this.base, this.profile),
+            invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile),
             selectedCurrency: { buy: "" },
             loading: false,
             canSave: false,
@@ -49576,7 +49502,7 @@ var Invoice = function () {
             var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             if (data == null) {
-                this.invoice = new Invoice(this.base, this.profile);
+                this.invoice = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile);
                 this.invoice.currency_id = this.currencies.find(function (el) {
                     return true;
                 }).id;
@@ -49589,7 +49515,7 @@ var Invoice = function () {
                 this.canSave = false;
                 this.edit = false;
             } else {
-                var x = new Invoice(this.base, this.profile);
+                var x = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile);
                 x.fill(data);
                 this.invoice = x; //console.log("x", this.invoice)
                 this.canSave = true;
@@ -52312,6 +52238,98 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 75 */,
+/* 76 */,
+/* 77 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Invoice = function () {
+    function Invoice() {
+        var base_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        var profile_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+        var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+        var payment_id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+        var currency_id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+        var title = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : '';
+        var desc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : '';
+        var client_acc = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
+        var NType = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
+        var NDate = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
+        var ext_num = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : '';
+        var int_num = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : '';
+        var sum = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
+        var remaining = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
+        var client_id = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : 0;
+        var warehouse_id = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : 0;
+        var records = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : [];
+
+        _classCallCheck(this, Invoice);
+
+        this.id = id;
+        this.serial = serial;
+        this.payment_id = payment_id;
+        this.currency_id = currency_id;
+        this.title = title;
+        this.desc = desc;
+        this.client_acc = client_acc;
+        this.NType = NType;
+        this.NDate = NDate;
+        this.ext_num = ext_num;
+        this.int_num = int_num;
+        this.sum = sum;
+        this.remaining = remaining;
+        this.client_id = client_id;
+        this.warehouse_id = warehouse_id;
+        this.base_id = base_id;
+        this.profile_id = profile_id;
+        this.records = records;
+    }
+
+    _createClass(Invoice, [{
+        key: 'fill',
+        value: function fill(obj) {
+            this.id = obj.id;this.serial = obj.serial;this.payment_id = obj.payment_id;this.currency_id = obj.currency_id;this.title = obj.title;this.desc = obj.desc;
+            this.client_acc = obj.client_acc;this.NType = obj.NType;this.NDate = obj.NDate;this.ext_num = obj.ext_num;this.int_num = obj.int_num;this.sum = obj.sum;
+            this.remaining = obj.remaining;this.client_id = obj.client_id;this.warehouse_id = obj.warehouse_id;
+        }
+    }]);
+
+    return Invoice;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Invoice);
+
+/***/ }),
+/* 78 */,
+/* 79 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var REC = function REC() {
+    var mat = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    var qty = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    var single = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var total = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
+    _classCallCheck(this, REC);
+
+    this.mat = mat;
+    this.qty = qty;
+    this.single = single;
+    this.total = total;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (REC);
 
 /***/ })
 /******/ ]);

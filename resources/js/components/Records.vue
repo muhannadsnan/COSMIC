@@ -31,14 +31,7 @@
 </template>
 
 <script>
-class REC {
-  constructor(mat = "", qty = 0, single = 0, total = 0) {
-    this.mat = mat;
-    this.qty = qty;
-    this.single = single;
-    this.total = total;
-  }
-}
+import REC from '../Record.class';
 export default {
         // props: ['value'],
         data(){
@@ -68,7 +61,10 @@ export default {
             }
         },
         computed: {
-            compTotal(){ return this.newREC.single*this.newREC.qty },
+            compTotal: {
+                get: function() { return this.newREC.single * this.newREC.qty },
+                set: function(value) { this.newREC.total = value },
+            },
         },
         watch: {
             // if the values are negative

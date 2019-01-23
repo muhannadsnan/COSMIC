@@ -1,7 +1,9 @@
+
 var store = {
     url: 'http://localhost:8000',
     state: { message: 'Hello!', text: 'haha' }, 
-    initCookie(){
+
+    initCookie() {
         this.token = $.cookie("cosmic_session")
     },
     urlParam(param) {
