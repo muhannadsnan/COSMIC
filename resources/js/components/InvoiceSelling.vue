@@ -1,22 +1,22 @@
 <template>
     <div class="containerX">
         <div class="tab-content" id="v-pills-tabContent">
-            <div id="invoiceRecords" class="tab-pane fade show active" role="tabpanel">
+            <div id="InvoiceSelling" class="tab-pane fade show active" role="tabpanel">
                 <div class="row form-group my-0">
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0" id="client">
-                            <label class="col-sm-2 d-flex">العميل</label>
-                            <!-- <input type="text" v-model="invoice.client_id" id="" class="form-control col-sm-10" placeholder="أدخل قيمة..."> -->
-                            <div class="Select2 col-sm-10 px-0">
-                                <Select2 v-model="invoice.client_id" :options="options.clients" option-key="id" option-label="text" placeholder="..." 
-                                    :classes="{input: 'form-control', wrapper: 'select-wrapper', icons: 'glyphicon', required: 'required'}" @change="xxx"></Select2>
+                            <label class="col-sm-2 d-flex">العميل</label> 
+                            <div class="Select2 col-sm-10 px-0" ref="searchClients"> 
+                                <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
+                                        :allow-empty="true" :preselect-first="false" :optionsLimit="10" :limit="5" :preserveSearch="true" :internalSearch="true"
+                                        @search-change="onChangeClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
                         <div class="row form-group my-0">
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">العملة</label>
-                                    <select v-model="invoice.currency_id" class="form-control col-md-8" @change="selectCurr()">
+                                    <select v-model="selected.currency" class="form-control col-md-8" @change="selectCurr()">
                                         <option v-for="curr,i in currencies" :value="curr.id" :key="i">{{curr.title}}</option>
                                     </select>
                                 </div>
@@ -24,7 +24,7 @@
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
                                     <label class="col-sm-4 d-flex">التعادل</label>
-                                    <input type="text" v-model="selectedCurrency.buy" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                                 </div>
                             </div>
                         </div>
@@ -81,14 +81,14 @@
             <li class="nav-item">
                 <button class="nav-link btn btn-light px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
             </li>
-            <li class="nav-item" v-if="!edit">
-                <button class="nav-link btn btn-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!canSave">حفظ</button>
+            <li class="nav-item" v-if="!settings.edit">
+                <button class="nav-link btn btn-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!settings.canSave">حفظ</button>
             </li>
-            <li class="nav-item" v-if="edit">
-                <button class="nav-link btn btn-info px-5" id="invoiceEdit" @click="submitInvoice()">تعديل</button>
+            <li class="nav-item" v-if="settings.edit">
+                <button class="nav-link btn btn-info px-5" id="invoicesettings.edit" @click="submitInvoice()">تعديل</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn btn-dark px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!canSave">حذف</button>
+                <button class="nav-link btn btn-dark px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!settings.canSave">حذف</button>
             </li>
         </ul>
     </div>
@@ -102,28 +102,16 @@ export default {
     data() {
         return {
             invoice: new Invoice(this.base, this.profile),
-            selectedCurrency: { buy: "" },
-            loading: false,
-            canSave: false,
-            edit: false,
-            // saved: false
-            options: {
-                clients: [
-                    { id: "AU", text: "Australia" },
-                    { id: "AU", text: "Australia" },
-                    { id: "AU", text: "Australia" },
-                    { id: "AU", text: "Australia" },
-                ]
-            },            
+            selected: {currency: { buy: "" }, client: null},
+            settings: {canSave: false, edit: false, saved: false},
+            options: {clients: [] },    
+            loading: {page: false, clients: false},   
         }
     },
     methods: {
-        tabClicked() {
-            // JQuery tab funcionality
-            $(this.$el).tab("show")
-        },
+        tabClicked() { /*  JQuery tab funcionality */ $(this.$el).tab("show") },
         selectCurr(curr) {
-            this.selectedCurrency = curr
+            this.selected.currency = curr
         },        
         clearInvoice() {
             if (confirm("هل أنت متأكد من أنك تريد حذف الفاتورة؟")) {
@@ -139,7 +127,7 @@ export default {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
                     this.init()
-                    // this.saved = true
+                    // this.settings.saved = true
                     this.Msg.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" })
                 })
                 .catch(error => {
@@ -154,15 +142,15 @@ export default {
                 this.invoice.payment_id = this.pay.find(function(el) {return true}).id
                 this.invoice.NDate = Store.formatDate(Date.now())
                 this.invoice.NType = +Store.urlParam('type')
-                this.invoice.client_id = +this.invoice.client_id
-                this.canSave = false
-                this.edit = false
+                this.invoice.client_id = 0
+                this.settings.canSave = false
+                this.settings.edit = false
             } else {
                 var x = new Invoice(this.base, this.profile)
                 x.fill(data)
                 this.invoice = x ;  //console.log("x", this.invoice)
-                this.canSave = true
-                this.edit = true
+                this.settings.canSave = true
+                this.settings.edit = true
                 this.$emit('gotRecords', data._records)
                 this.invoice.client_id = typeof data._clients[0] == 'undefined'? 0 : data._clients[0].id
                 this.invoice.warehouse_id = typeof data._warehouses[0] == 'undefined'? 0 : data._warehouses[0].id
@@ -171,11 +159,11 @@ export default {
         },
         OnCanSave(val) {
             console.log("can save invoice", val)
-            this.canSave = val
+            this.settings.canSave = val
         },
-        readInvoice() { // after reading, edit mode will become active        
-            if ( !this.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
-                axios.get("/api/invoices?serial=" + this.invoice.serial+'&NType='+Store.urlParam('type')) //?ser='+this.invoice.serial
+        readInvoice() { // after reading, settings.edit mode will become active        
+            if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
+                axios.get("/api/invoices/findBySerial?serial=" + this.invoice.serial+'&NType='+Store.urlParam('type')) //?ser='+this.invoice.serial
                     .then(resp => { //console.log("resp", resp)            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
@@ -206,48 +194,75 @@ export default {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
                     this.init()
-                    // this.saved = true
+                    // this.settings.saved = true
                     this.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" })
                 })
                 .catch(error => {
                     this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة"})
                     console.log("error", error)
                 })
-        },
-        xxx(){
-            alert('neiiii');
-        },
-
-
-        onSearch(search, loading) {
-                loading(true);
-                this.search(loading, search, this);
-        },
-        search: _.debounce((loading, search, vm) => {
-            fetch( `https://api.github.com/search/repositories?q=${escape(search)}` )
-                .then(res => {
-                    res.json().then(json => (vm.options = json.items));
-                    loading(false);
-                });
-        }, 200)
-    },
-    watch: {
-        invoice: {
-            handler: function(newValue) {
-                this.selectedCurrency = this.currencies.find(function(el) {
-                    return el.id == newValue.currency_id
+        },    
+        search: _.debounce(function(filterMethod, entity, query=''){ 
+            this.loading[entity] = true                 
+            // query = this.invoice.client_id.replace(' ', ',')
+            axios.get(`/api/invoices/${filterMethod}?profile=${this.profile}&search=${query}`) 
+                .then(resp => { //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
+                    switch (resp.status) {
+                        case 200: 
+                            this.options[entity] = resp.data.data
+                            break
+                        case 204:
+                            this.Msg.info({title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث"})
+                            break
+                        default:
+                            this.Msg.error({title: "حدث خطأ!", message: " خطأ أثناء البحث " })
+                            break
+                    }
                 })
-            },
-            deep: true
+                .catch(error => {
+                    this.Msg.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " })
+                    console.log("error", error)
+                })
+                .then(() => { // always executed
+                    this.loading[entity] = false
+                })
+                
+            }, 300),
+        
+        onChangeClient(value){  
+            if(this.options.clients.length == 0){
+                this.search('searchClientsByName', 'clients')
+            }
         }
     },
-    mounted() {
+    watch: {
+        selected: {
+            handler: function(newValue) { 
+                var data = JSON.parse(JSON.stringify( newValue ))
+                console.log("data",data)
+
+                if(data.currecny){ 
+                    var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
+                    console.log("currency",currency)
+                    this.invoice.currency_id = currency.id 
+                }
+                if(data.client){ 
+                    this.invoice.client_id = +{...this.options.clients.find(function(el) { return el.id == data.client.id })}.id
+                }
+            },
+            deep: true
+        },
+    },
+    mounted() {        
         console.log("Component <invoice-selling> mounted.")
-        this.init()
-    }
+        this.init()        
+    },
 }
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped lang="scss">
+    .tab-content .tab-pane { min-height: 270px } 
 .tab-content .tab-pane { min-height: 270px } 
+    .tab-content .tab-pane { min-height: 270px } 
 </style>

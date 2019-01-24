@@ -25,4 +25,11 @@ class Client extends _model
     {
         return $this->belongsToMany(Invoice::class, 'invoice_client', 'client_id', 'invoice_id');
     }
+
+    /********************** SCOPEs **********************/
+    public function scopeSearchList (Builder $query, $search) {
+        return $query->whereHas('name', function ($q) use ($search) {
+                $q->where('name', $search);
+        });
+    }
 }

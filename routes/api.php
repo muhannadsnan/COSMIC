@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['auth:api', 'cors']], function (){
     Route::post('/invoices', 'InvoiceController@apiStore');
-    Route::get('/invoices', 'InvoiceController@apiIndex');
+    Route::get('/invoices/findBySerial', 'InvoiceController@apiFindBySerial');
+    Route::get('/invoices/searchClientsByName', 'InvoiceController@searchClientsByName');
 });
