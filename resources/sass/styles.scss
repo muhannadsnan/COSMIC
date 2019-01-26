@@ -25,6 +25,7 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 .sub-menu-btn:hover + .sub-menu{display: block;}
 .sub-menu-btn .dropdown-toggle::before{ float: left; margin-top: 7px; margin-left: -17px; }
 *:disabled{ cursor: not-allowed;}
+.tab-content .tab-pane { min-height: 270px } 
 /******************** MODAL ********************/
 #createBaseModal {
     .modal-footer .btn{margin-right: 10px;}
@@ -57,11 +58,19 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 .tree-child-leaves{margin-right: 30px; border-right: 1px solid #ccc; padding-right: 20px; margin-right: 5px; padding-bottom: 10px;}
 .tree-expando{margin-left: 4px; width: 12px !important; height: 12px !important; text-align: center !important; border: 1px solid #ccc !important; background: #fff !important; }
 /******************** SELECT2 ********************/
-// .list-reset{ 
-//     input{border-color: red !important;}
-//     .glyphicon{color: red !important;}
-//     border: 1px solid #777; border-radius: 0 0 5px 5px;  background: #fff; border-top: 0; margin-top: -3px;
-//     li{text-align: center !important; text-align: center !important; padding: 3px 0px; color: #777;
-//         &:hover{background: #777; color: #fff;}
-//     }
-// }
+.multiselect{ min-height: 37px !important;
+    .multiselect__select{padding: 0; width: 10px; margin: 0 10px;}
+    .multiselect__content-wrapper{
+        border-color: #ced4da !important;
+        .multiselect__option{}
+    }
+    .multiselect__tags{border-color: #ced4da !important; min-height: 37px !important; height: 37px !important; padding: 0 15px !important;
+        .multiselect__select{padding: 0 !important; height: 37px !important;
+            &:before{top: 65% !important; right: 30% !important;}
+        }
+        .multiselect__placeholder{margin: 10px 15px;}
+        .multiselect__input, .multiselect__single {margin: 0 10px;  height: 35px; width: 90% !important; border: 0px solid #555;}
+        .multiselect__spinner{right: 4px ; z-index: 1; width: 20px;}
+        .multiselect__single{vertical-align: middle; line-height: 37px; padding: 0 7px;}
+    }
+}

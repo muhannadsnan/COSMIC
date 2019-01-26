@@ -11536,6 +11536,10 @@ ul#NAVBAR li.nav-item .nav-link::after {
   cursor: not-allowed;
 }
 
+.tab-content .tab-pane {
+  min-height: 270px;
+}
+
 /******************** MODAL ********************/
 
 #createBaseModal .modal-footer .btn {
@@ -11617,4 +11621,59 @@ ul#NAVBAR li.nav-item .nav-link::after {
 }
 
 /******************** SELECT2 ********************/
+
+.multiselect {
+  min-height: 37px !important;
+}
+
+.multiselect .multiselect__select {
+  padding: 0;
+  width: 10px;
+  margin: 0 10px;
+}
+
+.multiselect .multiselect__content-wrapper {
+  border-color: #ced4da !important;
+}
+
+.multiselect .multiselect__tags {
+  border-color: #ced4da !important;
+  min-height: 37px !important;
+  height: 37px !important;
+  padding: 0 15px !important;
+}
+
+.multiselect .multiselect__tags .multiselect__select {
+  padding: 0 !important;
+  height: 37px !important;
+}
+
+.multiselect .multiselect__tags .multiselect__select:before {
+  top: 65% !important;
+  right: 30% !important;
+}
+
+.multiselect .multiselect__tags .multiselect__placeholder {
+  margin: 10px 15px;
+}
+
+.multiselect .multiselect__tags .multiselect__input,
+.multiselect .multiselect__tags .multiselect__single {
+  margin: 0 10px;
+  height: 35px;
+  width: 90% !important;
+  border: 0px solid #555;
+}
+
+.multiselect .multiselect__tags .multiselect__spinner {
+  right: 4px;
+  z-index: 1;
+  width: 20px;
+}
+
+.multiselect .multiselect__tags .multiselect__single {
+  vertical-align: middle;
+  line-height: 37px;
+  padding: 0 7px;
+}
 

@@ -6,19 +6,21 @@
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0" id="client">
                             <label class="col-sm-2 d-flex">العميل</label> 
-                            <div class="Select2 col-sm-10 px-0" ref="searchClients"> 
+                            <div class="Select2 col-sm-10 px-0"> 
                                 <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
-                                        :allow-empty="true" :preselect-first="false" :optionsLimit="10" :limit="5" :preserveSearch="true" :internalSearch="true"
+                                        :allow-empty="false" :preselect-first="false" :optionsLimit="10" :limit="5" :preserveSearch="true" :internalSearch="true"
                                         @search-change="onChangeClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
                         <div class="row form-group my-0">
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
-                                    <label class="col-sm-4 d-flex">العملة</label>
-                                    <select v-model="selected.currency" class="form-control col-md-8" @change="selectCurr()">
-                                        <option v-for="curr,i in currencies" :value="curr.id" :key="i">{{curr.title}}</option>
-                                    </select>
+                                    <label class="col-sm-4 d-flex">العملة</label> 
+                                    <div class="Select2 col-md-8 px-0">
+                                        <select2 v-model="selected.currency" :options="currencies" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                            :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
+                                            :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-sm-6 px-0">
@@ -37,10 +39,12 @@
                             </div>
                             <div class="col-sm-6 px-0">
                                 <div class="row form-group mb-0">
-                                    <label class="col-sm-4 d-flex">الدفع</label>
-                                    <select v-model="invoice.payment_id" id="" class="form-control col-md-8">
-                                        <option v-for="val,i in pay" :value="val.id" :key="i">{{val.title}}</option>
-                                    </select>
+                                    <label class="col-sm-4 d-flex">الدفع</label> 
+                                    <div class="Select2 col-md-8 px-0">
+                                        <select2 v-model="selected.payment" :options="pay" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                            :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false"
+                                            :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -102,17 +106,14 @@ export default {
     data() {
         return {
             invoice: new Invoice(this.base, this.profile),
-            selected: {currency: { buy: "" }, client: null},
+            selected: {currency: { buy: "" }, client: null, payment: null},
             settings: {canSave: false, edit: false, saved: false},
             options: {clients: [] },    
             loading: {page: false, clients: false},   
         }
     },
     methods: {
-        tabClicked() { /*  JQuery tab funcionality */ $(this.$el).tab("show") },
-        selectCurr(curr) {
-            this.selected.currency = curr
-        },        
+        tabClicked() { /*  JQuery tab funcionality */ $(this.$el).tab("show") },       
         clearInvoice() {
             if (confirm("هل أنت متأكد من أنك تريد حذف الفاتورة؟")) {
                 this.$emit("ClearInvoice")
@@ -143,6 +144,7 @@ export default {
                 this.invoice.NDate = Store.formatDate(Date.now())
                 this.invoice.NType = +Store.urlParam('type')
                 this.invoice.client_id = 0
+                this.selected.currency = this.currencies[0]
                 this.settings.canSave = false
                 this.settings.edit = false
             } else {
@@ -229,11 +231,11 @@ export default {
                 
             }, 300),
         
-        onChangeClient(value){  
+        onChangeClient(data){ // fetch data
             if(this.options.clients.length == 0){
                 this.search('searchClientsByName', 'clients')
             }
-        }
+        } 
     },
     watch: {
         selected: {
@@ -262,7 +264,5 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped lang="scss">
-    .tab-content .tab-pane { min-height: 270px } 
-.tab-content .tab-pane { min-height: 270px } 
-    .tab-content .tab-pane { min-height: 270px } 
+
 </style>
