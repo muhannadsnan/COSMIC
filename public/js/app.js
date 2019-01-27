@@ -49536,7 +49536,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 // import Select2 from 'v-select2-component';
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["currencies", "pay", "base", "profile"],
+    props: ["currencies", "pay", "base", "profile", "user"],
     data: function data() {
         return {
             invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile),
@@ -49562,7 +49562,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var _this = this;
 
             this.invoice.records = this.$children[0]._data.records;
-            axios.post("/api/invoices", this.invoice).then(function (resp) {
+            axios.post("/api/invoices/" + this.profile + "/" + this.user, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this.$emit("SubmitInvoice");
                 _this.init();
@@ -49610,7 +49610,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // after reading, settings.edit mode will become active        
             if (!this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
-                axios.get("/api/invoices/findBySerial?serial=" + this.invoice.serial + '&NType=' + Store.urlParam('type')) //?ser='+this.invoice.serial
+                axios.get("/api/invoices/" + this.profile + "/" + this.user + "/findBySerial?serial=" + this.invoice.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.invoice.serial
                 .then(function (resp) {
                     //console.log("resp", resp)            console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
@@ -49635,7 +49635,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var _this3 = this;
 
             this.invoice.records = this.$children[0]._data.records;
-            axios.put("/api/invoices", this.invoice).then(function (resp) {
+            axios.put("/api/invoices/" + this.profile + "/" + this.user, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this3.$emit("SubmitInvoice");
                 _this3.init();
@@ -49654,7 +49654,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             this.loading[entity] = true;
             // query = this.invoice.client_id.replace(' ', ',')
-            axios.get("/api/invoices/" + filterMethod + "?profile=" + this.profile + "&search=" + query).then(function (resp) {
+            axios.get("/api/invoices/" + this.profile + "/" + this.user + "/" + filterMethod + "?search=" + query).then(function (resp) {
                 //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                 switch (resp.status) {
                     case 200:
@@ -49679,7 +49679,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         onChangeClient: function onChangeClient(data) {
             // fetch data
             if (this.options.clients.length == 0) {
-                this.search('searchClientsByName', 'clients');
+                this.search('getClientsList', 'clients');
             }
         }
     },

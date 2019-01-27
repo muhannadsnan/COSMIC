@@ -102,7 +102,7 @@
 import Invoice from '../Invoice.class';
 // import Select2 from 'v-select2-component';
 export default {
-    props: ["currencies", "pay", "base", "profile"],
+    props: ["currencies", "pay", "base", "profile", "user"],
     data() {
         return {
             invoice: new Invoice(this.base, this.profile),
@@ -123,7 +123,7 @@ export default {
         },
         submitInvoice() {
             this.invoice.records = this.$children[0]._data.records
-            axios.post("/api/invoices", this.invoice)
+            axios.post(`/api/invoices/${this.profile}/${this.user}`, this.invoice)
                 .then(resp => {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
@@ -165,7 +165,7 @@ export default {
         },
         readInvoice() { // after reading, settings.edit mode will become active        
             if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
-                axios.get("/api/invoices/findBySerial?serial=" + this.invoice.serial+'&NType='+Store.urlParam('type')) //?ser='+this.invoice.serial
+                axios.get(`/api/invoices/${this.profile}/${this.user}/findBySerial?serial=${this.invoice.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.invoice.serial
                     .then(resp => { //console.log("resp", resp)            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
@@ -191,7 +191,7 @@ export default {
         },
         editInvoice() {
             this.invoice.records = this.$children[0]._data.records
-            axios.put("/api/invoices", this.invoice)
+            axios.put(`/api/invoices/${this.profile}/${this.user}`, this.invoice)
                 .then(resp => {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
@@ -207,7 +207,7 @@ export default {
         search: _.debounce(function(filterMethod, entity, query=''){ 
             this.loading[entity] = true                 
             // query = this.invoice.client_id.replace(' ', ',')
-            axios.get(`/api/invoices/${filterMethod}?profile=${this.profile}&search=${query}`) 
+            axios.get(`/api/invoices/${this.profile}/${this.user}/${filterMethod}?search=${query}`) 
                 .then(resp => { //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
                         case 200: 
@@ -233,7 +233,7 @@ export default {
         
         onChangeClient(data){ // fetch data
             if(this.options.clients.length == 0){
-                this.search('searchClientsByName', 'clients')
+                this.search('getClientsList', 'clients')
             }
         } 
     },

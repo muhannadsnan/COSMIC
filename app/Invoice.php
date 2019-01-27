@@ -48,19 +48,27 @@ class Invoice extends _Model
     public static function searchClientsByName($request)
     { 
         /********* IMPORTANT SEARCH PROCESS *******/
-        // $res = Client::where(function($query) use ($request){
-        //         foreach(explode(',',$request->search) as $keyword){
-        //             $query->where(DB::raw('LOWER(name)'), 'LIKE', '%'.strtolower($keyword).'%');
-        //         }
-        //     })->whereProfileId($request->profile)->select("id", "name")->get();
+        $res = Client::where(function($query) use ($request){
+                foreach(explode(',',$request->search) as $keyword){
+                    $query->where(DB::raw('LOWER(name)'), 'LIKE', '%'.strtolower($keyword).'%');
+                }
+            })->whereProfileId($request->profile)->select("id", "name")->get();
         $res = Client::whereProfileId($request->profile)->select("id", "name")->get();
+        if(!$res) return false;
+        return $res;
+    }
+
+    public static function getClientsList($profile_id)
+    {
+        $res = Client::whereProfileId($profile_id)->select("id", "name")->get(); 
         if(!$res) return false;
         return $res;
     }
 
     public static function searchBySerial($request)
     {
-        $res = Invoice::where('serial', $request->serial)->where('NType', $request->NType)->with('_payment', '_currency', '_records', '_clients', '_warehouses')->get(); 
+        $res = Invoice::where('serial', $request->serial)
+                        ->where('NType', $request->NType)->with('_payment', '_currency', '_records', '_clients', '_warehouses')->get(); 
         if(!$res) return false;
         return $res;
     }

@@ -19,32 +19,39 @@ class InvoiceController extends Controller
     {
         $this->middleware('auth', ['except' => ['store']]);
         // $this->middleware('client', ['except' => []]);
-        $this->middleware('belongstome', ['except' => []]);
+        // $this->middleware('belongToMe', ['except' => []]);
     }
 /***************** API ******************/
-    public function apiSearchBySerial(Request $request)
+    public function findBySerial(Request $request, Profile $profile)
     { 
-        if(!$inv=Invoice::searchBySerial($request) || count($inv) == 0)
-            return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204
+        if(!($inv=Invoice::searchBySerial($request)) || count($inv) == 0)
+            return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204 
         return response()->json(['data' => $inv, 'msg' => 'تم ايجاد الفاتورة'], 200);
     }
 
-    public function apiStore(Request $request)
+    public function apiStore(Request $request, Profile $profile)
     { 
         if(!$newInvoice = Invoice::insertFull($request))
             return response()->json(['msg' => 'خطأ أثناء إضافة الفاتورة'], 404);        
         return response()->json(['data' => $newInvoice, 'msg' => 'تم إضافة الفاتورة بنجاح'], 200);
     }
 
-    public function searchClientsByName(Request $request)
+    public function searchClientsByName(Request $request, Profile $profile)
     {  
         if(!$res = Invoice::searchClientsByName($request))
             return response()->json(['msg' => 'حدث خطأ أثناء البحث عن العميل'], 404);        
         return response()->json(['data' => $res, 'msg' => 'تم إيجاد العميل بنجاح'], 200);
     }
+
+    public function getClientsList(Request $request, Profile $profile)
+    {
+        if(!$res = Invoice::getClientsList($profile->id))
+            return response()->json(['msg' => 'حدث خطأ أثناء البحث عن العميل'], 404);        
+        return response()->json(['data' => $res, 'msg' => 'تم إيجاد العميل بنجاح'], 200);
+    }
 /********************************************/
     public function index(Base $basis, Profile $profile)
-    {        
+    {
         return view('invoices.index', ['invoices' => Invoice::all()]);
     }
     

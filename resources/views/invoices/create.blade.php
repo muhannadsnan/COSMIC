@@ -26,7 +26,7 @@
                         :currencies="{{json_encode($currencies)}}" 
                         :pay="{{json_encode($payment)}}"
                         :warehouses="{{json_encode(request('profile')->_warehouses)}}"
-                        :base="{{request('base')->id}}" :profile="{{request('profile')->id}}">
+                        :base="{{request('base')->id}}" :profile="{{request('profile')->id}}" :user="{{auth()->id()}}">
                 </invoice-selling>
                 @break
             @default

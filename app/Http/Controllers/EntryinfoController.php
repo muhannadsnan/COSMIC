@@ -10,7 +10,7 @@ class EntryinfoController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => []]);
-        $this->middleware('belongstome', ['except' => []]);
+        $this->middleware('belongToMe', ['except' => []]);
     }
 
     public function index()

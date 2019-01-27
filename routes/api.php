@@ -17,8 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => ['auth:api', 'cors']], function (){
-    Route::post('/invoices', 'InvoiceController@apiStore');
-    Route::get('/invoices/findBySerial', 'InvoiceController@apiFindBySerial');
-    Route::get('/invoices/searchClientsByName', 'InvoiceController@searchClientsByName');
+Route::group(['middleware' => ['auth:api', 'bindings', 'belongToMe']], function (){
+    Route::get('/invoices/{profile}/findBySerial', 'InvoiceController@findBySerial');
+    Route::post('/invoices/{profile}', 'InvoiceController@apiStore');
+    Route::get('/invoices/{profile}/searchClientsByName', 'InvoiceController@searchClientsByName');
+    Route::get('/invoices/{profile}/getClientsList', 'InvoiceController@getClientsList');
 });
