@@ -137,13 +137,12 @@ export default {
         },
         init(data = null) { 
             if (data == null) {
-                this.invoice = new Invoice(this.base, this.profile)
-                this.invoice.currency_id = this.currencies.find(function(el) {return true}).id
-                this.invoice.payment_id = this.pay.find(function(el) {return true}).id
+                this.invoice = new Invoice(this.base, this.profile) 
+                this.selected.currency = this.currencies[0]
+                this.selected.payment = this.pay[0]
                 this.invoice.NDate = Store.formatDate(Date.now())
                 this.invoice.NType = +Store.urlParam('type')
                 this.invoice.client_id = 0
-                this.selected.currency = this.currencies[0]
                 this.settings.canSave = false
                 this.settings.edit = false
             } else {
@@ -153,9 +152,13 @@ export default {
                 this.settings.canSave = true
                 this.settings.edit = true
                 this.$emit('gotRecords', data._records)
-                this.invoice.client_id = typeof data._clients[0] == 'undefined'? 0 : data._clients[0].id
-                this.invoice.warehouse_id = typeof data._warehouses[0] == 'undefined'? 0 : data._warehouses[0].id
-                
+                // this.invoice.warehouse_id = typeof data._warehouses[0] == 'undefined'? 0 : data._warehouses[0].id
+                // this.invoice.currency_id = typeof data._currency == 'undefined'? 0 : data._currency.id                
+                // this.invoice.payment_id = typeof data._payment == 'undefined'? 0 : data._payment.id  
+                this.invoice.client_id = typeof data._clients[0] == 'undefined'? 0 : data._clients[0].id              
+                this.selected.warehouse = typeof data._warehouses[0] == 'undefined'? 0 : data._warehouses[0].id              
+                this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
+                this.selected.payment = this.pay.find(el => el.id == data._payment.id)               
             }
         },
         OnCanSave(val) {
@@ -245,13 +248,18 @@ export default {
                 var data = JSON.parse(JSON.stringify( newValue ))
                 console.log("data",data)
 
-                if(data.currecny){ 
+                if(data.currency){ 
                     var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
-                    console.log("currency",currency)
                     this.invoice.currency_id = currency.id 
+                    console.log("currency",currency)
                 }
                 if(data.client){ 
                     this.invoice.client_id = +{...this.options.clients.find(function(el) { return el.id == data.client.id })}.id
+                    console.log("client",client)
+                }
+                if(data.payment){ 
+                    this.invoice.payment_id = +{...this.pay.find(function(el) { return el.id == data.payment.id })}.id
+                    console.log("payment",currency)
                 }
             },
             deep: true

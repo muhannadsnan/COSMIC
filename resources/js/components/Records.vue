@@ -54,6 +54,7 @@ export default {
             clear(){
                 this.records = []; console.log("recoreds cleared !");
                 this.enableSaveInvoice()
+                this.$emit('recordsChange', this.records)
             },
             enableSaveInvoice(){
                 if(this.records.length > 0){
