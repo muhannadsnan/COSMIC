@@ -12,7 +12,6 @@ class ProfileController extends Controller
     public function __construct()
     { 
         $this->middleware('auth', ['except' => []]);
-        $this->middleware('sitetree', ['except' => []]);
         // $this->middleware('owner', ['except' => []]);
     }
 
@@ -30,15 +29,7 @@ class ProfileController extends Controller
     {
         return view('profiles.index');
     }
-
-    // public function fillProfileIntoBase($newProfile)
-    // {
-    //     Profile::SiteTree([$newProfile->_base, $newProfile]);  // fill breadcrumb
-    //     $base = request('base'); $bProfiles = $base->_profiles->toArray();
-    //     array_push($bProfiles, $newProfile);
-    //     $base->_profiles = $bProfiles;
-    //     session(['app.base' => $base]);
-    // }    
+       
     public function store(Request $request)
     {
         // dd($request->all());

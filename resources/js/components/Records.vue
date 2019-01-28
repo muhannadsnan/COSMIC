@@ -47,6 +47,7 @@ export default {
                     this.records.push(this.newREC)
                     this.newREC = new REC()
                     this.$refs.firstInput.focus()
+                    this.$emit('recordsChange', this.records)
                 }
                 this.enableSaveInvoice()
             },

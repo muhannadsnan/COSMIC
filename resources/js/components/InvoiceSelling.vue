@@ -70,7 +70,7 @@
                     <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
                 <!--------------- RECORDS ---------------->
-                <records @hasRecords="OnCanSave"></records>
+                <records @hasRecords="OnCanSave" @recordsChange="onRecordsChange"></records>
             </div>
 
             <div id="invoiceDetails" class="tab-pane fade" role="tabpanel">
@@ -102,7 +102,7 @@
 import Invoice from '../Invoice.class';
 // import Select2 from 'v-select2-component';
 export default {
-    props: ["currencies", "pay", "base", "profile", "user"],
+    props: ["currencies", "pay", "base", "profile"],
     data() {
         return {
             invoice: new Invoice(this.base, this.profile),
@@ -122,8 +122,7 @@ export default {
             }
         },
         submitInvoice() {
-            this.invoice.records = this.$children[0]._data.records
-            axios.post(`/api/invoices/${this.profile}/${this.user}`, this.invoice)
+            axios.post(`/api/invoices/${this.profile}`, this.invoice)
                 .then(resp => {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
@@ -165,8 +164,8 @@ export default {
         },
         readInvoice() { // after reading, settings.edit mode will become active        
             if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
-                axios.get(`/api/invoices/${this.profile}/${this.user}/findBySerial?serial=${this.invoice.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.invoice.serial
-                    .then(resp => { //console.log("resp", resp)            console.log("resp.data.data[0]", resp.data.data[0])
+                axios.get(`/api/invoices/${this.profile}/findBySerial?serial=${this.invoice.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.invoice.serial
+                    .then(resp => { console.log("resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
                                 if (Array.isArray(resp.data.data))
@@ -191,7 +190,7 @@ export default {
         },
         editInvoice() {
             this.invoice.records = this.$children[0]._data.records
-            axios.put(`/api/invoices/${this.profile}/${this.user}`, this.invoice)
+            axios.put(`/api/invoices/${this.profile}`, this.invoice)
                 .then(resp => {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
@@ -207,7 +206,7 @@ export default {
         search: _.debounce(function(filterMethod, entity, query=''){ 
             this.loading[entity] = true                 
             // query = this.invoice.client_id.replace(' ', ',')
-            axios.get(`/api/invoices/${this.profile}/${this.user}/${filterMethod}?search=${query}`) 
+            axios.get(`/api/invoices/${this.profile}/${filterMethod}?search=${query}`) 
                 .then(resp => { //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
                         case 200: 
@@ -232,10 +231,13 @@ export default {
             }, 300),
         
         onChangeClient(data){ // fetch data
-            if(this.options.clients.length == 0){
+            if(this.options.clients.length == 0 && data != ''){
                 this.search('getClientsList', 'clients')
             }
-        } 
+        },
+        onRecordsChange(data){
+            this.invoice.records = data
+        }
     },
     watch: {
         selected: {

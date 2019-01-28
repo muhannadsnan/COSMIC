@@ -48821,6 +48821,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.records.push(this.newREC);
                 this.newREC = new __WEBPACK_IMPORTED_MODULE_0__Record_class__["a" /* default */]();
                 this.$refs.firstInput.focus();
+                this.$emit('recordsChange', this.records);
             }
             this.enableSaveInvoice();
         },
@@ -49536,7 +49537,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 // import Select2 from 'v-select2-component';
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["currencies", "pay", "base", "profile", "user"],
+    props: ["currencies", "pay", "base", "profile"],
     data: function data() {
         return {
             invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile),
@@ -49561,8 +49562,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         submitInvoice: function submitInvoice() {
             var _this = this;
 
-            this.invoice.records = this.$children[0]._data.records;
-            axios.post("/api/invoices/" + this.profile + "/" + this.user, this.invoice).then(function (resp) {
+            axios.post("/api/invoices/" + this.profile, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this.$emit("SubmitInvoice");
                 _this.init();
@@ -49610,9 +49610,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // after reading, settings.edit mode will become active        
             if (!this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
-                axios.get("/api/invoices/" + this.profile + "/" + this.user + "/findBySerial?serial=" + this.invoice.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.invoice.serial
+                axios.get("/api/invoices/" + this.profile + "/findBySerial?serial=" + this.invoice.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.invoice.serial
                 .then(function (resp) {
-                    //console.log("resp", resp)            console.log("resp.data.data[0]", resp.data.data[0])
+                    console.log("resp", resp);console.log("resp.data.data[0]", resp.data.data[0]);
                     switch (resp.status) {
                         case 200:
                             if (Array.isArray(resp.data.data)) _this2.init(resp.data.data[0]);else if (resp.data.data != null) _this2.init(resp.data.data);
@@ -49635,7 +49635,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var _this3 = this;
 
             this.invoice.records = this.$children[0]._data.records;
-            axios.put("/api/invoices/" + this.profile + "/" + this.user, this.invoice).then(function (resp) {
+            axios.put("/api/invoices/" + this.profile, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this3.$emit("SubmitInvoice");
                 _this3.init();
@@ -49654,7 +49654,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             this.loading[entity] = true;
             // query = this.invoice.client_id.replace(' ', ',')
-            axios.get("/api/invoices/" + this.profile + "/" + this.user + "/" + filterMethod + "?search=" + query).then(function (resp) {
+            axios.get("/api/invoices/" + this.profile + "/" + filterMethod + "?search=" + query).then(function (resp) {
                 //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                 switch (resp.status) {
                     case 200:
@@ -49678,9 +49678,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
         onChangeClient: function onChangeClient(data) {
             // fetch data
-            if (this.options.clients.length == 0) {
+            if (this.options.clients.length == 0 && data != '') {
                 this.search('getClientsList', 'clients');
             }
+        },
+        onRecordsChange: function onRecordsChange(data) {
+            this.invoice.records = data;
         }
     },
     watch: {
@@ -50155,7 +50158,12 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("records", { on: { hasRecords: _vm.OnCanSave } })
+            _c("records", {
+              on: {
+                hasRecords: _vm.OnCanSave,
+                recordsChange: _vm.onRecordsChange
+              }
+            })
           ],
           1
         ),

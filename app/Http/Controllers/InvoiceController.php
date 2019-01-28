@@ -36,7 +36,7 @@ class InvoiceController extends Controller
         return response()->json(['data' => $newInvoice, 'msg' => 'تم إضافة الفاتورة بنجاح'], 200);
     }
 
-    public function searchClientsByName(Request $request, Profile $profile)
+    public function searchClientsByName(Request $request, Profile $profile) // use getClientsList instead
     {  
         if(!$res = Invoice::searchClientsByName($request))
             return response()->json(['msg' => 'حدث خطأ أثناء البحث عن العميل'], 404);        

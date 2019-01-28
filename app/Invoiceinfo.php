@@ -23,7 +23,7 @@ class Invoiceinfo extends _model
         ]);
     }
 
-    public static function insertMany($records, $invID){
+    public static function insertMany($records, $invID){ //dd($records);
         foreach($records as $rec){
             InvoiceInfo::insert($rec, $invID); 
         }
