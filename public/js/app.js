@@ -49534,17 +49534,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 // import Select2 from 'v-select2-component';
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["currencies", "pay", "base", "profile"],
+    props: ["profile", "currencies", "pay"],
     data: function data() {
         return {
-            invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile),
-            selected: { currency: { buy: "" }, client: null, payment: null },
+            invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile),
+            selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null },
             settings: { canSave: false, edit: false, saved: false },
-            options: { clients: [] },
+            options: { clients: [], warehouses: [] },
             loading: { page: false, clients: false }
         };
     },
@@ -49563,7 +49568,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         submitInvoice: function submitInvoice() {
             var _this = this;
 
-            axios.post("/api/invoices/" + this.profile, this.invoice).then(function (resp) {
+            axios.post("/api/invoices/" + this.profile.id, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this.$emit("SubmitInvoice");
                 _this.init();
@@ -49575,29 +49580,38 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             });
         },
         init: function init() {
+            var _this2 = this;
+
             var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             if (data == null) {
-                this.invoice = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile);
-                this.selected.currency = this.currencies[0];
-                this.selected.payment = this.pay[0];
+                this.invoice = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
                 this.invoice.NDate = Store.formatDate(Date.now());
                 this.invoice.NType = +Store.urlParam('type');
                 this.invoice.client_id = 0;
+                this.options.warehouses = this.profile._warehouses;
+                this.selected.client = null;
+                this.selected.warehouse = null;
+                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0];
+                this.selected.payment = this.pay.length == 0 ? null : this.pay[0];
                 this.settings.canSave = false;
                 this.settings.edit = false;
             } else {
-                var x = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.base, this.profile);
-                x.fill(data);
-                this.invoice = x; //console.log("x", this.invoice)
+                var inv = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
+                inv.fill(data);
+                this.invoice = inv; //console.log("inv", this.invoice)
                 this.settings.canSave = true;
                 this.settings.edit = true;
                 this.$emit('gotRecords', data._records);
-                // this.invoice.warehouse_id = typeof data._warehouses[0] == 'undefined'? 0 : data._warehouses[0].id
-                // this.invoice.currency_id = typeof data._currency == 'undefined'? 0 : data._currency.id                
-                // this.invoice.payment_id = typeof data._payment == 'undefined'? 0 : data._payment.id  
-                this.invoice.client_id = typeof data._clients[0] == 'undefined' ? 0 : data._clients[0].id;
-                this.selected.warehouse = typeof data._warehouses[0] == 'undefined' ? 0 : data._warehouses[0].id;
+                // this.invoice.client_id = typeof data._clients[0] != 'undefined'? data._clients[0].id : null
+                if (this.options.clients.length == 0) {
+                    this.search('getClientsList', 'clients', '', function () {
+                        _this2.selected.client = typeof data._clients[0] != 'undefined' ? data._clients[0] : null;
+                    });
+                } else {
+                    this.selected.client = typeof data._clients[0] != 'undefined' ? data._clients[0] : null;
+                }
+                this.selected.warehouse = typeof data._warehouses[0] != 'undefined' ? data._warehouses[0] : null;
                 this.selected.currency = this.currencies.find(function (el) {
                     return el.id == data._currency.id;
                 });
@@ -49611,74 +49625,75 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.settings.canSave = val;
         },
         readInvoice: function readInvoice() {
-            var _this2 = this;
+            var _this3 = this;
 
             // after reading, settings.edit mode will become active        
             if (!this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
-                axios.get("/api/invoices/" + this.profile + "/findBySerial?serial=" + this.invoice.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.invoice.serial
+                axios.get("/api/invoices/" + this.profile.id + "/findBySerial?serial=" + this.invoice.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.invoice.serial
                 .then(function (resp) {
                     console.log("resp", resp);console.log("resp.data.data[0]", resp.data.data[0]);
                     switch (resp.status) {
                         case 200:
-                            if (Array.isArray(resp.data.data)) _this2.init(resp.data.data[0]);else if (resp.data.data != null) _this2.init(resp.data.data);
-                            _this2.Msg.success({ title: "نجاح الطلب", message: resp.data.msg });
+                            if (Array.isArray(resp.data.data)) _this3.init(resp.data.data[0]);else if (resp.data.data != null) _this3.init(resp.data.data);
+                            _this3.Msg.success({ title: "نجاح الطلب", message: resp.data.msg });
                             break;
                         case 204:
-                            _this2.Msg.info({ title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة" });
+                            _this3.Msg.info({ title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة" });
                             break;
                         default:
-                            _this2.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                            _this3.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
                             break;
                     }
                 }).catch(function (error) {
-                    _this2.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                    _this3.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
                     console.log("error", error);
                 });
             }
         },
         editInvoice: function editInvoice() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.invoice.records = this.$children[0]._data.records;
-            axios.put("/api/invoices/" + this.profile, this.invoice).then(function (resp) {
+            axios.put("/api/invoices/" + this.profile.id, this.invoice).then(function (resp) {
                 console.log(resp);
-                _this3.$emit("SubmitInvoice");
-                _this3.init();
+                _this4.$emit("SubmitInvoice");
+                _this4.init();
                 // this.settings.saved = true
-                _this3.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" });
+                _this4.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" });
             }).catch(function (error) {
-                _this3.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة" });
+                _this4.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة" });
                 console.log("error", error);
             });
         },
 
         search: _.debounce(function (filterMethod, entity) {
-            var _this4 = this;
+            var _this5 = this;
 
             var query = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+            var xxx = arguments[3];
 
             this.loading[entity] = true;
             // query = this.invoice.client_id.replace(' ', ',')
-            axios.get("/api/invoices/" + this.profile + "/" + filterMethod + "?search=" + query).then(function (resp) {
+            axios.get("/api/invoices/" + this.profile.id + "/" + filterMethod + "?search=" + query).then(function (resp) {
                 //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                 switch (resp.status) {
                     case 200:
-                        _this4.options[entity] = resp.data.data;
+                        _this5.options[entity] = resp.data.data;
                         break;
                     case 204:
-                        _this4.Msg.info({ title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث" });
+                        _this5.Msg.info({ title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث" });
                         break;
                     default:
-                        _this4.Msg.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
+                        _this5.Msg.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
                         break;
                 }
             }).catch(function (error) {
-                _this4.Msg.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
+                _this5.Msg.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
                 console.log("error", error);
             }).then(function () {
                 // always executed
-                _this4.loading[entity] = false;
-            });
+                _this5.loading[entity] = false;
+            }).then(xxx);
         }, 300),
 
         onChangeClient: function onChangeClient(data) {
@@ -49702,19 +49717,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                         return el.id == data.currency.id;
                     });
                     this.invoice.currency_id = currency.id;
-                    console.log("currency", currency);
+                    console.log("selected.currency", currency);
                 }
                 if (data.client) {
                     this.invoice.client_id = +_extends({}, this.options.clients.find(function (el) {
                         return el.id == data.client.id;
                     })).id;
-                    console.log("client", client);
+                    console.log("selected.client", client);
                 }
                 if (data.payment) {
                     this.invoice.payment_id = +_extends({}, this.pay.find(function (el) {
                         return el.id == data.payment.id;
                     })).id;
-                    console.log("payment", currency);
+                    console.log("selected.payment", this.selected.payment);
+                }
+                if (data.warehouse) {
+                    this.invoice.warehouse_id = +_extends({}, this.options.warehouses.find(function (el) {
+                        return el.id == data.warehouse.id;
+                    })).id;
+                    console.log("selected.warehouse", this.selected.warehouse);
                 }
             },
             deep: true
@@ -49737,24 +49758,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Invoice = function () {
     function Invoice() {
-        var base_id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        var profile_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-        var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
-        var payment_id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
-        var currency_id = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
-        var title = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : '';
-        var desc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : '';
-        var client_acc = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
-        var NType = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 1;
-        var NDate = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
-        var ext_num = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : '';
-        var int_num = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : '';
-        var sum = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
-        var remaining = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
-        var client_id = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : 0;
-        var warehouse_id = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : 0;
-        var records = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : [];
+        var profile = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var serial = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+        var payment_id = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+        var currency_id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+        var title = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
+        var desc = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : '';
+        var client_acc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 0;
+        var NType = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 1;
+        var NDate = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : '';
+        var ext_num = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : '';
+        var int_num = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : '';
+        var sum = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : 0;
+        var remaining = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
+        var client_id = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
+        var warehouse_id = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : 0;
+        var records = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : [];
 
         _classCallCheck(this, Invoice);
 
@@ -49773,8 +49793,8 @@ var Invoice = function () {
         this.remaining = remaining;
         this.client_id = client_id;
         this.warehouse_id = warehouse_id;
-        this.base_id = base_id;
-        this.profile_id = profile_id;
+        this.profile_id = profile.id;
+        this.base_id = profile._base.id;
         this.records = records;
     }
 
@@ -49838,7 +49858,6 @@ var render = function() {
                             placeholder: "...",
                             "allow-empty": false,
                             "preselect-first": false,
-                            optionsLimit: 10,
                             limit: 5,
                             preserveSearch: true,
                             internalSearch: true,
@@ -49872,7 +49891,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "Select2 col-md-8 px-0" },
+                        { staticClass: "Select2 col-sm-8 px-0" },
                         [
                           _c("select2", {
                             attrs: {
@@ -49988,7 +50007,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "Select2 col-md-8 px-0" },
+                        { staticClass: "Select2 col-sm-8 px-0" },
                         [
                           _c("select2", {
                             attrs: {
@@ -50077,35 +50096,39 @@ var render = function() {
                     _vm._v("المستودع")
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.invoice.warehouse_id,
-                        expression: "invoice.warehouse_id"
-                      }
-                    ],
-                    staticClass: "form-control col-sm-8",
-                    attrs: {
-                      type: "text",
-                      id: "",
-                      placeholder: "أدخل قيمة..."
-                    },
-                    domProps: { value: _vm.invoice.warehouse_id },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
+                  _c(
+                    "div",
+                    { staticClass: "Select2 col-sm-8 px-0" },
+                    [
+                      _c("select2", {
+                        attrs: {
+                          options: _vm.options.warehouses,
+                          "track-by": "id",
+                          label: "title",
+                          "show-labels": false,
+                          placeholder: "...",
+                          "allow-empty": false,
+                          "preselect-first": false,
+                          limit: 5,
+                          preserveSearch: true,
+                          internalSearch: true,
+                          loading: _vm.loading.warehouses,
+                          showNoResults: false,
+                          multiple: false,
+                          taggable: false,
+                          max: null
+                        },
+                        model: {
+                          value: _vm.selected.warehouse,
+                          callback: function($$v) {
+                            _vm.$set(_vm.selected, "warehouse", $$v)
+                          },
+                          expression: "selected.warehouse"
                         }
-                        _vm.$set(
-                          _vm.invoice,
-                          "warehouse_id",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
+                      })
+                    ],
+                    1
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row form-group my-00" }, [

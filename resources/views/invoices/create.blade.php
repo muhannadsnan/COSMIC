@@ -21,12 +21,15 @@
             @case (1)
                 <h1>case: 1</h1>
                 @break
-            @case (2)
+            @case (2) 
+                <?php
+                    $profile = request('profile');
+                    $profile->load(['_warehouses']);
+                    // dd($profile);
+                ?>
                 <invoice-selling 
-                        :currencies="{{json_encode($currencies)}}" 
-                        :pay="{{json_encode($payment)}}"
-                        :warehouses="{{json_encode(request('profile')->_warehouses)}}"
-                        :base="{{request('base')->id}}" :profile="{{request('profile')->id}}">
+                        :currencies="{{json_encode($currencies)}}" :pay="{{json_encode($payment)}}" 
+                        :profile="{{json_encode($profile)}}">
                 </invoice-selling>
                 @break
             @default

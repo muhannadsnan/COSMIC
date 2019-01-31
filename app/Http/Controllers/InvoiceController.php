@@ -47,7 +47,7 @@ class InvoiceController extends Controller
     {
         if(!$res = Invoice::getClientsList($profile->id))
             return response()->json(['msg' => 'حدث خطأ أثناء البحث عن العميل'], 404);        
-        return response()->json(['data' => $res, 'msg' => 'تم إيجاد العميل بنجاح'], 200);
+        return response()->json(['data' => $res, 'msg' => 'تم البحث عن العميل بنجاح'], 200);
     }
 /********************************************/
     public function index(Base $basis, Profile $profile)

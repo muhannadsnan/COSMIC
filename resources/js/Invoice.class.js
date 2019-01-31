@@ -1,5 +1,5 @@
 export default class Invoice {
-    constructor(base_id = 0, profile_id = 0, id = 0, serial = '', payment_id = 0, currency_id = 0, title = '', desc = '', client_acc = 0, NType = 1, NDate = '', ext_num = '', int_num = '', sum = 0, remaining = 0, client_id = 0, warehouse_id = 0, records = []) {
+    constructor(profile = {}, id = 0, serial = '', payment_id = 0, currency_id = 0, title = '', desc = '', client_acc = 0, NType = 1, NDate = '', ext_num = '', int_num = '', sum = 0, remaining = 0, client_id = 0, warehouse_id = 0, records = []) {
         this.id = id;
         this.serial = serial;
         this.payment_id = payment_id;
@@ -15,8 +15,8 @@ export default class Invoice {
         this.remaining = remaining;
         this.client_id = client_id;
         this.warehouse_id = warehouse_id;
-        this.base_id = base_id;
-        this.profile_id = profile_id;
+        this.profile_id = profile.id;
+        this.base_id = profile._base.id;
         this.records = records;
     }
     fill(obj) {

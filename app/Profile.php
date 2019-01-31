@@ -54,5 +54,5 @@ class Profile extends _Model
     public function _base()
     {
         return $this->belongsTo(Base::class, 'base_id');
-    }
+    } 
 }

@@ -27,7 +27,7 @@ class BelongToMe
                 if( $profile->_base->_user->id != auth()->id() ) return redirect('home');
 
                 $request->request->add(['profile' => $profile]);
-            }                
+            } 
         }
         return $next($request);
     }
