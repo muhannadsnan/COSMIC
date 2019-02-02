@@ -11471,6 +11471,7 @@ hr {
   margin-bottom: 0;
   direction: ltr !important;
   padding: 0 0 0 3px !important;
+  white-space: nowrap;
 }
 
 /******************** CUSTOM ********************/
@@ -11661,7 +11662,7 @@ ul#NAVBAR li.nav-item .nav-link::after {
 .multiselect .multiselect__tags .multiselect__single {
   margin: 0 10px;
   height: 35px;
-  width: 90% !important;
+  width: 82% !important;
   border: 0px solid #555;
 }
 
@@ -11675,5 +11676,11 @@ ul#NAVBAR li.nav-item .nav-link::after {
   vertical-align: middle;
   line-height: 37px;
   padding: 0 7px;
+}
+
+/******************** INPUT GROUP ********************/
+
+.input-group {
+  padding: 0;
 }
 

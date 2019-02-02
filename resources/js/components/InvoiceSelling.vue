@@ -52,7 +52,16 @@
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0">
                             <label class="col-sm-4 d-flex">الرقم التسلسلي</label>
-                            <input type="text" v-model="invoice.serial" id="" class="form-control col-sm-8" placeholder="أدخل قيمة..." @keyup.enter="readInvoice()">
+                            <!-- <input type="text" v-model="invoice.serial" id="" class="form-control col-sm-8" placeholder="أدخل قيمة..." @keyup.enter="readInvoice()"> -->
+                            <div class="input-group col-sm-8 align-self-center">
+                                <div class="input-group-prepend order-3">
+                                    <button class="btn btn-outline-primary" type="button" id="button-addon1">></button>
+                                </div>
+                                <input type="text" v-model="invoice.serial" class="form-control order-2" placeholder="..." @keyup.enter="readInvoice()">
+                                <div class="input-group-append order-1">
+                                    <button class="btn btn-outline-primary" type="button" id="button-addon1"><</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="row form-group my-00">
                             <label class="col-sm-4 d-flex">المستودع</label>
@@ -94,7 +103,7 @@
                 <button class="nav-link btn btn-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!settings.canSave">حفظ</button>
             </li>
             <li class="nav-item" v-if="settings.edit">
-                <button class="nav-link btn btn-info px-5" id="invoicesettings.edit" @click="submitInvoice()">تعديل</button>
+                <button class="nav-link btn btn-info px-5" id="invoicesettings.edit" @click="editInvoice()">تعديل</button>
             </li>
             <li class="nav-item">
                 <button class="nav-link btn btn-dark px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!settings.canSave">حذف</button>
@@ -112,7 +121,7 @@ export default {
         return {
             invoice: new Invoice(this.profile),
             selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null},
-            settings: {canSave: false, edit: false, saved: false},
+            settings: {canSave: false, edit: false, saved: false, rtl: true},
             options: {clients: [] , warehouses: []},    
             loading: {page: false, clients: false},   
         }
@@ -160,7 +169,7 @@ export default {
                 this.settings.canSave = true
                 this.settings.edit = true
                 this.$emit('gotRecords', data._records)
-                // this.invoice.client_id = typeof data._clients[0] != 'undefined'? data._clients[0].id : null
+                this.invoice.records = data._records
                 if(this.options.clients.length == 0){
                     this.search('getClientsList', 'clients', '', () => { 
                         this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
@@ -204,7 +213,6 @@ export default {
             }
         },
         editInvoice() {
-            this.invoice.records = this.$children[0]._data.records
             axios.put(`/api/invoices/${this.profile.id}`, this.invoice)
                 .then(resp => {
                     console.log(resp)
@@ -291,5 +299,13 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped lang="scss">
-
+/******************** INPUT GROUP ********************/
+// .input-group{ 
+//     .input-group-prepend .input-group-text{
+//         border-radius: 0 0.25rem 0.25rem 0 !important; //border-color: red !important;
+//     }
+//     input{
+//         border-radius: 0.25rem 0 0 0.25rem !important;
+//     }
+// }
 </style>

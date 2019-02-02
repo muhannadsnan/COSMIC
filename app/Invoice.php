@@ -44,6 +44,43 @@ class Invoice extends _Model
         if(!InvoiceInfo::insertMany($records, $invID)) return false;
         return true;
     }
+
+    public static function editFull($request)
+    {
+        if( !$updInvoice = Invoice::edit($request)) return false;
+        if( !Invoice::editRecords($request->records, $updInvoice->id)) return false;
+        
+        $updInvoice->_clients()->sync([ $request->client_id ]);
+        $updInvoice->_warehouses()->sync([ $request->warehouse_id ]);
+        return $updInvoice;
+    }
+
+    public static function edit($request)
+    {
+        $inv = Invoice::findOrFail($request->id);
+        $inv->payment_id = $request->payment_id;
+        $inv->currency_id = $request->currency_id;
+        $inv->profile_id = $request->profile_id;
+        $inv->serial = $request->serial;
+        $inv->title = $request->title == ''? 'TEST': $request->title;
+        $inv->desc = $request->desc;
+        $inv->client_acc = $request->client_acc;
+        $inv->NType = $request->NType;
+        $inv->NDate = $request->NDate;
+        $inv->ext_num = $request->ext_num == ''? 'TEST': $request->ext_num;
+        $inv->int_num = $request->int_num == ''? 'TEST': $request->int_num;
+        $inv->sum = $request->sum;
+        $inv->remaining = $request->remaining;
+        if(!$inv->save())
+            return false;
+        return $inv;
+    }
+
+    public static function editRecords($records, $invID)
+    {
+        if(!InvoiceInfo::editMany($records, $invID)) return false;
+        return true;
+    }
     
     public static function searchClientsByName($request)
     { 

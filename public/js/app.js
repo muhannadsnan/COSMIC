@@ -49420,7 +49420,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "/******************** INPUT GROUP ********************/\n", ""]);
 
 // exports
 
@@ -49539,6 +49539,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 // import Select2 from 'v-select2-component';
@@ -49548,7 +49557,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         return {
             invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile),
             selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null },
-            settings: { canSave: false, edit: false, saved: false },
+            settings: { canSave: false, edit: false, saved: false, rtl: true },
             options: { clients: [], warehouses: [] },
             loading: { page: false, clients: false }
         };
@@ -49603,7 +49612,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.settings.canSave = true;
                 this.settings.edit = true;
                 this.$emit('gotRecords', data._records);
-                // this.invoice.client_id = typeof data._clients[0] != 'undefined'? data._clients[0].id : null
+                this.invoice.records = data._records;
                 if (this.options.clients.length == 0) {
                     this.search('getClientsList', 'clients', '', function () {
                         _this2.selected.client = typeof data._clients[0] != 'undefined' ? data._clients[0] : null;
@@ -49653,7 +49662,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         editInvoice: function editInvoice() {
             var _this4 = this;
 
-            this.invoice.records = this.$children[0]._data.records;
             axios.put("/api/invoices/" + this.profile.id, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this4.$emit("SubmitInvoice");
@@ -49775,6 +49783,7 @@ var Invoice = function () {
         var client_id = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
         var warehouse_id = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : 0;
         var records = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : [];
+        var deletedRecords = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : [];
 
         _classCallCheck(this, Invoice);
 
@@ -49796,6 +49805,7 @@ var Invoice = function () {
         this.profile_id = profile.id;
         this.base_id = profile._base.id;
         this.records = records;
+        this.deletedRecords = deletedRecords;
     }
 
     _createClass(Invoice, [{
@@ -50049,46 +50059,52 @@ var render = function() {
                     _vm._v("الرقم التسلسلي")
                   ]),
                   _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.invoice.serial,
-                        expression: "invoice.serial"
-                      }
-                    ],
-                    staticClass: "form-control col-sm-8",
-                    attrs: {
-                      type: "text",
-                      id: "",
-                      placeholder: "أدخل قيمة..."
-                    },
-                    domProps: { value: _vm.invoice.serial },
-                    on: {
-                      keyup: function($event) {
-                        if (
-                          !("button" in $event) &&
-                          _vm._k(
-                            $event.keyCode,
-                            "enter",
-                            13,
-                            $event.key,
-                            "Enter"
-                          )
-                        ) {
-                          return null
+                  _c(
+                    "div",
+                    { staticClass: "input-group col-sm-8 align-self-center" },
+                    [
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.invoice.serial,
+                            expression: "invoice.serial"
+                          }
+                        ],
+                        staticClass: "form-control order-2",
+                        attrs: { type: "text", placeholder: "..." },
+                        domProps: { value: _vm.invoice.serial },
+                        on: {
+                          keyup: function($event) {
+                            if (
+                              !("button" in $event) &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
+                            _vm.readInvoice()
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.invoice, "serial", $event.target.value)
+                          }
                         }
-                        _vm.readInvoice()
-                      },
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.invoice, "serial", $event.target.value)
-                      }
-                    }
-                  })
+                      }),
+                      _vm._v(" "),
+                      _vm._m(1)
+                    ]
+                  )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "row form-group my-00" }, [
@@ -50203,7 +50219,7 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _vm._m(2)
       ]
     ),
     _vm._v(" "),
@@ -50275,7 +50291,7 @@ var render = function() {
                   attrs: { id: "invoicesettings.edit" },
                   on: {
                     click: function($event) {
-                      _vm.submitInvoice()
+                      _vm.editInvoice()
                     }
                   }
                 },
@@ -50304,6 +50320,36 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend order-3" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-primary",
+          attrs: { type: "button", id: "button-addon1" }
+        },
+        [_vm._v(">")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-append order-1" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-outline-primary",
+          attrs: { type: "button", id: "button-addon1" }
+        },
+        [_vm._v("<")]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

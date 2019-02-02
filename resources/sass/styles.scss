@@ -4,7 +4,7 @@ input[type="radio"], input[type="checkbox"]{vertical-align: middle; margin-left:
 input[type="number"]::-webkit-inner-spin-button, input[type="date"]::-webkit-inner-spin-button {display: none;} 
 hr{border-color: darkseagreen;}
 .form-group {
-    label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important;}
+    label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important; white-space: nowrap;}
 }
 
 /******************** CUSTOM ********************/
@@ -32,13 +32,11 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
     .modal-header .close{margin-right: auto; margin-left: -1rem;}
     .modal-btn{z-index: 1 !important; position: relative;}
 }
-
 /******************** BREADCRUMB ********************/
 .breadcrumb {
     .breadcrumb-item{ padding-right: 0 !important; padding-left: 0 !important;}
     .breadcrumb-item + .breadcrumb-item::before { padding: 0px 5px;}
 } 
-
 /******************** CARD ********************/
 .card{
     .card-header{
@@ -69,8 +67,11 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
             &:before{top: 65% !important; right: 30% !important;}
         }
         .multiselect__placeholder{margin: 10px 15px;}
-        .multiselect__input, .multiselect__single {margin: 0 10px;  height: 35px; width: 90% !important; border: 0px solid #555;}
+        .multiselect__input, .multiselect__single {margin: 0 10px;  height: 35px; width: 82% !important; border: 0px solid #555;}
         .multiselect__spinner{right: 4px ; z-index: 1; width: 20px;}
         .multiselect__single{vertical-align: middle; line-height: 37px; padding: 0 7px;}
     }
 }
+
+/******************** INPUT GROUP ********************/
+.input-group{ padding: 0;}

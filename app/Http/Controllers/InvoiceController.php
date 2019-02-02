@@ -36,6 +36,13 @@ class InvoiceController extends Controller
         return response()->json(['data' => $newInvoice, 'msg' => 'تم إضافة الفاتورة بنجاح'], 200);
     }
 
+    public function apiUpdate(Request $request, Profile $profile)
+    { 
+        if(!$newInvoice = Invoice::editFull($request))
+            return response()->json(['msg' => 'خطأ أثناء تعديل الفاتورة'], 404);        
+        return response()->json(['data' => $newInvoice, 'msg' => 'تم تعديل الفاتورة بنجاح'], 200);
+    }
+
     public function searchClientsByName(Request $request, Profile $profile) // use getClientsList instead
     {  
         if(!$res = Invoice::searchClientsByName($request))
