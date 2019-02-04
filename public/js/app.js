@@ -49547,7 +49547,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
 
 
 // import Select2 from 'v-select2-component';
@@ -49556,9 +49555,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     data: function data() {
         return {
             invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile),
-            selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null },
-            settings: { canSave: false, edit: false, saved: false, rtl: true },
-            options: { clients: [], warehouses: [] },
+            selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
+            settings: { canSave: false, canEdit: false, edit: false, saved: false, rtl: true },
+            options: { clients: [], warehouses: [], serials: [] },
             loading: { page: false, clients: false }
         };
     },
@@ -49603,14 +49602,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.selected.warehouse = null;
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0];
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0];
-                this.settings.canSave = false;
                 this.settings.edit = false;
+                this.settings.canSave = false;
             } else {
                 var inv = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
                 inv.fill(data);
                 this.invoice = inv; //console.log("inv", this.invoice)
-                this.settings.canSave = true;
-                this.settings.edit = true;
                 this.$emit('gotRecords', data._records);
                 this.invoice.records = data._records;
                 if (this.options.clients.length == 0) {
@@ -49627,7 +49624,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.selected.payment = this.pay.find(function (el) {
                     return el.id == data._payment.id;
                 });
+                this.settings.edit = true;
+                this.settings.canEdit = false;
             }
+            this.getSerials();
         },
         OnCanSave: function OnCanSave(val) {
             console.log("can save invoice", val);
@@ -49666,7 +49666,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 console.log(resp);
                 _this4.$emit("SubmitInvoice");
                 _this4.init();
-                // this.settings.saved = true
                 _this4.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" });
             }).catch(function (error) {
                 _this4.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة" });
@@ -49704,47 +49703,103 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }).then(xxx);
         }, 300),
 
-        onChangeClient: function onChangeClient(data) {
+        onSearchClient: function onSearchClient(data) {
             // fetch data
             if (this.options.clients.length == 0 && data != '') {
                 this.search('getClientsList', 'clients');
+                this.settings.canEdit = false;
             }
         },
         onRecordsChange: function onRecordsChange(data) {
             this.invoice.records = data;
+        },
+        getSerials: function getSerials() {
+            var _this6 = this;
+
+            // and set the max serial
+            this.loading.serial = true;
+            axios.get("/api/invoices/" + this.profile.id + "/getSerials/" + this.invoice.NType) //?ser='+this.invoice.serial
+            .then(function (resp) {
+                console.log("getSerials", resp);
+                switch (resp.status) {
+                    case 200:
+                        var result = resp.data;console.log('result', result);
+                        if (result.length == 0) {
+                            result.push(1);
+                        }
+                        _this6.options.serials = result;
+                        _this6.selected.serial = 0; // index of it
+                        _this6.invoice.serial = _this6.options.serials[_this6.selected.serial];
+                        _this6.settings.maxSerial = _this6.invoice.serial;
+                        break;
+                    default:
+                        _this6.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                        break;
+                }
+            }).catch(function (error) {
+                _this6.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                console.log("error", error);
+            }).then(function () /* finally */{
+                _this6.loading.serial = false;
+            });
+        },
+        changeSerial: function changeSerial(change) {
+            if (change == 'up' && this.canIncreaseSerial) // go up in value, down in index
+                this.selected.serial--;else if (change == 'down' && this.canDecreaseSerial) this.selected.serial++;
+            console.log("this.selected.serial= " + this.selected.serial + " - option selected= " + this.options.serials[this.selected.serial]);
+        }
+    },
+    computed: {
+        canIncreaseSerial: function canIncreaseSerial() {
+            return this.selected.serial != 0;
+        },
+        canDecreaseSerial: function canDecreaseSerial() {
+            return this.selected.serial + 1 != this.options.serials.length;
         }
     },
     watch: {
         selected: {
             handler: function handler(newValue) {
                 var data = JSON.parse(JSON.stringify(newValue));
-                console.log("data", data);
+                console.log("---selected---", data);
 
-                if (data.currency) {
+                if (data.currency != null) {
                     var currency = this.currencies.find(function (el) {
                         return el.id == data.currency.id;
                     });
                     this.invoice.currency_id = currency.id;
                     console.log("selected.currency", currency);
                 }
-                if (data.client) {
+                if (data.client != null) {
                     this.invoice.client_id = +_extends({}, this.options.clients.find(function (el) {
                         return el.id == data.client.id;
                     })).id;
                     console.log("selected.client", client);
                 }
-                if (data.payment) {
+                if (data.payment != null) {
                     this.invoice.payment_id = +_extends({}, this.pay.find(function (el) {
                         return el.id == data.payment.id;
                     })).id;
                     console.log("selected.payment", this.selected.payment);
                 }
-                if (data.warehouse) {
+                if (data.warehouse != null) {
                     this.invoice.warehouse_id = +_extends({}, this.options.warehouses.find(function (el) {
                         return el.id == data.warehouse.id;
                     })).id;
                     console.log("selected.warehouse", this.selected.warehouse);
                 }
+                if (data.serial != null) {
+                    //console.log('data.serial', data.serial);
+                    this.invoice.serial = +this.options.serials[data.serial];
+                    console.log("selected.serial", this.selected.serial);
+                }
+                this.settings.canEdit = true;
+            },
+            deep: true
+        },
+        invoice: {
+            handler: function handler(newValue) {
+                this.settings.canEdit = true;
             },
             deep: true
         }
@@ -49877,7 +49932,7 @@ var render = function() {
                             taggable: false,
                             max: null
                           },
-                          on: { "search-change": _vm.onChangeClient },
+                          on: { "search-change": _vm.onSearchClient },
                           model: {
                             value: _vm.selected.client,
                             callback: function($$v) {
@@ -50063,7 +50118,29 @@ var render = function() {
                     "div",
                     { staticClass: "input-group col-sm-8 align-self-center" },
                     [
-                      _vm._m(0),
+                      _c(
+                        "div",
+                        { staticClass: "input-group-prepend order-3" },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-primary",
+                              attrs: {
+                                type: "button",
+                                id: "button-addon1",
+                                disabled: !_vm.canDecreaseSerial
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.changeSerial("down")
+                                }
+                              }
+                            },
+                            [_vm._v("-")]
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
                       _c("input", {
                         directives: [
@@ -50075,7 +50152,11 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control order-2",
-                        attrs: { type: "text", placeholder: "..." },
+                        attrs: {
+                          type: "number",
+                          placeholder: _vm.loading.serial ? "loading" : "...",
+                          disabled: false
+                        },
                         domProps: { value: _vm.invoice.serial },
                         on: {
                           keyup: function($event) {
@@ -50102,7 +50183,25 @@ var render = function() {
                         }
                       }),
                       _vm._v(" "),
-                      _vm._m(1)
+                      _c("div", { staticClass: "input-group-append order-1" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-primary",
+                            attrs: {
+                              type: "button",
+                              id: "button-addon1",
+                              disabled: !_vm.canIncreaseSerial
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.changeSerial("up")
+                              }
+                            }
+                          },
+                          [_vm._v("+")]
+                        )
+                      ])
                     ]
                   )
                 ]),
@@ -50219,7 +50318,7 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm._m(2)
+        _vm._m(0)
       ]
     ),
     _vm._v(" "),
@@ -50234,7 +50333,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "nav-link btn btn-light active px-5",
+              staticClass: "nav-link btn btn-outline-secondary active px-5",
               attrs: {
                 id: "invoiceRecords",
                 "data-toggle": "pill",
@@ -50251,7 +50350,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "nav-link btn btn-light px-5",
+              staticClass: "nav-link btn btn-outline-secondary px-5",
               attrs: {
                 id: "invoiceDetails",
                 "data-toggle": "pill",
@@ -50287,8 +50386,11 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "nav-link btn btn-info px-5",
-                  attrs: { id: "invoicesettings.edit" },
+                  staticClass: "nav-link btn btn-info text-white px-5",
+                  attrs: {
+                    id: "invoicesettings.edit",
+                    disabled: !_vm.settings.canEdit
+                  },
                   on: {
                     click: function($event) {
                       _vm.editInvoice()
@@ -50320,36 +50422,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group-prepend order-3" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-primary",
-          attrs: { type: "button", id: "button-addon1" }
-        },
-        [_vm._v(">")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group-append order-1" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-primary",
-          attrs: { type: "button", id: "button-addon1" }
-        },
-        [_vm._v("<")]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

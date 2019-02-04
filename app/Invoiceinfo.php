@@ -36,11 +36,11 @@ class Invoiceinfo extends _model
         $info->qty = $request['qty'];
         $info->single = $request['single'];
         $info->total = $request['total'];
-        $info->invoice_id =  @$request['invoice_id'];
+        $info->invoice_id = @$request['invoice_id'];
         return $info->save();
     }
 
-    public static function editMany($records, $invID){ //dd($records);
+    public static function editMany($records, $invID=0){ //dd($records);
         foreach($records as $rec){
             InvoiceInfo::edit($rec, $invID); 
         }

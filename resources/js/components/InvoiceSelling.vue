@@ -9,7 +9,7 @@
                             <div class="Select2 col-sm-10 px-0"> 
                                 <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
                                         :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
-                                        @search-change="onChangeClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
+                                        @search-change="onSearchClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
                         <div class="row form-group my-0">
@@ -52,14 +52,13 @@
                     <div class="col-sm-6 px-0">
                         <div class="row form-group my-0">
                             <label class="col-sm-4 d-flex">الرقم التسلسلي</label>
-                            <!-- <input type="text" v-model="invoice.serial" id="" class="form-control col-sm-8" placeholder="أدخل قيمة..." @keyup.enter="readInvoice()"> -->
                             <div class="input-group col-sm-8 align-self-center">
                                 <div class="input-group-prepend order-3">
-                                    <button class="btn btn-outline-primary" type="button" id="button-addon1">></button>
+                                    <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('down')" :disabled="!canDecreaseSerial">-</button>
                                 </div>
-                                <input type="text" v-model="invoice.serial" class="form-control order-2" placeholder="..." @keyup.enter="readInvoice()">
+                                <input type="number" v-model="invoice.serial" class="form-control order-2" :placeholder="loading.serial ? 'loading': '...'" @keyup.enter="readInvoice()" :disabled="false">
                                 <div class="input-group-append order-1">
-                                    <button class="btn btn-outline-primary" type="button" id="button-addon1"><</button>
+                                    <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('up')" :disabled="!canIncreaseSerial">+</button>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +83,7 @@
                     <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
                 <!--------------- RECORDS ---------------->
-                <records @hasRecords="OnCanSave" @recordsChange="onRecordsChange"></records>
+                <records @hasRecords="OnCanSave" @recordsChange="onRecordsChange" />
             </div>
 
             <div id="invoiceDetails" class="tab-pane fade" role="tabpanel">
@@ -94,19 +93,19 @@
 
         <ul class="nav nav-pills nav-fill TABS-bottom" role="tablist">
             <li class="nav-item">
-                <button class="nav-link btn btn-light active px-5" id="invoiceRecords" data-toggle="pill" role="tab" href="#invoiceRecords" @click="tabClicked">الفاتورة</button>
+                <button @click="tabClicked" class="nav-link btn btn-outline-secondary active px-5" id="invoiceRecords" data-toggle="pill" role="tab" href="#invoiceRecords">الفاتورة</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn btn-light px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails" @click="tabClicked">المزيد</button>
+                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails">المزيد</button>
             </li>
             <li class="nav-item" v-if="!settings.edit">
-                <button class="nav-link btn btn-success px-5" id="invoiceSave" @click="submitInvoice()" :disabled="!settings.canSave">حفظ</button>
+                <button @click="submitInvoice()" class="nav-link btn btn-success px-5" id="invoiceSave" :disabled="!settings.canSave">حفظ</button>
             </li>
             <li class="nav-item" v-if="settings.edit">
-                <button class="nav-link btn btn-info px-5" id="invoicesettings.edit" @click="editInvoice()">تعديل</button>
+                <button @click="editInvoice()" class="nav-link btn btn-info text-white px-5" id="invoicesettings.edit" :disabled="!settings.canEdit">تعديل</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link btn btn-dark px-5" id="invoiceClear" @click="clearInvoice()" :disabled="!settings.canSave">حذف</button>
+                <button @click="clearInvoice()" class="nav-link btn btn-dark px-5" id="invoiceClear" :disabled="!settings.canSave">حذف</button>
             </li>
         </ul>
     </div>
@@ -120,9 +119,9 @@ export default {
     data() {
         return {
             invoice: new Invoice(this.profile),
-            selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null},
-            settings: {canSave: false, edit: false, saved: false, rtl: true},
-            options: {clients: [] , warehouses: []},    
+            selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null},
+            settings: {canSave: false, canEdit: false, edit: false, saved: false, rtl: true },
+            options: {clients: [] , warehouses: [], serials: []},    
             loading: {page: false, clients: false},   
         }
     },
@@ -160,14 +159,12 @@ export default {
                 this.selected.warehouse = null
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
-                this.settings.canSave = false
                 this.settings.edit = false
+                this.settings.canSave = false 
             } else {
                 var inv = new Invoice(this.profile)
                 inv.fill(data)
                 this.invoice = inv ;  //console.log("inv", this.invoice)
-                this.settings.canSave = true
-                this.settings.edit = true
                 this.$emit('gotRecords', data._records)
                 this.invoice.records = data._records
                 if(this.options.clients.length == 0){
@@ -179,8 +176,11 @@ export default {
                 }
                 this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
                 this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
-                this.selected.payment = this.pay.find(el => el.id == data._payment.id)               
+                this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
+                this.settings.edit = true          
+                this.settings.canEdit = false
             }
+            this.getSerials()
         },
         OnCanSave(val) {
             console.log("can save invoice", val)
@@ -218,7 +218,6 @@ export default {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
                     this.init()
-                    // this.settings.saved = true
                     this.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" })
                 })
                 .catch(error => {
@@ -254,41 +253,94 @@ export default {
                 
             }, 300),
         
-        onChangeClient(data){ // fetch data
+        onSearchClient(data){ // fetch data
             if(this.options.clients.length == 0 && data != ''){
                 this.search('getClientsList', 'clients')
+                this.settings.canEdit = false
             }
         },
         onRecordsChange(data){
             this.invoice.records = data
+        },
+        getSerials(){ // and set the max serial
+            this.loading.serial = true
+            axios.get(`/api/invoices/${this.profile.id}/getSerials/${this.invoice.NType}`) //?ser='+this.invoice.serial
+                .then(resp => { console.log("getSerials", resp); 
+                    switch (resp.status) {
+                        case 200:
+                            var result = resp.data; console.log('result', result);
+                            if(result.length == 0){
+                                result.push(1) 
+                            }
+                            this.options.serials = result                            
+                            this.selected.serial = 0 // index of it
+                            this.invoice.serial = this.options.serials[this.selected.serial]
+                            this.settings.maxSerial = this.invoice.serial
+                            break 
+                        default:
+                            this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                            break
+                    }
+                })
+                .catch(error => {
+                    this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                    console.log("error", error)
+                })
+                .then((/* finally */)=> {this.loading.serial = false})
+        },
+        changeSerial(change){  
+            if(change == 'up' && this.canIncreaseSerial) // go up in value, down in index
+                this.selected.serial--
+            else if(change == 'down' && this.canDecreaseSerial)
+                this.selected.serial++
+            console.log("this.selected.serial= " + this.selected.serial + " - option selected= "+this.options.serials[this.selected.serial])
+        }
+    },
+    computed: {
+        canIncreaseSerial(){
+            return this.selected.serial != 0 
+        },
+        canDecreaseSerial(){
+            return this.selected.serial+1 != this.options.serials.length
         } 
     },
     watch: {
         selected: {
             handler: function(newValue) { 
                 var data = JSON.parse(JSON.stringify( newValue )) 
-                console.log("data",data)
+                console.log("---selected---",data)
 
-                if(data.currency){ 
+                if(data.currency != null){ 
                     var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
                     this.invoice.currency_id = currency.id 
                     console.log("selected.currency",currency)
                 }
-                if(data.client){ 
+                if(data.client != null){ 
                     this.invoice.client_id = +{...this.options.clients.find(function(el) { return el.id == data.client.id })}.id
                     console.log("selected.client",client)
                 }
-                if(data.payment){ 
+                if(data.payment != null){ 
                     this.invoice.payment_id = +{...this.pay.find(function(el) { return el.id == data.payment.id })}.id
                     console.log("selected.payment",this.selected.payment)
                 }
-                if(data.warehouse){ 
+                if(data.warehouse != null){ 
                     this.invoice.warehouse_id = +{...this.options.warehouses.find(function(el) { return el.id == data.warehouse.id })}.id
                     console.log("selected.warehouse",this.selected.warehouse)
                 }
+                if(data.serial != null){ //console.log('data.serial', data.serial);
+                    this.invoice.serial = +this.options.serials[data.serial]
+                    console.log("selected.serial",this.selected.serial)
+                }                
+                this.settings.canEdit = true
             },
             deep: true
-        }
+        },
+        invoice: {
+            handler: function(newValue) {  
+                this.settings.canEdit = true
+            },
+            deep: true
+        },
     },
     mounted() {        
         console.log("Component <invoice-selling> mounted.")

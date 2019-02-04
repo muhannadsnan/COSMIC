@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route:: get('/invoices/{profile}/test', function (Request $request) {
+    return \App\Invoice::getMaxSerial();
+});
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -23,4 +26,5 @@ Route::group(['middleware' => ['auth:api', 'bindings', 'belongToMe']], function 
     Route::put('/invoices/{profile}', 'InvoiceController@apiUpdate');
     Route::get('/invoices/{profile}/searchClientsByName', 'InvoiceController@searchClientsByName');
     Route::get('/invoices/{profile}/getClientsList', 'InvoiceController@getClientsList');
+    Route::get('/invoices/{profile}/getSerials/{NType}', 'InvoiceController@getSerials');
 });

@@ -92,7 +92,7 @@ $factory->define(App\Invoice::class, function (Faker $faker) {
     $currencies = App\Profile::all()->pluck('id')->toArray();
     $payments = App\Payment::all()->pluck('id')->toArray();
     return [ 
-        'serial' => $faker->ean8,
+        'serial' => $faker->randomDigit,
         'title' => $faker->name,
         'desc' => $faker->sentence,
         'client_acc' => $faker->randomElement([1,2,3]), // 1=cash, 2=remaining, 3=xxx 

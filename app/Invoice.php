@@ -10,8 +10,7 @@ use DB;
 
 class Invoice extends _Model
 {
-    public static function insertFull($request)
-    {
+    public static function insertFull($request){
         if( !$newInvoice = Invoice::insert($request)) return false;
         if( !Invoice::insertRecords($request->records, $newInvoice->id)) return false;
         
@@ -20,8 +19,7 @@ class Invoice extends _Model
         return $newInvoice;
     }
 
-    public static function insert($request)
-    {
+    public static function insert($request){
         return Invoice::create([
             'payment_id' => $request->payment_id,
             'currency_id' => $request->currency_id,
@@ -39,14 +37,12 @@ class Invoice extends _Model
         ]);
     }
 
-    public static function insertRecords($records, $invID)
-    {
+    public static function insertRecords($records, $invID){
         if(!InvoiceInfo::insertMany($records, $invID)) return false;
         return true;
     }
 
-    public static function editFull($request)
-    {
+    public static function editFull($request){
         if( !$updInvoice = Invoice::edit($request)) return false;
         if( !Invoice::editRecords($request->records, $updInvoice->id)) return false;
         
@@ -55,8 +51,7 @@ class Invoice extends _Model
         return $updInvoice;
     }
 
-    public static function edit($request)
-    {
+    public static function edit($request){
         $inv = Invoice::findOrFail($request->id);
         $inv->payment_id = $request->payment_id;
         $inv->currency_id = $request->currency_id;
@@ -76,14 +71,12 @@ class Invoice extends _Model
         return $inv;
     }
 
-    public static function editRecords($records, $invID)
-    {
+    public static function editRecords($records, $invID){
         if(!InvoiceInfo::editMany($records, $invID)) return false;
         return true;
     }
     
-    public static function searchClientsByName($request)
-    { 
+    public static function searchClientsByName($request){ 
         /********* IMPORTANT SEARCH PROCESS *******/
         $res = Client::where(function($query) use ($request){
                 foreach(explode(',',$request->search) as $keyword){
@@ -95,19 +88,21 @@ class Invoice extends _Model
         return $res;
     }
 
-    public static function getClientsList($profile_id)
-    {
+    public static function getClientsList($profile_id){
         $res = Client::whereProfileId($profile_id)->select("id", "name")->get(); 
         if(!$res) return false;
         return $res;
     }
 
-    public static function searchBySerial($request)
-    {
+    public static function searchBySerial($request){
         $res = Invoice::where('serial', $request->serial)
                         ->where('NType', $request->NType)->with('_payment', '_currency', '_records', '_clients', '_warehouses')->get(); 
         if(!$res) return false;
         return $res;
+    }
+
+    public static function getSerials($profile_id=1, $NType=1){
+        return Invoice::where('NType', $NType)->where('profile_id', $profile_id)->orderBy('serial', 'desc')->pluck('serial');
     }
 
     /********************   RELATIIONSHIPS   *********************/

@@ -56,6 +56,10 @@ class InvoiceController extends Controller
             return response()->json(['msg' => 'حدث خطأ أثناء البحث عن العميل'], 404);        
         return response()->json(['data' => $res, 'msg' => 'تم البحث عن العميل بنجاح'], 200);
     }
+    
+    public function getSerials(Request $request, Profile $profile, $NType=1){
+        return Invoice::getSerials($profile->id, $NType);
+    }
 /********************************************/
     public function index(Base $basis, Profile $profile)
     {
