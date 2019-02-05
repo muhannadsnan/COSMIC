@@ -49579,8 +49579,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             axios.post("/api/invoices/" + this.profile.id, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this.$emit("SubmitInvoice");
+                _this.options.serials.unshift(_this.invoice.serial);
                 _this.init();
-                // this.settings.saved = true
                 _this.Msg.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" });
             }).catch(function (error) {
                 _this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" });
@@ -49602,8 +49602,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.selected.warehouse = null;
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0];
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0];
+                this.selected.serial = null;
                 this.settings.edit = false;
                 this.settings.canSave = false;
+                this.getSerials();
             } else {
                 var inv = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
                 inv.fill(data);
@@ -49624,10 +49626,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.selected.payment = this.pay.find(function (el) {
                     return el.id == data._payment.id;
                 });
+                this.selected.serial = data.serial;
                 this.settings.edit = true;
                 this.settings.canEdit = false;
             }
-            this.getSerials();
         },
         OnCanSave: function OnCanSave(val) {
             console.log("can save invoice", val);
@@ -49677,10 +49679,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var _this5 = this;
 
             var query = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-            var xxx = arguments[3];
+            var callback = arguments[3];
 
             this.loading[entity] = true;
-            // query = this.invoice.client_id.replace(' ', ',')
+            if (query != '') query = this.invoice.client_id.replace(' ', ',');
             axios.get("/api/invoices/" + this.profile.id + "/" + filterMethod + "?search=" + query).then(function (resp) {
                 //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                 switch (resp.status) {
@@ -49700,7 +49702,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }).then(function () {
                 // always executed
                 _this5.loading[entity] = false;
-            }).then(xxx);
+            }).then(callback);
         }, 300),
 
         onSearchClient: function onSearchClient(data) {
@@ -49724,13 +49726,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 switch (resp.status) {
                     case 200:
                         var result = resp.data;console.log('result', result);
-                        if (result.length == 0) {
-                            result.push(1);
-                        }
                         _this6.options.serials = result;
-                        _this6.selected.serial = 0; // index of it
-                        _this6.invoice.serial = _this6.options.serials[_this6.selected.serial];
-                        _this6.settings.maxSerial = _this6.invoice.serial;
+                        if (result.length == 0) {
+                            // result.push(1) 
+                            _this6.invoice.serial = 1;
+                        } else {
+                            // this.selected.serial = 0 // index of it
+                            _this6.invoice.serial = +_this6.options.serials[0] + 1;
+                        }
                         break;
                     default:
                         _this6.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
@@ -49744,24 +49747,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             });
         },
         changeSerial: function changeSerial(change) {
-            if (change == 'up' && this.canIncreaseSerial) // go up in value, down in index
-                this.selected.serial--;else if (change == 'down' && this.canDecreaseSerial) this.selected.serial++;
+            if (change == 'up' && this.canIncreaseSerial) // go up in value, down in index                
+                this.selected.serial--;else if (change == 'down' && this.canDecreaseSerial) if (this.selected.serial == null) this.selected.serial = 0;else this.selected.serial++;
             console.log("this.selected.serial= " + this.selected.serial + " - option selected= " + this.options.serials[this.selected.serial]);
         }
     },
     computed: {
         canIncreaseSerial: function canIncreaseSerial() {
-            return this.selected.serial != 0;
+            return this.selected.serial != 0 && this.selected.serial != null;
         },
         canDecreaseSerial: function canDecreaseSerial() {
-            return this.selected.serial + 1 != this.options.serials.length;
+            console.log('this.selected.serial+1 != this.options.serials.length', this.selected.serial + 1 != this.options.serials.length);
+            if (this.selected.serial == null) return this.options.serials.length != 0;else return this.selected.serial + 1 != this.options.serials.length;
         }
     },
     watch: {
         selected: {
             handler: function handler(newValue) {
                 var data = JSON.parse(JSON.stringify(newValue));
-                console.log("---selected---", data);
+                console.log("selected", data);
 
                 if (data.currency != null) {
                     var currency = this.currencies.find(function (el) {
@@ -50407,14 +50411,17 @@ var render = function() {
             "button",
             {
               staticClass: "nav-link btn btn-dark px-5",
-              attrs: { id: "invoiceClear", disabled: !_vm.settings.canSave },
+              attrs: {
+                id: "invoiceClear",
+                disabled: !_vm.settings.canSave && _vm.selected.serial == null
+              },
               on: {
                 click: function($event) {
                   _vm.clearInvoice()
                 }
               }
             },
-            [_vm._v("حذف")]
+            [_vm._v("جديد")]
           )
         ])
       ]
