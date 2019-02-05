@@ -14353,11 +14353,12 @@ __webpack_require__(16);
 
 Vue.component('records', __webpack_require__(48));
 Vue.component('invoice-selling', __webpack_require__(55));
+Vue.component('loading-page', __webpack_require__(81));
 
 Vue.component('passport-clients', __webpack_require__(63));
 Vue.component('passport-authorized-clients', __webpack_require__(68));
 Vue.component('passport-personal-access-tokens', __webpack_require__(73));
-// import Select2 from "vue-single-select"; Vue.component('Select2', Select2); // dont change - https://github.com/godbasin/vue-select2
+
 Vue.component('Select2', __WEBPACK_IMPORTED_MODULE_0_vue_multiselect___default.a); // dont change - https://vue-multiselect.js.org/
 
 var app = new Vue({
@@ -49420,7 +49421,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "/******************** INPUT GROUP ********************/\n", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
@@ -49547,9 +49548,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
 
 
-// import Select2 from 'v-select2-component';
+
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ["profile", "currencies", "pay"],
     data: function data() {
@@ -49558,7 +49561,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
             settings: { canSave: false, canEdit: false, edit: false, saved: false, rtl: true },
             options: { clients: [], warehouses: [], serials: [] },
-            loading: { page: false, clients: false }
+            loading: { page: false, clients: false, serial: false }
         };
     },
 
@@ -49576,6 +49579,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         submitInvoice: function submitInvoice() {
             var _this = this;
 
+            this.loadingPage();
             axios.post("/api/invoices/" + this.profile.id, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this.$emit("SubmitInvoice");
@@ -49585,6 +49589,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }).catch(function (error) {
                 _this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" });
                 console.log("error", error);
+            }).then(function () {
+                return _this.loadingPage(false);
             });
         },
         init: function init() {
@@ -49643,6 +49649,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // after reading, settings.edit mode will become active        
             if (!this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
+                this.loadingPage();
                 axios.get("/api/invoices/" + this.profile.id + "/findBySerial?serial=" + this.invoice.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.invoice.serial
                 .then(function (resp) {
                     console.log("resp", resp);console.log("resp.data.data[0]", resp.data.data[0]);
@@ -49650,7 +49657,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                         case 200:
                             var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](_this3.profile);
                             _this3.init(result);
-                            _this3.Msg.success({ title: "نجاح الطلب", message: resp.data.msg });
+                            // this.Msg.success({title: "نجاح الطلب", message: resp.data.msg})
                             break;
                         case 204:
                             _this3.Msg.info({ title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة" });
@@ -49662,6 +49669,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 }).catch(function (error) {
                     _this3.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
                     console.log("error", error);
+                }).then(function () {
+                    return _this3.loadingPage(false);
                 });
             }
         },
@@ -49672,6 +49681,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         editInvoice: function editInvoice() {
             var _this4 = this;
 
+            this.loadingPage();
             axios.put("/api/invoices/" + this.profile.id, this.invoice).then(function (resp) {
                 console.log(resp);
                 _this4.$emit("SubmitInvoice");
@@ -49680,6 +49690,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }).catch(function (error) {
                 _this4.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة" });
                 console.log("error", error);
+            }).then(function () {
+                return _this4.loadingPage(false);
             });
         },
 
@@ -49756,6 +49768,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.selected.serial--;else if (change == 'down' && this.canDecreaseSerial) if (this.selected.serial == null) this.selected.serial = 0;else this.selected.serial++;
             console.log("this.selected.serial= " + this.selected.serial + " - option selected= " + this.options.serials[this.selected.serial]);
             this.readInvoiceDebounce();
+        },
+        loadingPage: function loadingPage() {
+            var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            this.loading.page = param;
         }
     },
     computed: {
@@ -49807,8 +49824,14 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             deep: true
         },
         invoice: {
-            handler: function handler(newValue) {
+            handler: function handler(invoice) {
                 this.settings.canEdit = true;
+            },
+            deep: true
+        },
+        loading: {
+            handler: function handler(loading) {
+                this.$emit('LoadingPage', loading.page);
             },
             deep: true
         }
@@ -49895,40 +49918,356 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "containerX" }, [
-    _c(
-      "div",
-      { staticClass: "tab-content", attrs: { id: "v-pills-tabContent" } },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "tab-pane fade show active",
-            attrs: { id: "InvoiceSelling", role: "tabpanel" }
-          },
-          [
-            _c("div", { staticClass: "row form-group my-0" }, [
-              _c("div", { staticClass: "col-sm-6 px-0" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "row form-group my-0",
-                    attrs: { id: "client" }
-                  },
-                  [
-                    _c("label", { staticClass: "col-sm-2 d-flex" }, [
-                      _vm._v("العميل")
+  return _c(
+    "div",
+    { staticClass: "containerX" },
+    [
+      _c(
+        "div",
+        { staticClass: "tab-content", attrs: { id: "v-pills-tabContent" } },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade show active",
+              attrs: { id: "InvoiceSelling", role: "tabpanel" }
+            },
+            [
+              _c("div", { staticClass: "row form-group my-0" }, [
+                _c("div", { staticClass: "col-sm-6 px-0" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "row form-group my-0",
+                      attrs: { id: "client" }
+                    },
+                    [
+                      _c("label", { staticClass: "col-sm-2 d-flex" }, [
+                        _vm._v("العميل")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "Select2 col-sm-10 px-0" },
+                        [
+                          _c("select2", {
+                            attrs: {
+                              options: _vm.options.clients,
+                              "track-by": "id",
+                              label: "name",
+                              "show-labels": false,
+                              placeholder: "...",
+                              "allow-empty": false,
+                              "preselect-first": false,
+                              limit: 5,
+                              preserveSearch: true,
+                              internalSearch: true,
+                              loading: _vm.loading.clients,
+                              showNoResults: false,
+                              multiple: false,
+                              taggable: false,
+                              max: null
+                            },
+                            on: { "search-change": _vm.onSearchClient },
+                            model: {
+                              value: _vm.selected.client,
+                              callback: function($$v) {
+                                _vm.$set(_vm.selected, "client", $$v)
+                              },
+                              expression: "selected.client"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row form-group my-0" }, [
+                    _c("div", { staticClass: "col-sm-6 px-0" }, [
+                      _c("div", { staticClass: "row form-group mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                          _vm._v("العملة")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "Select2 col-sm-8 px-0" },
+                          [
+                            _c("select2", {
+                              attrs: {
+                                options: _vm.currencies,
+                                "track-by": "id",
+                                label: "title",
+                                "show-labels": false,
+                                placeholder: "...",
+                                "allow-empty": false,
+                                "preselect-first": true,
+                                preserveSearch: false,
+                                internalSearch: false,
+                                searchable: false,
+                                loading: false,
+                                showNoResults: false,
+                                multiple: false,
+                                taggable: false,
+                                max: null
+                              },
+                              model: {
+                                value: _vm.selected.currency,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.selected, "currency", $$v)
+                                },
+                                expression: "selected.currency"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6 px-0" }, [
+                      _c("div", { staticClass: "row form-group mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                          _vm._v("التعادل")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.selected.currency.buy,
+                              expression: "selected.currency.buy"
+                            }
+                          ],
+                          staticClass: "form-control col-sm-8",
+                          attrs: {
+                            type: "text",
+                            id: "",
+                            placeholder: "أدخل قيمة..."
+                          },
+                          domProps: { value: _vm.selected.currency.buy },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.selected.currency,
+                                "buy",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row form-group my-0" }, [
+                    _c("div", { staticClass: "col-sm-6 px-0" }, [
+                      _c("div", { staticClass: "row form-group mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                          _vm._v("التاريخ")
+                        ]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.invoice.NDate,
+                              expression: "invoice.NDate"
+                            }
+                          ],
+                          staticClass: "form-control col-sm-8",
+                          attrs: {
+                            type: "date",
+                            value: "2018-09-29",
+                            placeholder: "أدخل قيمة..."
+                          },
+                          domProps: { value: _vm.invoice.NDate },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.invoice,
+                                "NDate",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6 px-0" }, [
+                      _c("div", { staticClass: "row form-group mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                          _vm._v("الدفع")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "Select2 col-sm-8 px-0" },
+                          [
+                            _c("select2", {
+                              attrs: {
+                                options: _vm.pay,
+                                "track-by": "id",
+                                label: "title",
+                                "show-labels": false,
+                                placeholder: "...",
+                                "allow-empty": false,
+                                "preselect-first": true,
+                                preserveSearch: false,
+                                internalSearch: false,
+                                searchable: false,
+                                loading: false,
+                                showNoResults: false,
+                                multiple: false,
+                                taggable: false,
+                                max: null
+                              },
+                              model: {
+                                value: _vm.selected.payment,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.selected, "payment", $$v)
+                                },
+                                expression: "selected.payment"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-sm-6 px-0" }, [
+                  _c("div", { staticClass: "row form-group my-0" }, [
+                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _vm._v("الرقم التسلسلي")
                     ]),
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "Select2 col-sm-10 px-0" },
+                      { staticClass: "input-group col-sm-8 align-self-center" },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "input-group-prepend order-3" },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-primary",
+                                attrs: {
+                                  type: "button",
+                                  id: "button-addon1",
+                                  disabled: !_vm.canDecreaseSerial
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.changeSerial("down")
+                                  }
+                                }
+                              },
+                              [_vm._v("-")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.invoice.serial,
+                              expression: "invoice.serial"
+                            }
+                          ],
+                          staticClass: "form-control order-2",
+                          attrs: {
+                            type: "number",
+                            placeholder: _vm.loading.serial ? "loading" : "...",
+                            disabled: false
+                          },
+                          domProps: { value: _vm.invoice.serial },
+                          on: {
+                            keyup: function($event) {
+                              if (
+                                !("button" in $event) &&
+                                _vm._k(
+                                  $event.keyCode,
+                                  "enter",
+                                  13,
+                                  $event.key,
+                                  "Enter"
+                                )
+                              ) {
+                                return null
+                              }
+                              _vm.readInvoice()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.invoice,
+                                "serial",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "input-group-append order-1" },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-primary",
+                                attrs: {
+                                  type: "button",
+                                  id: "button-addon1",
+                                  disabled: !_vm.canIncreaseSerial
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.changeSerial("up")
+                                  }
+                                }
+                              },
+                              [_vm._v("+")]
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row form-group my-00" }, [
+                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _vm._v("المستودع")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "Select2 col-sm-8 px-0" },
                       [
                         _c("select2", {
                           attrs: {
-                            options: _vm.options.clients,
+                            options: _vm.options.warehouses,
                             "track-by": "id",
-                            label: "name",
+                            label: "title",
                             "show-labels": false,
                             placeholder: "...",
                             "allow-empty": false,
@@ -49936,503 +50275,213 @@ var render = function() {
                             limit: 5,
                             preserveSearch: true,
                             internalSearch: true,
-                            loading: _vm.loading.clients,
+                            loading: _vm.loading.warehouses,
                             showNoResults: false,
                             multiple: false,
                             taggable: false,
                             max: null
                           },
-                          on: { "search-change": _vm.onSearchClient },
                           model: {
-                            value: _vm.selected.client,
+                            value: _vm.selected.warehouse,
                             callback: function($$v) {
-                              _vm.$set(_vm.selected, "client", $$v)
+                              _vm.$set(_vm.selected, "warehouse", $$v)
                             },
-                            expression: "selected.client"
+                            expression: "selected.warehouse"
                           }
                         })
                       ],
                       1
                     )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "row form-group my-0" }, [
-                  _c("div", { staticClass: "col-sm-6 px-0" }, [
-                    _c("div", { staticClass: "row form-group mb-0" }, [
-                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                        _vm._v("العملة")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "Select2 col-sm-8 px-0" },
-                        [
-                          _c("select2", {
-                            attrs: {
-                              options: _vm.currencies,
-                              "track-by": "id",
-                              label: "title",
-                              "show-labels": false,
-                              placeholder: "...",
-                              "allow-empty": false,
-                              "preselect-first": true,
-                              preserveSearch: false,
-                              internalSearch: false,
-                              searchable: false,
-                              loading: false,
-                              showNoResults: false,
-                              multiple: false,
-                              taggable: false,
-                              max: null
-                            },
-                            model: {
-                              value: _vm.selected.currency,
-                              callback: function($$v) {
-                                _vm.$set(_vm.selected, "currency", $$v)
-                              },
-                              expression: "selected.currency"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-6 px-0" }, [
-                    _c("div", { staticClass: "row form-group mb-0" }, [
-                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                        _vm._v("التعادل")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.selected.currency.buy,
-                            expression: "selected.currency.buy"
-                          }
-                        ],
-                        staticClass: "form-control col-sm-8",
-                        attrs: {
-                          type: "text",
-                          id: "",
-                          placeholder: "أدخل قيمة..."
-                        },
-                        domProps: { value: _vm.selected.currency.buy },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.selected.currency,
-                              "buy",
-                              $event.target.value
-                            )
-                          }
+                  _c("div", { staticClass: "row form-group my-00" }, [
+                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _vm._v("حساب العميل")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.invoice.client_acc,
+                          expression: "invoice.client_acc"
                         }
-                      })
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row form-group my-0" }, [
-                  _c("div", { staticClass: "col-sm-6 px-0" }, [
-                    _c("div", { staticClass: "row form-group mb-0" }, [
-                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                        _vm._v("التاريخ")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.invoice.NDate,
-                            expression: "invoice.NDate"
+                      ],
+                      staticClass: "form-control col-sm-8",
+                      attrs: {
+                        type: "text",
+                        id: "",
+                        placeholder: "أدخل قيمة..."
+                      },
+                      domProps: { value: _vm.invoice.client_acc },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
                           }
-                        ],
-                        staticClass: "form-control col-sm-8",
-                        attrs: {
-                          type: "date",
-                          value: "2018-09-29",
-                          placeholder: "أدخل قيمة..."
-                        },
-                        domProps: { value: _vm.invoice.NDate },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.invoice, "NDate", $event.target.value)
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm-6 px-0" }, [
-                    _c("div", { staticClass: "row form-group mb-0" }, [
-                      _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                        _vm._v("الدفع")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "Select2 col-sm-8 px-0" },
-                        [
-                          _c("select2", {
-                            attrs: {
-                              options: _vm.pay,
-                              "track-by": "id",
-                              label: "title",
-                              "show-labels": false,
-                              placeholder: "...",
-                              "allow-empty": false,
-                              "preselect-first": true,
-                              preserveSearch: false,
-                              internalSearch: false,
-                              searchable: false,
-                              loading: false,
-                              showNoResults: false,
-                              multiple: false,
-                              taggable: false,
-                              max: null
-                            },
-                            model: {
-                              value: _vm.selected.payment,
-                              callback: function($$v) {
-                                _vm.$set(_vm.selected, "payment", $$v)
-                              },
-                              expression: "selected.payment"
-                            }
-                          })
-                        ],
-                        1
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-6 px-0" }, [
-                _c("div", { staticClass: "row form-group my-0" }, [
-                  _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                    _vm._v("الرقم التسلسلي")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "input-group col-sm-8 align-self-center" },
-                    [
-                      _c(
-                        "div",
-                        { staticClass: "input-group-prepend order-3" },
-                        [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-outline-primary",
-                              attrs: {
-                                type: "button",
-                                id: "button-addon1",
-                                disabled: !_vm.canDecreaseSerial
-                              },
-                              on: {
-                                click: function($event) {
-                                  _vm.changeSerial("down")
-                                }
-                              }
-                            },
-                            [_vm._v("-")]
+                          _vm.$set(
+                            _vm.invoice,
+                            "client_acc",
+                            $event.target.value
                           )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.invoice.serial,
-                            expression: "invoice.serial"
-                          }
-                        ],
-                        staticClass: "form-control order-2",
-                        attrs: {
-                          type: "number",
-                          placeholder: _vm.loading.serial ? "loading" : "...",
-                          disabled: false
-                        },
-                        domProps: { value: _vm.invoice.serial },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !("button" in $event) &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
-                              )
-                            ) {
-                              return null
-                            }
-                            _vm.readInvoice()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(_vm.invoice, "serial", $event.target.value)
-                          }
                         }
-                      }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "input-group-append order-1" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-primary",
-                            attrs: {
-                              type: "button",
-                              id: "button-addon1",
-                              disabled: !_vm.canIncreaseSerial
-                            },
-                            on: {
-                              click: function($event) {
-                                _vm.changeSerial("up")
-                              }
-                            }
-                          },
-                          [_vm._v("+")]
-                        )
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row form-group my-00" }, [
-                  _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                    _vm._v("المستودع")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "Select2 col-sm-8 px-0" },
-                    [
-                      _c("select2", {
-                        attrs: {
-                          options: _vm.options.warehouses,
-                          "track-by": "id",
-                          label: "title",
-                          "show-labels": false,
-                          placeholder: "...",
-                          "allow-empty": false,
-                          "preselect-first": false,
-                          limit: 5,
-                          preserveSearch: true,
-                          internalSearch: true,
-                          loading: _vm.loading.warehouses,
-                          showNoResults: false,
-                          multiple: false,
-                          taggable: false,
-                          max: null
-                        },
-                        model: {
-                          value: _vm.selected.warehouse,
-                          callback: function($$v) {
-                            _vm.$set(_vm.selected, "warehouse", $$v)
-                          },
-                          expression: "selected.warehouse"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "row form-group my-00" }, [
-                  _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                    _vm._v("حساب العميل")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.invoice.client_acc,
-                        expression: "invoice.client_acc"
                       }
-                    ],
-                    staticClass: "form-control col-sm-8",
-                    attrs: {
-                      type: "text",
-                      id: "",
-                      placeholder: "أدخل قيمة..."
-                    },
-                    domProps: { value: _vm.invoice.client_acc },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.invoice, "client_acc", $event.target.value)
-                      }
-                    }
-                  })
+                    })
+                  ])
                 ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row form-group mb-3 mt-0" }, [
-              _c("label", { staticClass: "col-sm-1 d-flex" }, [
-                _vm._v("البيان")
               ]),
               _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.invoice.desc,
-                    expression: "invoice.desc"
-                  }
-                ],
-                staticClass: "form-control col-sm-11",
-                attrs: { type: "text", id: "", placeholder: "أدخل قيمة..." },
-                domProps: { value: _vm.invoice.desc },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+              _c("div", { staticClass: "row form-group mb-3 mt-0" }, [
+                _c("label", { staticClass: "col-sm-1 d-flex" }, [
+                  _vm._v("البيان")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.invoice.desc,
+                      expression: "invoice.desc"
                     }
-                    _vm.$set(_vm.invoice, "desc", $event.target.value)
+                  ],
+                  staticClass: "form-control col-sm-11",
+                  attrs: { type: "text", id: "", placeholder: "أدخل قيمة..." },
+                  domProps: { value: _vm.invoice.desc },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.invoice, "desc", $event.target.value)
+                    }
                   }
+                })
+              ]),
+              _vm._v(" "),
+              _c("records", {
+                on: {
+                  hasRecords: _vm.OnCanSave,
+                  recordsChange: _vm.onRecordsChange
                 }
               })
-            ]),
-            _vm._v(" "),
-            _c("records", {
-              on: {
-                hasRecords: _vm.OnCanSave,
-                recordsChange: _vm.onRecordsChange
-              }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm._m(0)
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "ul",
-      {
-        staticClass: "nav nav-pills nav-fill TABS-bottom",
-        attrs: { role: "tablist" }
-      },
-      [
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "button",
-            {
-              staticClass: "nav-link btn btn-outline-secondary active px-5",
-              attrs: {
-                id: "invoiceRecords",
-                "data-toggle": "pill",
-                role: "tab",
-                href: "#invoiceRecords"
-              },
-              on: { click: _vm.tabClicked }
-            },
-            [_vm._v("الفاتورة")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "button",
-            {
-              staticClass: "nav-link btn btn-outline-secondary px-5",
-              attrs: {
-                id: "invoiceDetails",
-                "data-toggle": "pill",
-                role: "tab",
-                href: "#invoiceDetails"
-              },
-              on: { click: _vm.tabClicked }
-            },
-            [_vm._v("المزيد")]
-          )
-        ]),
-        _vm._v(" "),
-        !_vm.settings.edit
-          ? _c("li", { staticClass: "nav-item" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "nav-link btn btn-success px-5",
-                  attrs: { id: "invoiceSave", disabled: !_vm.settings.canSave },
-                  on: {
-                    click: function($event) {
-                      _vm.submitInvoice()
-                    }
-                  }
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm._m(0)
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "ul",
+        {
+          staticClass: "nav nav-pills nav-fill TABS-bottom",
+          attrs: { role: "tablist" }
+        },
+        [
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "button",
+              {
+                staticClass: "nav-link btn btn-outline-secondary active px-5",
+                attrs: {
+                  id: "invoiceRecords",
+                  "data-toggle": "pill",
+                  role: "tab",
+                  href: "#invoiceRecords"
                 },
-                [_vm._v("حفظ")]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.settings.edit
-          ? _c("li", { staticClass: "nav-item" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "nav-link btn btn-info text-white px-5",
-                  attrs: {
-                    id: "invoicesettings.edit",
-                    disabled: !_vm.settings.canEdit
+                on: { click: _vm.tabClicked }
+              },
+              [_vm._v("الفاتورة")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "button",
+              {
+                staticClass: "nav-link btn btn-outline-secondary px-5",
+                attrs: {
+                  id: "invoiceDetails",
+                  "data-toggle": "pill",
+                  role: "tab",
+                  href: "#invoiceDetails"
+                },
+                on: { click: _vm.tabClicked }
+              },
+              [_vm._v("المزيد")]
+            )
+          ]),
+          _vm._v(" "),
+          !_vm.settings.edit
+            ? _c("li", { staticClass: "nav-item" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "nav-link btn btn-success px-5",
+                    attrs: {
+                      id: "invoiceSave",
+                      disabled: !_vm.settings.canSave
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.submitInvoice()
+                      }
+                    }
                   },
-                  on: {
-                    click: function($event) {
-                      _vm.editInvoice()
+                  [_vm._v("حفظ")]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.settings.edit
+            ? _c("li", { staticClass: "nav-item" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "nav-link btn btn-info text-white px-5",
+                    attrs: {
+                      id: "invoicesettings.edit",
+                      disabled: !_vm.settings.canEdit
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.editInvoice()
+                      }
                     }
-                  }
+                  },
+                  [_vm._v("تعديل")]
+                )
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item" }, [
+            _c(
+              "button",
+              {
+                staticClass: "nav-link btn btn-dark px-5",
+                attrs: {
+                  id: "invoiceClear",
+                  disabled: !_vm.settings.canSave && _vm.selected.serial == null
                 },
-                [_vm._v("تعديل")]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item" }, [
-          _c(
-            "button",
-            {
-              staticClass: "nav-link btn btn-dark px-5",
-              attrs: {
-                id: "invoiceClear",
-                disabled: !_vm.settings.canSave && _vm.selected.serial == null
-              },
-              on: {
-                click: function($event) {
-                  _vm.clearInvoice()
+                on: {
+                  click: function($event) {
+                    _vm.clearInvoice()
+                  }
                 }
-              }
-            },
-            [_vm._v("جديد")]
-          )
-        ])
-      ]
-    )
-  ])
+              },
+              [_vm._v("جديد")]
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("loading-page")
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -52603,6 +52652,155 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 80 */,
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(84)
+}
+var normalizeComponent = __webpack_require__(4)
+/* script */
+var __vue_script__ = __webpack_require__(82)
+/* template */
+var __vue_template__ = __webpack_require__(86)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-0b59c750"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/LoadingPage.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0b59c750", Component.options)
+  } else {
+    hotAPI.reload("data-v-0b59c750", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 82 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            show: false
+        };
+    },
+
+    methods: {
+        onLoadingPage: function onLoadingPage() {
+            var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+            this.show = param;
+        }
+    },
+    mounted: function mounted() {
+        this.$parent.$on('LoadingPage', this.onLoadingPage);
+    }
+});
+
+/***/ }),
+/* 83 */,
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(85);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("9222ecea", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b59c750\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoadingPage.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b59c750\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./LoadingPage.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.loading-page[data-v-0b59c750] {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  right: 0;\n  left: 0;\n  background: #000;\n  opacity: .7;\n  z-index: 999999999;\n  text-align: center !important;\n}\n.loading-page h3[data-v-0b59c750] {\n    color: #fff;\n    padding-top: 50px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.show
+    ? _c("div", { staticClass: "loading-page" }, [
+        _c("h3", [_vm._v("الرجاء الانتظار")])
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0b59c750", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

@@ -108,12 +108,14 @@
                 <button @click="clearInvoice()" class="nav-link btn btn-dark px-5" id="invoiceClear" :disabled="!settings.canSave && selected.serial == null">جديد</button>
             </li>
         </ul>
+
+        <loading-page />
     </div>
 </template>
 
 <script>
 import Invoice from '../Invoice.class';
-// import Select2 from 'v-select2-component';
+
 export default {
     props: ["profile", "currencies", "pay"],
     data() {
@@ -122,7 +124,7 @@ export default {
             selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null},
             settings: {canSave: false, canEdit: false, edit: false, saved: false, rtl: true },
             options: {clients: [] , warehouses: [], serials: []},    
-            loading: {page: false, clients: false},   
+            loading: {page: false, clients: false, serial: false},   
         }
     },
     methods: {
@@ -135,6 +137,7 @@ export default {
             }
         },
         submitInvoice() {
+            this.loadingPage()
             axios.post(`/api/invoices/${this.profile.id}`, this.invoice)
                 .then(resp => {
                     console.log(resp)
@@ -147,6 +150,7 @@ export default {
                     this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" })
                     console.log("error", error)
                 })
+                .then(() => this.loadingPage(false))
         },
         init(data = null) { 
             if (data == null) { // reset all
@@ -192,13 +196,14 @@ export default {
         },
         readInvoice() { // after reading, settings.edit mode will become active        
             if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
+                this.loadingPage()
                 axios.get(`/api/invoices/${this.profile.id}/findBySerial?serial=${this.invoice.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.invoice.serial
                     .then(resp => { console.log("resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
                                 var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Invoice(this.profile))
                                 this.init(result)
-                                this.Msg.success({title: "نجاح الطلب", message: resp.data.msg})
+                                // this.Msg.success({title: "نجاح الطلب", message: resp.data.msg})
                                 break
                             case 204:
                                 this.Msg.info({title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة"})
@@ -212,10 +217,12 @@ export default {
                         this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
                         console.log("error", error)
                     })
+                    .then(() => this.loadingPage(false))
             }
         },
         readInvoiceDebounce: _.debounce(function(){ this.readInvoice() }, 200),
         editInvoice() {
+            this.loadingPage()
             axios.put(`/api/invoices/${this.profile.id}`, this.invoice)
                 .then(resp => {
                     console.log(resp)
@@ -227,6 +234,7 @@ export default {
                     this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة"})
                     console.log("error", error)
                 })
+                .then(() => this.loadingPage(false))
         },    
         search: _.debounce(function(filterMethod, entity, query='', callback){ 
             this.loading[entity] = true                 
@@ -301,6 +309,9 @@ export default {
                     this.selected.serial++
             console.log("this.selected.serial= " + this.selected.serial + " - option selected= "+this.options.serials[this.selected.serial])
             this.readInvoiceDebounce();
+        },
+        loadingPage(param=true){
+            this.loading.page = param
         }
     },
     computed: {
@@ -346,8 +357,14 @@ export default {
             deep: true
         },
         invoice: {
-            handler: function(newValue) {  
+            handler: function(invoice) {  
                 this.settings.canEdit = true
+            },
+            deep: true
+        },
+        loading: {
+            handler: function(loading) {  
+                this.$emit('LoadingPage', loading.page)
             },
             deep: true
         },
@@ -361,13 +378,5 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped lang="scss">
-/******************** INPUT GROUP ********************/
-// .input-group{ 
-//     .input-group-prepend .input-group-text{
-//         border-radius: 0 0.25rem 0.25rem 0 !important; //border-color: red !important;
-//     }
-//     input{
-//         border-radius: 0.25rem 0 0 0.25rem !important;
-//     }
-// }
+
 </style>
