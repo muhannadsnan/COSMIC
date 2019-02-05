@@ -214,6 +214,7 @@ export default {
                     })
             }
         },
+        readInvoiceDebounce: _.debounce(function(){ this.readInvoice() }, 200),
         editInvoice() {
             axios.put(`/api/invoices/${this.profile.id}`, this.invoice)
                 .then(resp => {
@@ -299,6 +300,7 @@ export default {
                 else
                     this.selected.serial++
             console.log("this.selected.serial= " + this.selected.serial + " - option selected= "+this.options.serials[this.selected.serial])
+            this.readInvoiceDebounce();
         }
     },
     computed: {
@@ -352,7 +354,7 @@ export default {
     },
     mounted() {        
         console.log("Component <invoice-selling> mounted.")
-        this.init()        
+        this.init()     
     },
 }
 </script>

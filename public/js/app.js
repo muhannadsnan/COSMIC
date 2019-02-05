@@ -49665,6 +49665,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 });
             }
         },
+
+        readInvoiceDebounce: _.debounce(function () {
+            this.readInvoice();
+        }, 200),
         editInvoice: function editInvoice() {
             var _this4 = this;
 
@@ -49751,6 +49755,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             if (change == 'up' && this.canIncreaseSerial) // go up in value, down in index                
                 this.selected.serial--;else if (change == 'down' && this.canDecreaseSerial) if (this.selected.serial == null) this.selected.serial = 0;else this.selected.serial++;
             console.log("this.selected.serial= " + this.selected.serial + " - option selected= " + this.options.serials[this.selected.serial]);
+            this.readInvoiceDebounce();
         }
     },
     computed: {
