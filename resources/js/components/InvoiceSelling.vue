@@ -149,7 +149,7 @@ export default {
                 })
         },
         init(data = null) { 
-            if (data == null) {
+            if (data == null) { // reset all
                 this.invoice = new Invoice(this.profile) 
                 this.invoice.NDate = Store.formatDate(Date.now())
                 this.invoice.NType = +Store.urlParam('type')
@@ -163,10 +163,11 @@ export default {
                 this.settings.edit = false
                 this.settings.canSave = false 
                 this.getSerials()
-            } else {
+            } 
+            else { // fill inv
                 var inv = new Invoice(this.profile)
-                inv.fill(data)
-                this.invoice = inv ;  //console.log("inv", this.invoice)
+                inv.fill(data); console.log("inv", inv)
+                this.invoice = inv ;  console.log("invoice", this.invoice)
                 this.$emit('gotRecords', data._records)
                 this.invoice.records = data._records
                 if(this.options.clients.length == 0){
@@ -179,7 +180,8 @@ export default {
                 this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
                 this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
                 this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
-                this.selected.serial = data.serial
+                this.selected.serial = this.options.serials.indexOf(data.serial)
+                console.log('filter', this.selected.serial);
                 this.settings.edit = true          
                 this.settings.canEdit = false
             }
@@ -194,17 +196,15 @@ export default {
                     .then(resp => { console.log("resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
-                                if (Array.isArray(resp.data.data))
-                                    this.init(resp.data.data[0])
-                                else if (resp.data.data != null) 
-                                    this.init(resp.data.data)
-                                    this.Msg.success({title: "نجاح الطلب", message: resp.data.msg})
+                                var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Invoice(this.profile))
+                                this.init(result)
+                                this.Msg.success({title: "نجاح الطلب", message: resp.data.msg})
                                 break
                             case 204:
                                 this.Msg.info({title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة"})
                                 break
                             default:
-                                this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                                this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة--" })
                                 break
                         }
                     })
@@ -267,17 +267,15 @@ export default {
         },
         getSerials(){ // and set the max serial
             this.loading.serial = true
-            axios.get(`/api/invoices/${this.profile.id}/getSerials/${this.invoice.NType}`) //?ser='+this.invoice.serial
+            axios.get(`/api/invoices/${this.profile.id}/getSerials/${this.invoice.NType}`)
                 .then(resp => { console.log("getSerials", resp); 
                     switch (resp.status) {
                         case 200:
-                            var result = resp.data; console.log('result', result);
-                            this.options.serials = result                            
+                            var result = resp.data
+                            this.options.serials = result    ; console.log('options.serials', result);                        
                             if(result.length == 0){
-                                // result.push(1) 
                                 this.invoice.serial = 1
                             }else{
-                                // this.selected.serial = 0 // index of it
                                 this.invoice.serial = +this.options.serials[0] + 1
                             }
                             break 
@@ -307,7 +305,7 @@ export default {
         canIncreaseSerial(){
             return this.selected.serial != 0 && this.selected.serial != null
         },
-        canDecreaseSerial(){ console.log('this.selected.serial+1 != this.options.serials.length', this.selected.serial+1 != this.options.serials.length);
+        canDecreaseSerial(){ 
             if(this.selected.serial == null)
                 return   this.options.serials.length != 0  
             else
@@ -339,7 +337,7 @@ export default {
                 }
                 if(data.serial != null){ //console.log('data.serial', data.serial);
                     this.invoice.serial = +this.options.serials[data.serial]
-                    console.log("selected.serial",this.selected.serial)
+                    console.log("selected.serial= "+this.selected.serial+ " - this.invoice.serial= ",this.invoice.serial) 
                 }                
                 this.settings.canEdit = true
             },

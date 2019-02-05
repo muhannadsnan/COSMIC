@@ -24,7 +24,9 @@ class InvoiceController extends Controller
 /***************** API ******************/
     public function findBySerial(Request $request, Profile $profile)
     { 
-        if(!($inv=Invoice::searchBySerial($request)) || count($inv) == 0)
+        if(!($inv=Invoice::searchBySerial($request, $profile->id)))
+            return response()->json(['msg' => 'حدث خطأ أثناء البحث'], 500); 
+        if(count($inv) == 0)
             return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204 
         return response()->json(['data' => $inv, 'msg' => 'تم ايجاد الفاتورة'], 200);
     }
@@ -57,7 +59,8 @@ class InvoiceController extends Controller
         return response()->json(['data' => $res, 'msg' => 'تم البحث عن العميل بنجاح'], 200);
     }
     
-    public function getSerials(Request $request, Profile $profile, $NType=1){
+    public function getSerials(Request $request, Profile $profile, $NType=1)
+    {
         return Invoice::getSerials($profile->id, $NType);
     }
 /********************************************/

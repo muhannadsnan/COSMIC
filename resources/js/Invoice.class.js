@@ -1,5 +1,5 @@
 export default class Invoice {
-    constructor(profile = {}, id = 0, serial = '', payment_id = 0, currency_id = 0, title = '', desc = '', client_acc = 0, NType = 1, NDate = '', ext_num = '', int_num = '', sum = 0, remaining = 0, client_id = 0, warehouse_id = 0, records = [], deletedRecords = []) {
+    constructor(profile = {}, id = 0, serial = 0, payment_id = 0, currency_id = 0, title = '', desc = '', client_acc = 0, NType = 1, NDate = '', ext_num = '', int_num = '', sum = 0, remaining = 0, client_id = 0, warehouse_id = 0, records = [], deletedRecords = []) {
         this.id = id;
         this.serial = serial;
         this.payment_id = payment_id;
@@ -20,8 +20,8 @@ export default class Invoice {
         this.records = records;
         this.deletedRecords = deletedRecords;
     }
-    fill(obj) {
-        this.id = obj.id; this.serial = obj.serial; this.payment_id = obj.payment_id; this.currency_id = obj.currency_id; this.title = obj.title; this.desc = obj.desc;
+    fill(obj) { console.log('fill', obj);
+        this.id = obj.id; this.serial = +obj.serial; this.payment_id = obj.payment_id; this.currency_id = obj.currency_id; this.title = obj.title; this.desc = obj.desc;
         this.client_acc = obj.client_acc; this.NType = obj.NType; this.NDate = obj.NDate; this.ext_num = obj.ext_num; this.int_num = obj.int_num; this.sum = obj.sum;
         this.remaining = obj.remaining; this.client_id = obj.client_id; this.warehouse_id = obj.warehouse_id; 
     }

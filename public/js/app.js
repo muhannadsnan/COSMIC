@@ -49593,6 +49593,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
             if (data == null) {
+                // reset all
                 this.invoice = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
                 this.invoice.NDate = Store.formatDate(Date.now());
                 this.invoice.NType = +Store.urlParam('type');
@@ -49607,9 +49608,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.settings.canSave = false;
                 this.getSerials();
             } else {
+                // fill inv
                 var inv = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
-                inv.fill(data);
-                this.invoice = inv; //console.log("inv", this.invoice)
+                inv.fill(data);console.log("inv", inv);
+                this.invoice = inv;console.log("invoice", this.invoice);
                 this.$emit('gotRecords', data._records);
                 this.invoice.records = data._records;
                 if (this.options.clients.length == 0) {
@@ -49626,7 +49628,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.selected.payment = this.pay.find(function (el) {
                     return el.id == data._payment.id;
                 });
-                this.selected.serial = data.serial;
+                this.selected.serial = this.options.serials.indexOf(data.serial);
+                console.log('filter', this.selected.serial);
                 this.settings.edit = true;
                 this.settings.canEdit = false;
             }
@@ -49645,14 +49648,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     console.log("resp", resp);console.log("resp.data.data[0]", resp.data.data[0]);
                     switch (resp.status) {
                         case 200:
-                            if (Array.isArray(resp.data.data)) _this3.init(resp.data.data[0]);else if (resp.data.data != null) _this3.init(resp.data.data);
+                            var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](_this3.profile);
+                            _this3.init(result);
                             _this3.Msg.success({ title: "نجاح الطلب", message: resp.data.msg });
                             break;
                         case 204:
                             _this3.Msg.info({ title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة" });
                             break;
                         default:
-                            _this3.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                            _this3.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة--" });
                             break;
                     }
                 }).catch(function (error) {
@@ -49720,18 +49724,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             // and set the max serial
             this.loading.serial = true;
-            axios.get("/api/invoices/" + this.profile.id + "/getSerials/" + this.invoice.NType) //?ser='+this.invoice.serial
-            .then(function (resp) {
+            axios.get("/api/invoices/" + this.profile.id + "/getSerials/" + this.invoice.NType).then(function (resp) {
                 console.log("getSerials", resp);
                 switch (resp.status) {
                     case 200:
-                        var result = resp.data;console.log('result', result);
-                        _this6.options.serials = result;
+                        var result = resp.data;
+                        _this6.options.serials = result;console.log('options.serials', result);
                         if (result.length == 0) {
-                            // result.push(1) 
                             _this6.invoice.serial = 1;
                         } else {
-                            // this.selected.serial = 0 // index of it
                             _this6.invoice.serial = +_this6.options.serials[0] + 1;
                         }
                         break;
@@ -49757,7 +49758,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             return this.selected.serial != 0 && this.selected.serial != null;
         },
         canDecreaseSerial: function canDecreaseSerial() {
-            console.log('this.selected.serial+1 != this.options.serials.length', this.selected.serial + 1 != this.options.serials.length);
             if (this.selected.serial == null) return this.options.serials.length != 0;else return this.selected.serial + 1 != this.options.serials.length;
         }
     },
@@ -49795,7 +49795,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 if (data.serial != null) {
                     //console.log('data.serial', data.serial);
                     this.invoice.serial = +this.options.serials[data.serial];
-                    console.log("selected.serial", this.selected.serial);
+                    console.log("selected.serial= " + this.selected.serial + " - this.invoice.serial= ", this.invoice.serial);
                 }
                 this.settings.canEdit = true;
             },
@@ -49827,7 +49827,7 @@ var Invoice = function () {
     function Invoice() {
         var profile = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        var serial = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+        var serial = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
         var payment_id = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
         var currency_id = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
         var title = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
@@ -49870,7 +49870,8 @@ var Invoice = function () {
     _createClass(Invoice, [{
         key: 'fill',
         value: function fill(obj) {
-            this.id = obj.id;this.serial = obj.serial;this.payment_id = obj.payment_id;this.currency_id = obj.currency_id;this.title = obj.title;this.desc = obj.desc;
+            console.log('fill', obj);
+            this.id = obj.id;this.serial = +obj.serial;this.payment_id = obj.payment_id;this.currency_id = obj.currency_id;this.title = obj.title;this.desc = obj.desc;
             this.client_acc = obj.client_acc;this.NType = obj.NType;this.NDate = obj.NDate;this.ext_num = obj.ext_num;this.int_num = obj.int_num;this.sum = obj.sum;
             this.remaining = obj.remaining;this.client_id = obj.client_id;this.warehouse_id = obj.warehouse_id;
         }

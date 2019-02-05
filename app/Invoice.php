@@ -94,9 +94,9 @@ class Invoice extends _Model
         return $res;
     }
 
-    public static function searchBySerial($request){
-        $res = Invoice::where('serial', $request->serial)
-                        ->where('NType', $request->NType)->with('_payment', '_currency', '_records', '_clients', '_warehouses')->get(); 
+    public static function searchBySerial($request, $profile_id){ // should bring only a record
+        $res = Invoice::where('serial', $request->serial)->where('NType', $request->NType)->where('profile_id', $profile_id)
+                        ->with('_payment', '_currency', '_records', '_clients', '_warehouses')->get(); 
         if(!$res) return false;
         return $res;
     }
