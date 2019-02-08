@@ -48727,7 +48727,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\ntable tr td[data-v-270f56a7] {\n  padding: 0;\n  height: 20px !important;\n}\ntable tr td input.form-control[data-v-270f56a7] {\n    background: transparent;\n    border: 0;\n    border-radius: 0;\n    max-width: unset;\n    width: 100%;\n    color: #fff;\n    padding: 0px 5px;\n    line-height: 20px;\n    height: 31px;\n}\n", ""]);
+exports.push([module.i, "\ntable tr:hover .deleteRec[data-v-270f56a7] {\n  opacity: 1;\n}\ntable tr .deleteRec[data-v-270f56a7] {\n  float: left;\n  padding: 1 6px;\n  opacity: 0;\n}\ntable tr td[data-v-270f56a7] {\n  padding: 0;\n  height: 20px !important;\n}\ntable tr td input.form-control[data-v-270f56a7] {\n    background: transparent;\n    border: 0;\n    border-radius: 0;\n    max-width: unset;\n    width: 100%;\n    color: #fff;\n    padding: 0px 5px;\n    line-height: 20px;\n    height: 31px;\n}\n", ""]);
 
 // exports
 
@@ -48822,18 +48822,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.records.push(this.newREC);
                 this.newREC = new __WEBPACK_IMPORTED_MODULE_0__Record_class__["a" /* default */]();
                 this.$refs.firstInput.focus();
-                this.$emit('recordsChange', this.records);
+                this.$emit('recordsChanged', this.records);
             }
-            this.enableSaveInvoice();
+            // this.enableSaveInvoice()
         },
         clear: function clear() {
             this.records = [];console.log("recoreds cleared !");
-            this.enableSaveInvoice();
-            this.$emit('recordsChange', this.records);
+            // this.enableSaveInvoice()
+            this.$emit('recordsChanged', this.records);
         },
-        enableSaveInvoice: function enableSaveInvoice() {
-            if (this.records.length > 0) {
-                this.$emit('hasRecords', true);
+
+        // enableSaveInvoice(){
+        //     if(this.records.length > 0){
+        //         this.$emit('hasRecords', true)
+        //     }
+        // },
+        deleteRec: function deleteRec(recID, recMAT) {
+            if (confirm('هل أنت متأكد أنك تريد حذف المادة؟')) {
+                if (recID) {
+                    this.records = this.records.filter(function (el) {
+                        return el.id != recID;
+                    });
+                    this.$emit('recordsChanged', this.records);
+                    this.$emit('RecordDeleted', recID);
+                } else {
+                    this.records = this.records.filter(function (el) {
+                        return el.mat != recMAT;
+                    });
+                    this.$emit('recordsChanged', this.records);
+                }
             }
         }
     },
@@ -48920,7 +48937,21 @@ var render = function() {
           [
             _vm._l(_vm.records, function(item, i) {
               return _c("tr", [
-                _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(i + 1))]),
+                _c("th", { attrs: { scope: "row" } }, [
+                  _vm._v(_vm._s(i + 1) + " "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-danger deleteRec",
+                      on: {
+                        click: function($event) {
+                          _vm.deleteRec(item.id, item.mat)
+                        }
+                      }
+                    },
+                    [_vm._v("X")]
+                  )
+                ]),
                 _vm._v(" "),
                 _c("td", [
                   _c("input", {
@@ -49559,21 +49590,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         return {
             invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile),
             selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
-            settings: { canSave: false, canEdit: false, edit: false, saved: false, rtl: true },
+            settings: { canSave: false, canEdit: false, editMode: false, originalObj: {}, saved: false,
+                rtl: true, hasRecords: false, valid: false },
             options: { clients: [], warehouses: [], serials: [] },
             loading: { page: false, clients: false, serial: false }
         };
     },
 
     methods: {
-        tabClicked: function tabClicked() {
-            /*  JQuery tab funcionality */$(this.$el).tab("show");
+        tabClicked: function tabClicked(event) {
+            /* JQuery tab funcionality */$(this.$el).tab("show");
         },
         clearInvoice: function clearInvoice() {
-            if (confirm("هل أنت متأكد من أنك تريد حذف الفاتورة؟")) {
+            if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
                 this.$emit("ClearInvoice");
                 this.init();
-                this.Msg.success({ title: "تم بنجاح!", message: "حذف الفاتورة" });
+                // this.Msg.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
             }
         },
         submitInvoice: function submitInvoice() {
@@ -49597,26 +49629,30 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var _this2 = this;
 
             var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+            var callback = arguments[1];
 
             if (data == null) {
                 // reset all
-                this.invoice = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
+                // this.invoice = new Invoice(this.profile) 
                 this.invoice.NDate = Store.formatDate(Date.now());
                 this.invoice.NType = +Store.urlParam('type');
-                this.invoice.client_id = 0;
+                this.invoice.client_id = 1;
                 this.options.warehouses = this.profile._warehouses;
                 this.selected.client = null;
                 this.selected.warehouse = null;
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0];
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0];
                 this.selected.serial = null;
-                this.settings.edit = false;
-                this.settings.canSave = false;
-                this.getSerials();
+                this.getSerials(); //(() => { // callback
+                //     this.settings.originalObj = Object.assign({}, this.invoice)                      
+                // })
+                this.settings.editMode = false;
+                // this.settings.canSave = false 
+                // this.settings.canEdit = false 
             } else {
                 // fill inv
                 var inv = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
-                inv.fill(data);console.log("inv", inv);
+                inv.fill(data);console.log("inv.fill", inv);
                 this.invoice = inv;console.log("invoice", this.invoice);
                 this.$emit('gotRecords', data._records);
                 this.invoice.records = data._records;
@@ -49635,19 +49671,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     return el.id == data._payment.id;
                 });
                 this.selected.serial = this.options.serials.indexOf(data.serial);
-                console.log('filter', this.selected.serial);
-                this.settings.edit = true;
-                this.settings.canEdit = false;
+                this.settings.editMode = true;
+                // this.settings.canEdit = false
             }
-        },
-        OnCanSave: function OnCanSave(val) {
-            console.log("can save invoice", val);
-            this.settings.canSave = val;
+            callback();
         },
         readInvoice: function readInvoice() {
             var _this3 = this;
 
-            // after reading, settings.edit mode will become active        
+            // after reading, settings.editMode mode will become active        
             if (!this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
                 this.loadingPage();
                 axios.get("/api/invoices/" + this.profile.id + "/findBySerial?serial=" + this.invoice.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.invoice.serial
@@ -49708,6 +49740,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 switch (resp.status) {
                     case 200:
                         _this5.options[entity] = resp.data.data;
+                        // this.settings.canEdit = false
                         break;
                     case 204:
                         _this5.Msg.info({ title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث" });
@@ -49732,10 +49765,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 this.settings.canEdit = false;
             }
         },
-        onRecordsChange: function onRecordsChange(data) {
+        onRecordsChanged: function onRecordsChanged(data) {
             this.invoice.records = data;
+            // this.settings.canEdit = true
         },
-        getSerials: function getSerials() {
+        getSerials: function getSerials(callback) {
             var _this6 = this;
 
             // and set the max serial
@@ -49761,7 +49795,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 console.log("error", error);
             }).then(function () /* finally */{
                 _this6.loading.serial = false;
-            });
+            }).then(callback);
         },
         changeSerial: function changeSerial(change) {
             if (change == 'up' && this.canIncreaseSerial) // go up in value, down in index                
@@ -49773,6 +49807,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
             this.loading.page = param;
+        },
+        onDeleteRec: function onDeleteRec(recID) {
+            this.invoice.deletedRecords.push(recID);
         }
     },
     computed: {
@@ -49781,11 +49818,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         canDecreaseSerial: function canDecreaseSerial() {
             if (this.selected.serial == null) return this.options.serials.length != 0;else return this.selected.serial + 1 != this.options.serials.length;
+        },
+        changed: function changed() {
+            // determain whether settings.originalObj and invoice are completely equal 
+            return !_.isEqual(JSON.stringify(this.settings.originalObj), JSON.stringify(this.invoice));
         }
     },
     watch: {
         selected: {
             handler: function handler(newValue) {
+                // console.log('changed2', !_.isEqual(this.settings.originalObj, this.invoice));
                 var data = JSON.parse(JSON.stringify(newValue));
                 console.log("selected", data);
 
@@ -49819,13 +49861,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     this.invoice.serial = +this.options.serials[data.serial];
                     console.log("selected.serial= " + this.selected.serial + " - this.invoice.serial= ", this.invoice.serial);
                 }
-                this.settings.canEdit = true;
+                // console.log('changed3', !_.isEqual(this.settings.originalObj, this.invoice));     
             },
             deep: true
         },
         invoice: {
             handler: function handler(invoice) {
-                this.settings.canEdit = true;
+                // console.log('changed1', !_.isEqual(this.settings.originalObj, this.invoice));
+                if (this.invoice.client_id && this.invoice.client_acc && this.invoice.records.length != 0 && this.invoice.warehouse_id) {
+                    this.settings.valid = true;
+                } else {
+                    this.settings.valid = false;
+                }
+                // console.log('changed11', !_.isEqual(this.settings.originalObj, this.invoice));
+            },
+            deep: true
+        },
+        changed: {
+            handler: function handler(changed) {
+                console.log('changed0', changed);
             },
             deep: true
         },
@@ -49837,8 +49891,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         }
     },
     mounted: function mounted() {
+        var _this7 = this;
+
         console.log("Component <invoice-selling> mounted.");
-        this.init();
+        this.init(null, function () {
+            console.log('callback');_this7.settings.originalObj = Object.assign({}, _this7.invoice);console.log('change');
+        });
     }
 });
 
@@ -50362,8 +50420,8 @@ var render = function() {
               _vm._v(" "),
               _c("records", {
                 on: {
-                  hasRecords: _vm.OnCanSave,
-                  recordsChange: _vm.onRecordsChange
+                  recordsChanged: _vm.onRecordsChanged,
+                  RecordDeleted: _vm.onDeleteRec
                 }
               })
             ],
@@ -50387,10 +50445,10 @@ var render = function() {
               {
                 staticClass: "nav-link btn btn-outline-secondary active px-5",
                 attrs: {
-                  id: "invoiceRecords",
+                  id: "InvoiceSelling",
                   "data-toggle": "pill",
                   role: "tab",
-                  href: "#invoiceRecords"
+                  href: "#InvoiceSelling"
                 },
                 on: { click: _vm.tabClicked }
               },
@@ -50415,7 +50473,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          !_vm.settings.edit
+          !_vm.settings.editMode
             ? _c("li", { staticClass: "nav-item" }, [
                 _c(
                   "button",
@@ -50423,7 +50481,7 @@ var render = function() {
                     staticClass: "nav-link btn btn-success px-5",
                     attrs: {
                       id: "invoiceSave",
-                      disabled: !_vm.settings.canSave
+                      disabled: !_vm.changed || !_vm.settings.valid
                     },
                     on: {
                       click: function($event) {
@@ -50436,15 +50494,15 @@ var render = function() {
               ])
             : _vm._e(),
           _vm._v(" "),
-          _vm.settings.edit
+          _vm.settings.editMode
             ? _c("li", { staticClass: "nav-item" }, [
                 _c(
                   "button",
                   {
                     staticClass: "nav-link btn btn-info text-white px-5",
                     attrs: {
-                      id: "invoicesettings.edit",
-                      disabled: !_vm.settings.canEdit
+                      id: "invoicesettings.editMode",
+                      disabled: !_vm.changed || !_vm.settings.valid
                     },
                     on: {
                       click: function($event) {
@@ -50464,7 +50522,7 @@ var render = function() {
                 staticClass: "nav-link btn btn-dark px-5",
                 attrs: {
                   id: "invoiceClear",
-                  disabled: !_vm.settings.canSave && _vm.selected.serial == null
+                  disabled: !_vm.changed && _vm.selected.serial == null
                 },
                 on: {
                   click: function($event) {

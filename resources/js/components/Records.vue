@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 <tr v-for="item,i in records">
-                    <th scope="row">{{i+1}}</th>
+                    <th scope="row">{{i+1}} <button class="btn btn-sm btn-danger deleteRec" @click="deleteRec(item.id, item.mat)">X</button></th>
                     <td><input type="text" v-model="records[i].mat" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
                     <td><input type="number" v-model.number="records[i].qty" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
                     <td><input type="number" v-model.number="records[i].single" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
@@ -47,18 +47,30 @@ export default {
                     this.records.push(this.newREC)
                     this.newREC = new REC()
                     this.$refs.firstInput.focus()
-                    this.$emit('recordsChange', this.records)
+                    this.$emit('recordsChanged', this.records)
                 }
-                this.enableSaveInvoice()
+                // this.enableSaveInvoice()
             },
             clear(){
                 this.records = []; console.log("recoreds cleared !");
-                this.enableSaveInvoice()
-                this.$emit('recordsChange', this.records)
+                // this.enableSaveInvoice()
+                this.$emit('recordsChanged', this.records)
             },
-            enableSaveInvoice(){
-                if(this.records.length > 0){
-                    this.$emit('hasRecords', true)
+            // enableSaveInvoice(){
+            //     if(this.records.length > 0){
+            //         this.$emit('hasRecords', true)
+            //     }
+            // },
+            deleteRec(recID, recMAT){
+                if(confirm('هل أنت متأكد أنك تريد حذف المادة؟')){ 
+                    if(recID){
+                            this.records = this.records.filter(el => el.id != recID)
+                            this.$emit('recordsChanged', this.records)
+                            this.$emit('RecordDeleted', recID)
+                    }else{
+                        this.records = this.records.filter(el => el.mat != recMAT)
+                        this.$emit('recordsChanged', this.records)
+                    }
                 }
             }
         },
@@ -94,22 +106,26 @@ export default {
 
 <style lang="scss" scoped>
 table {
-  tr {
-    td {
-      padding: 0;
-      height: 20px !important;
-      input.form-control {
-        background: transparent;
-        border: 0;
-        border-radius: 0;
-        max-width: unset;
-        width: 100%;
-        color: #fff;
-        padding: 0px 5px;
-        line-height: 20px;
-        height: 31px;
-      }
+    tr {
+        &:hover{
+            .deleteRec{opacity: 1;}
+        }
+        .deleteRec{ float: left; padding: 1 6px; opacity: 0;  }
+        td {
+        padding: 0;
+        height: 20px !important;
+        input.form-control {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            max-width: unset;
+            width: 100%;
+            color: #fff;
+            padding: 0px 5px;
+            line-height: 20px;
+            height: 31px;
+        }
+        }
     }
-  }
 }
 </style>

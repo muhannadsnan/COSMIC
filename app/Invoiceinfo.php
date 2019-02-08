@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Invoiceinfo;
 
-class Invoiceinfo extends _model
+class Invoiceinfo extends _Model
 {
     public function _invoice()
     {
@@ -30,21 +30,23 @@ class Invoiceinfo extends _model
         return true;
     }
 
-    public static function edit($request, $invID=0){
-        $info = Invoiceinfo::findOrFail($request['id']); 
-        $info->mat = $request['mat'];
-        $info->qty = $request['qty'];
-        $info->single = $request['single'];
-        $info->total = $request['total'];
-        $info->invoice_id = @$request['invoice_id'];
-        return $info->save();
+    public static function edit($request, $invID=1){ //dd($request['invoice_id']);
+        $info = Invoiceinfo::updateOrCreate(['id' => @$request['id']], [
+            'mat' => $request['mat'],
+            'qty' => $request['qty'],
+            'single' => $request['single'],
+            'total' => $request['total'],
+            'invoice_id' => $invID,
+            
+        ]); 
+        return $info->save(); 
     }
 
-    public static function editMany($records, $invID=0){ //dd($records);
+    public static function editMany($records, $deletedRecords, $invID=1){ //dd($records);
+        Invoiceinfo::whereIn('id', $deletedRecords)->delete();
         foreach($records as $rec){
             InvoiceInfo::edit($rec, $invID); 
         }
-        // Invoiceinfo::whereIn('id', $ids_to_delete)->delete(); 
         return true;
     }
 }

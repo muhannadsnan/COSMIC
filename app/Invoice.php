@@ -44,7 +44,7 @@ class Invoice extends _Model
 
     public static function editFull($request){
         if( !$updInvoice = Invoice::edit($request)) return false;
-        if( !Invoice::editRecords($request->records, $updInvoice->id)) return false;
+        if( !Invoice::editRecords($request->records, $request->deletedRecords, $updInvoice->id)) return false;
         
         $updInvoice->_clients()->sync([ $request->client_id ]);
         $updInvoice->_warehouses()->sync([ $request->warehouse_id ]);
@@ -71,8 +71,8 @@ class Invoice extends _Model
         return $inv;
     }
 
-    public static function editRecords($records, $invID){
-        if(!InvoiceInfo::editMany($records, $invID)) return false;
+    public static function editRecords($records, $deletedRecords, $invID=1){
+        if(!InvoiceInfo::editMany($records, $deletedRecords, $invID)) return false;
         return true;
     }
     

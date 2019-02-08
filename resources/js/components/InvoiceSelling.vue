@@ -83,7 +83,7 @@
                     <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
                 <!--------------- RECORDS ---------------->
-                <records @hasRecords="OnCanSave" @recordsChange="onRecordsChange" />
+                <records @recordsChanged="onRecordsChanged" @RecordDeleted="onDeleteRec"/>
             </div>
 
             <div id="invoiceDetails" class="tab-pane fade" role="tabpanel">
@@ -93,19 +93,19 @@
 
         <ul class="nav nav-pills nav-fill TABS-bottom" role="tablist">
             <li class="nav-item">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary active px-5" id="invoiceRecords" data-toggle="pill" role="tab" href="#invoiceRecords">الفاتورة</button>
+                <button @click="tabClicked" class="nav-link btn btn-outline-secondary active px-5" id="InvoiceSelling" data-toggle="pill" role="tab" href="#InvoiceSelling">الفاتورة</button>
             </li>
             <li class="nav-item">
                 <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails">المزيد</button>
             </li>
-            <li class="nav-item" v-if="!settings.edit">
-                <button @click="submitInvoice()" class="nav-link btn btn-success px-5" id="invoiceSave" :disabled="!settings.canSave">حفظ</button>
+            <li class="nav-item" v-if="!settings.editMode">
+                <button @click="submitInvoice()" class="nav-link btn btn-success px-5" id="invoiceSave" :disabled="!changed || !settings.valid">حفظ</button>
             </li>
-            <li class="nav-item" v-if="settings.edit">
-                <button @click="editInvoice()" class="nav-link btn btn-info text-white px-5" id="invoicesettings.edit" :disabled="!settings.canEdit">تعديل</button>
+            <li class="nav-item" v-if="settings.editMode">
+                <button @click="editInvoice()" class="nav-link btn btn-info text-white px-5" id="invoicesettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
             </li>
             <li class="nav-item">
-                <button @click="clearInvoice()" class="nav-link btn btn-dark px-5" id="invoiceClear" :disabled="!settings.canSave && selected.serial == null">جديد</button>
+                <button @click="clearInvoice()" class="nav-link btn btn-dark px-5" id="invoiceClear" :disabled="!changed && selected.serial == null">جديد</button>
             </li>
         </ul>
 
@@ -122,18 +122,19 @@ export default {
         return {
             invoice: new Invoice(this.profile),
             selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null},
-            settings: {canSave: false, canEdit: false, edit: false, saved: false, rtl: true },
+            settings: {canSave: false, canEdit: false, editMode: false, originalObj: {}, saved: false, 
+                        rtl: true, hasRecords: false, valid: false},
             options: {clients: [] , warehouses: [], serials: []},    
             loading: {page: false, clients: false, serial: false},   
         }
     },
     methods: {
-        tabClicked() { /*  JQuery tab funcionality */ $(this.$el).tab("show") },       
+        tabClicked(event) { /* JQuery tab funcionality */  $(this.$el).tab("show") },       
         clearInvoice() {
-            if (confirm("هل أنت متأكد من أنك تريد حذف الفاتورة؟")) {
+            if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
                 this.$emit("ClearInvoice")
                 this.init()
-                this.Msg.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
+                // this.Msg.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
             }
         },
         submitInvoice() {
@@ -152,25 +153,28 @@ export default {
                 })
                 .then(() => this.loadingPage(false))
         },
-        init(data = null) { 
+        init(data = null, callback) { 
             if (data == null) { // reset all
-                this.invoice = new Invoice(this.profile) 
+                // this.invoice = new Invoice(this.profile) 
                 this.invoice.NDate = Store.formatDate(Date.now())
                 this.invoice.NType = +Store.urlParam('type')
-                this.invoice.client_id = 0
+                this.invoice.client_id = 1
                 this.options.warehouses = this.profile._warehouses
                 this.selected.client = null
                 this.selected.warehouse = null
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
                 this.selected.serial = null
-                this.settings.edit = false
-                this.settings.canSave = false 
-                this.getSerials()
+                this.getSerials() //(() => { // callback
+                //     this.settings.originalObj = Object.assign({}, this.invoice)                      
+                // })
+                this.settings.editMode = false
+                // this.settings.canSave = false 
+                // this.settings.canEdit = false 
             } 
             else { // fill inv
                 var inv = new Invoice(this.profile)
-                inv.fill(data); console.log("inv", inv)
+                inv.fill(data); console.log("inv.fill", inv)
                 this.invoice = inv ;  console.log("invoice", this.invoice)
                 this.$emit('gotRecords', data._records)
                 this.invoice.records = data._records
@@ -184,17 +188,13 @@ export default {
                 this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
                 this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
                 this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
-                this.selected.serial = this.options.serials.indexOf(data.serial)
-                console.log('filter', this.selected.serial);
-                this.settings.edit = true          
-                this.settings.canEdit = false
+                this.selected.serial = this.options.serials.indexOf(data.serial) 
+                this.settings.editMode = true          
+                // this.settings.canEdit = false
             }
-        },
-        OnCanSave(val) {
-            console.log("can save invoice", val)
-            this.settings.canSave = val
-        },
-        readInvoice() { // after reading, settings.edit mode will become active        
+            callback();
+        }, 
+        readInvoice() { // after reading, settings.editMode mode will become active        
             if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
                 this.loadingPage()
                 axios.get(`/api/invoices/${this.profile.id}/findBySerial?serial=${this.invoice.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.invoice.serial
@@ -245,6 +245,7 @@ export default {
                     switch (resp.status) {
                         case 200: 
                             this.options[entity] = resp.data.data
+                            // this.settings.canEdit = false
                             break
                         case 204:
                             this.Msg.info({title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث"})
@@ -271,17 +272,18 @@ export default {
                 this.settings.canEdit = false
             }
         },
-        onRecordsChange(data){
+        onRecordsChanged(data){
             this.invoice.records = data
+            // this.settings.canEdit = true
         },
-        getSerials(){ // and set the max serial
+        getSerials(callback){ // and set the max serial
             this.loading.serial = true
             axios.get(`/api/invoices/${this.profile.id}/getSerials/${this.invoice.NType}`)
                 .then(resp => { console.log("getSerials", resp); 
                     switch (resp.status) {
                         case 200:
                             var result = resp.data
-                            this.options.serials = result    ; console.log('options.serials', result);                        
+                            this.options.serials = result; console.log('options.serials', result);                        
                             if(result.length == 0){
                                 this.invoice.serial = 1
                             }else{
@@ -298,6 +300,7 @@ export default {
                     console.log("error", error)
                 })
                 .then((/* finally */)=> {this.loading.serial = false})
+                .then(callback)
         },
         changeSerial(change){  
             if(change == 'up' && this.canIncreaseSerial) // go up in value, down in index                
@@ -312,6 +315,9 @@ export default {
         },
         loadingPage(param=true){
             this.loading.page = param
+        },
+        onDeleteRec(recID){
+            this.invoice.deletedRecords.push(recID) 
         }
     },
     computed: {
@@ -323,11 +329,16 @@ export default {
                 return   this.options.serials.length != 0  
             else
                 return this.selected.serial+1 != this.options.serials.length
-        } 
+        } ,
+        changed(){
+            // determain whether settings.originalObj and invoice are completely equal 
+            return ! _.isEqual(JSON.stringify(this.settings.originalObj), JSON.stringify(this.invoice))
+        }
     },
     watch: {
         selected: {
             handler: function(newValue) { 
+                // console.log('changed2', !_.isEqual(this.settings.originalObj, this.invoice));
                 var data = JSON.parse(JSON.stringify( newValue )) 
                 console.log("selected",data)
 
@@ -351,14 +362,27 @@ export default {
                 if(data.serial != null){ //console.log('data.serial', data.serial);
                     this.invoice.serial = +this.options.serials[data.serial]
                     console.log("selected.serial= "+this.selected.serial+ " - this.invoice.serial= ",this.invoice.serial) 
-                }                
-                this.settings.canEdit = true
+                }           
+                // console.log('changed3', !_.isEqual(this.settings.originalObj, this.invoice));     
             },
             deep: true
         },
         invoice: {
-            handler: function(invoice) {  
-                this.settings.canEdit = true
+            handler: function(invoice) {   
+                // console.log('changed1', !_.isEqual(this.settings.originalObj, this.invoice));
+                if(this.invoice.client_id && this.invoice.client_acc && this.invoice.records.length != 0 && this.invoice.warehouse_id){
+                    this.settings.valid = true
+                }
+                else {
+                    this.settings.valid = false
+                }
+                // console.log('changed11', !_.isEqual(this.settings.originalObj, this.invoice));
+            },
+            deep: true
+        },
+        changed: {
+            handler: function(changed) {  
+                console.log('changed0', changed);
             },
             deep: true
         },
@@ -369,9 +393,9 @@ export default {
             deep: true
         },
     },
-    mounted() {        
+    mounted() {         
         console.log("Component <invoice-selling> mounted.")
-        this.init()     
+        this.init(null, () => {console.log('callback' );this.settings.originalObj = Object.assign({}, this.invoice); console.log('change' );} )           
     },
 }
 </script>
