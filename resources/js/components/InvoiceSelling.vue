@@ -120,9 +120,10 @@ export default {
     props: ["profile", "currencies", "pay"],
     data() {
         return {
+            originalObj: {},
             invoice: new Invoice(this.profile),
             selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null},
-            settings: {canSave: false, canEdit: false, editMode: false, originalObj: {}, saved: false, 
+            settings: {canSave: false, canEdit: false, editMode: false, saved: false, invoiceReady: false, 
                         rtl: true, hasRecords: false, valid: false},
             options: {clients: [] , warehouses: [], serials: []},    
             loading: {page: false, clients: false, serial: false},   
@@ -134,7 +135,7 @@ export default {
             if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
                 this.$emit("ClearInvoice")
                 this.init()
-                // this.Msg.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
+                // this.$toast.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
             }
         },
         submitInvoice() {
@@ -145,17 +146,18 @@ export default {
                     this.$emit("SubmitInvoice")
                     this.options.serials.unshift(this.invoice.serial)
                     this.init()
-                    this.Msg.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" })
+                    this.$toast.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" })
                 })
                 .catch(error => {
-                    this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" })
+                    this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" })
                     console.log("error", error)
                 })
                 .then(() => this.loadingPage(false))
         },
-        init(data = null, callback) { 
+        init(data = null, callback = function(){}) { 
+            this.invoiceReady(false)
             if (data == null) { // reset all
-                // this.invoice = new Invoice(this.profile) 
+                this.settings.editMode = false 
                 this.invoice.NDate = Store.formatDate(Date.now())
                 this.invoice.NType = +Store.urlParam('type')
                 this.invoice.client_id = 1
@@ -165,32 +167,28 @@ export default {
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
                 this.selected.serial = null
-                this.getSerials() //(() => { // callback
-                //     this.settings.originalObj = Object.assign({}, this.invoice)                      
-                // })
-                this.settings.editMode = false
-                // this.settings.canSave = false 
-                // this.settings.canEdit = false 
+                this.getSerials(()=>  this.invoiceReady() )                 
             } 
             else { // fill inv
+                this.settings.editMode = true     
                 var inv = new Invoice(this.profile)
                 inv.fill(data); console.log("inv.fill", inv)
                 this.invoice = inv ;  console.log("invoice", this.invoice)
                 this.$emit('gotRecords', data._records)
                 this.invoice.records = data._records
-                if(this.options.clients.length == 0){
-                    this.search('getClientsList', 'clients', '', () => { 
-                        this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
-                    })
-                }else{
-                    this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
-                }
                 this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
                 this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
                 this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
                 this.selected.serial = this.options.serials.indexOf(data.serial) 
-                this.settings.editMode = true          
-                // this.settings.canEdit = false
+                if(this.options.clients.length == 0){
+                    this.search('getClientsList', 'clients', '', () => { 
+                        this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
+                        this.invoiceReady()
+                    })
+                }else {
+                    this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null 
+                    this.invoiceReady()
+                }
             }
             callback();
         }, 
@@ -198,23 +196,23 @@ export default {
             if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
                 this.loadingPage()
                 axios.get(`/api/invoices/${this.profile.id}/findBySerial?serial=${this.invoice.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.invoice.serial
-                    .then(resp => { console.log("resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
+                    .then(resp => { //console.log("readInvoice: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
                                 var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Invoice(this.profile))
-                                this.init(result)
-                                // this.Msg.success({title: "نجاح الطلب", message: resp.data.msg})
+                                this.init(result) 
+                                // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                                 break
                             case 204:
-                                this.Msg.info({title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة"})
+                                this.$toast.info({title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة"})
                                 break
                             default:
-                                this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة--" })
+                                this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
                                 break
                         }
                     })
                     .catch(error => {
-                        this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                        this.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
                         console.log("error", error)
                     })
                     .then(() => this.loadingPage(false))
@@ -228,10 +226,10 @@ export default {
                     console.log(resp)
                     this.$emit("SubmitInvoice")
                     this.init()
-                    this.Msg.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" })
+                    this.$toast.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" })
                 })
                 .catch(error => {
-                    this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة"})
+                    this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة"})
                     console.log("error", error)
                 })
                 .then(() => this.loadingPage(false))
@@ -248,15 +246,15 @@ export default {
                             // this.settings.canEdit = false
                             break
                         case 204:
-                            this.Msg.info({title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث"})
+                            this.$toast.info({title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث"})
                             break
                         default:
-                            this.Msg.error({title: "حدث خطأ!", message: " خطأ أثناء البحث " })
+                            this.$toast.error({title: "حدث خطأ!", message: " خطأ أثناء البحث " })
                             break
                     }
                 })
                 .catch(error => {
-                    this.Msg.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " })
+                    this.$toast.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " })
                     console.log("error", error)
                 })
                 .then(() => { // always executed
@@ -288,15 +286,15 @@ export default {
                                 this.invoice.serial = 1
                             }else{
                                 this.invoice.serial = +this.options.serials[0] + 1
-                            }
+                            } 
                             break 
                         default:
-                            this.Msg.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                            this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
                             break
                     }
                 })
                 .catch(error => {
-                    this.Msg.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                    this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
                     console.log("error", error)
                 })
                 .then((/* finally */)=> {this.loading.serial = false})
@@ -318,6 +316,9 @@ export default {
         },
         onDeleteRec(recID){
             this.invoice.deletedRecords.push(recID) 
+        },
+        invoiceReady(val=true){
+            this.settings.invoiceReady = val
         }
     },
     computed: {
@@ -332,15 +333,16 @@ export default {
         } ,
         changed(){
             // determain whether settings.originalObj and invoice are completely equal 
-            return ! _.isEqual(JSON.stringify(this.settings.originalObj), JSON.stringify(this.invoice))
-        }
+            console.log("originalObj",JSON.stringify(this.originalObj))
+            console.log("invoice",JSON.stringify(this.invoice))
+            return ! _.isEqual(JSON.stringify(this.originalObj), JSON.stringify(this.invoice))
+        }, 
     },
     watch: {
         selected: {
             handler: function(newValue) { 
-                // console.log('changed2', !_.isEqual(this.settings.originalObj, this.invoice));
                 var data = JSON.parse(JSON.stringify( newValue )) 
-                console.log("selected",data)
+                // console.log("selected",data)
 
                 if(data.currency != null){ 
                     var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
@@ -359,30 +361,28 @@ export default {
                     this.invoice.warehouse_id = +{...this.options.warehouses.find(function(el) { return el.id == data.warehouse.id })}.id
                     console.log("selected.warehouse",this.selected.warehouse)
                 }
-                if(data.serial != null){ //console.log('data.serial', data.serial);
+                if(data.serial != null){
                     this.invoice.serial = +this.options.serials[data.serial]
                     console.log("selected.serial= "+this.selected.serial+ " - this.invoice.serial= ",this.invoice.serial) 
                 }           
-                // console.log('changed3', !_.isEqual(this.settings.originalObj, this.invoice));     
             },
             deep: true
         },
         invoice: {
             handler: function(invoice) {   
-                // console.log('changed1', !_.isEqual(this.settings.originalObj, this.invoice));
                 if(this.invoice.client_id && this.invoice.client_acc && this.invoice.records.length != 0 && this.invoice.warehouse_id){
                     this.settings.valid = true
                 }
                 else {
                     this.settings.valid = false
                 }
-                // console.log('changed11', !_.isEqual(this.settings.originalObj, this.invoice));
             },
             deep: true
         },
-        changed: {
-            handler: function(changed) {  
-                console.log('changed0', changed);
+        settings: {
+            handler: function(settings) {   
+                if(settings.invoiceReady)
+                    this.originalObj = Object.assign({}, this.invoice)
             },
             deep: true
         },
@@ -395,7 +395,9 @@ export default {
     },
     mounted() {         
         console.log("Component <invoice-selling> mounted.")
-        this.init(null, () => {console.log('callback' );this.settings.originalObj = Object.assign({}, this.invoice); console.log('change' );} )           
+        console.log("mounted")
+        this.init()    
+        
     },
 }
 </script>

@@ -24,6 +24,6 @@ const app = new Vue({
     },
     mounted() {
         // console.log("Store.state", Store.state)
-        // Msg.success({"title": "aaa", "message": "bbbb"})
+        // this.$toast.success({"title": "aaa", "message": "bbbb"})
     }
 })
