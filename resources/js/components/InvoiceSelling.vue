@@ -158,6 +158,7 @@ export default {
             this.invoiceReady(false)
             if (data == null) { // reset all
                 this.settings.editMode = false 
+                this.invoice = new Invoice(this.profile)
                 this.invoice.NDate = Store.formatDate(Date.now())
                 this.invoice.NType = +Store.urlParam('type')
                 this.invoice.client_id = 1
@@ -175,7 +176,7 @@ export default {
                 inv.fill(data); console.log("inv.fill", inv)
                 this.invoice = inv ;  console.log("invoice", this.invoice)
                 this.$emit('gotRecords', data._records)
-                this.invoice.records = data._records
+                this.invoice.records = data._records//.forEach((rec)=> { return {mat: rec.mat, qty: rec.qty, single: rec.single, total:rec.total} }) || []
                 this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
                 this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
                 this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
@@ -318,7 +319,7 @@ export default {
             this.invoice.deletedRecords.push(recID) 
         },
         invoiceReady(val=true){
-            this.settings.invoiceReady = val
+            this.settings.invoiceReady = val 
         }
     },
     computed: {
@@ -333,9 +334,9 @@ export default {
         } ,
         changed(){
             // determain whether settings.originalObj and invoice are completely equal 
-            console.log("originalObj",JSON.stringify(this.originalObj))
+            console.log("originalObj",this.originalObj)
             console.log("invoice",JSON.stringify(this.invoice))
-            return ! _.isEqual(JSON.stringify(this.originalObj), JSON.stringify(this.invoice))
+            return ! _.isEqual(this.originalObj, JSON.stringify(this.invoice))
         }, 
     },
     watch: {
@@ -381,8 +382,10 @@ export default {
         },
         settings: {
             handler: function(settings) {   
-                if(settings.invoiceReady)
-                    this.originalObj = Object.assign({}, this.invoice)
+                if(settings.invoiceReady){
+                    this.originalObj = JSON.stringify(this.invoice)
+                    this.settings.invoiceReady = false
+                }
             },
             deep: true
         },

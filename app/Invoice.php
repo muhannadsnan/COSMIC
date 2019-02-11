@@ -12,7 +12,10 @@ class Invoice extends _Model
 {
     public static function insertFull($request){
         if( !$newInvoice = Invoice::insert($request)) return false;
-        if( !Invoice::insertRecords($request->records, $newInvoice->id)) return false;
+        if( !Invoice::insertRecords($request->records, $newInvoice->id)){
+            Invoice::destroy($newInvoice->id);
+            return false;
+        }
         
         $newInvoice->_clients()->sync([ $request->client_id ]);
         $newInvoice->_warehouses()->sync([ $request->warehouse_id ]);

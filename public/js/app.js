@@ -48820,19 +48820,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.$refs.firstInput.focus();
                 this.$emit('recordsChanged', this.records);
             }
-            // this.enableSaveInvoice()
         },
         clear: function clear() {
             this.records = [];console.log("recoreds cleared !");
-            // this.enableSaveInvoice()
             this.$emit('recordsChanged', this.records);
         },
-
-        // enableSaveInvoice(){
-        //     if(this.records.length > 0){
-        //         this.$emit('hasRecords', true)
-        //     }
-        // },
         deleteRec: function deleteRec(recID, recMAT) {
             if (confirm('هل أنت متأكد أنك تريد حذف المادة؟')) {
                 if (recID) {
@@ -49632,6 +49624,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             if (data == null) {
                 // reset all
                 this.settings.editMode = false;
+                this.invoice = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
                 this.invoice.NDate = Store.formatDate(Date.now());
                 this.invoice.NType = +Store.urlParam('type');
                 this.invoice.client_id = 1;
@@ -49651,7 +49644,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 inv.fill(data);console.log("inv.fill", inv);
                 this.invoice = inv;console.log("invoice", this.invoice);
                 this.$emit('gotRecords', data._records);
-                this.invoice.records = data._records;
+                this.invoice.records = data._records; //.forEach((rec)=> { return {mat: rec.mat, qty: rec.qty, single: rec.single, total:rec.total} }) || []
                 this.selected.warehouse = typeof data._warehouses[0] != 'undefined' ? data._warehouses[0] : null;
                 this.selected.currency = this.currencies.find(function (el) {
                     return el.id == data._currency.id;
@@ -49822,9 +49815,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         changed: function changed() {
             // determain whether settings.originalObj and invoice are completely equal 
-            console.log("originalObj", JSON.stringify(this.originalObj));
+            console.log("originalObj", this.originalObj);
             console.log("invoice", JSON.stringify(this.invoice));
-            return !_.isEqual(JSON.stringify(this.originalObj), JSON.stringify(this.invoice));
+            return !_.isEqual(this.originalObj, JSON.stringify(this.invoice));
         }
     },
     watch: {
@@ -49877,7 +49870,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         settings: {
             handler: function handler(settings) {
-                if (settings.invoiceReady) this.originalObj = Object.assign({}, this.invoice);
+                if (settings.invoiceReady) {
+                    this.originalObj = JSON.stringify(this.invoice);
+                    this.settings.invoiceReady = false;
+                }
             },
             deep: true
         },

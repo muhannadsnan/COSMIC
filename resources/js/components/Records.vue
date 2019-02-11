@@ -48,19 +48,12 @@ export default {
                     this.newREC = new REC()
                     this.$refs.firstInput.focus()
                     this.$emit('recordsChanged', this.records)
-                }
-                // this.enableSaveInvoice()
+                } 
             },
             clear(){
-                this.records = []; console.log("recoreds cleared !");
-                // this.enableSaveInvoice()
+                this.records = []; console.log("recoreds cleared !"); 
                 this.$emit('recordsChanged', this.records)
-            },
-            // enableSaveInvoice(){
-            //     if(this.records.length > 0){
-            //         this.$emit('hasRecords', true)
-            //     }
-            // },
+            }, 
             deleteRec(recID, recMAT){
                 if(confirm('هل أنت متأكد أنك تريد حذف المادة؟')){ 
                     if(recID){

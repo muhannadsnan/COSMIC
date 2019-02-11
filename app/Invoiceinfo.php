@@ -15,7 +15,7 @@ class Invoiceinfo extends _Model
     /***************************************** */
     public static function insert($request, $invID=0){
         return Invoiceinfo::create([
-            'mat' => $request['mat'],
+            'mat' => (int)$request['mat'],
             'qty' => $request['qty'],
             'single' => $request['single'],
             'total' => $request['total'],
@@ -31,11 +31,11 @@ class Invoiceinfo extends _Model
     }
 
     public static function edit($request, $invID=1){ //dd($request['invoice_id']);
-        $info = Invoiceinfo::updateOrCreate(['id' => @$request['id']], [
-            'mat' => $request['mat'],
-            'qty' => $request['qty'],
-            'single' => $request['single'],
-            'total' => $request['total'],
+        $info = Invoiceinfo::updateOrCreate(['id' => $request['id']], [
+            'mat' => (int)$request['mat'],
+            'qty' => (float)$request['qty'],
+            'single' => (float)$request['single'],
+            'total' => (float)$request['total'],
             'invoice_id' => $invID,
             
         ]); 

@@ -16,10 +16,10 @@ class CreateInvoiceinfosTable extends Migration
         Schema::create('invoiceinfos', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('invoice_id');
-            $table->string('mat');
-            $table->string('qty');
-            $table->string('single');
-            $table->string('total');
+            $table->unsignedInteger('mat');
+            $table->float('qty');
+            $table->float('single');
+            $table->float('total');
             $table->timestamps();
             $table->foreign('invoice_id')
                     ->references('id')
