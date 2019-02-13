@@ -11596,29 +11596,50 @@ ul#NAVBAR li.nav-item .nav-link::after {
 
 /******************** TREE ********************/
 
-.tree-leaf .tree-leaf-text {
-  float: right !important;
+#tree ul {
+  padding: 0;
 }
 
-.tree-expando {
-  float: right !important;
+#tree ul li {
+  padding: 5px;
 }
 
-.tree-child-leaves {
-  margin-right: 30px;
-  border-right: 1px solid #ccc;
-  padding-right: 20px;
-  margin-right: 5px;
-  padding-bottom: 10px;
+#tree ul li span.icon.expand-icon {
+  color: #38c172;
+  margin: 0px 5px;
 }
 
-.tree-expando {
-  margin-left: 4px;
-  width: 12px !important;
-  height: 12px !important;
+#tree ul li span.indent {
+  margin: 0 20px;
+}
+
+#tree ul li .dropdown {
+  padding: 0px 10px;
+  color: #777;
+}
+
+.dropdown.bootstrapMenu ul.dropdown-menu {
+  padding: 5px 7px;
+  border-color: #888;
+  margin: 0;
+}
+
+.dropdown.bootstrapMenu ul.dropdown-menu li {
+  padding: 3px 7px;
   text-align: center !important;
-  border: 1px solid #ccc !important;
-  background: #fff !important;
+}
+
+.dropdown.bootstrapMenu ul.dropdown-menu li a {
+  text-decoration: none;
+  width: 100%;
+}
+
+.dropdown.bootstrapMenu ul.dropdown-menu li a i {
+  text-align: right;
+}
+
+.dropdown.bootstrapMenu ul.dropdown-menu li:hover {
+  background: #ccc;
 }
 
 /******************** SELECT2 ********************/

@@ -334,9 +334,9 @@ export default {
         } ,
         changed(){
             // determain whether settings.originalObj and invoice are completely equal 
-            console.log("originalObj",this.originalObj)
-            console.log("invoice",JSON.stringify(this.invoice))
-            return ! _.isEqual(this.originalObj, JSON.stringify(this.invoice))
+            // console.log("originalObj",this.originalObj); console.log("invoice",JSON.stringify(this.invoice));
+            // return ! _.isEqual(this.originalObj, JSON.stringify(this.invoice))
+            return true
         }, 
     },
     watch: {
@@ -348,23 +348,23 @@ export default {
                 if(data.currency != null){ 
                     var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
                     this.invoice.currency_id = currency.id 
-                    console.log("selected.currency",currency)
+                    console.log("selected.currency",currency.id)
                 }
                 if(data.client != null){ 
                     this.invoice.client_id = +{...this.options.clients.find(function(el) { return el.id == data.client.id })}.id
-                    console.log("selected.client",client)
+                    console.log("selected.client",client.id)
                 }
                 if(data.payment != null){ 
                     this.invoice.payment_id = +{...this.pay.find(function(el) { return el.id == data.payment.id })}.id
-                    console.log("selected.payment",this.selected.payment)
+                    console.log("selected.payment",this.selected.payment.id)
                 }
                 if(data.warehouse != null){ 
                     this.invoice.warehouse_id = +{...this.options.warehouses.find(function(el) { return el.id == data.warehouse.id })}.id
-                    console.log("selected.warehouse",this.selected.warehouse)
+                    console.log("selected.warehouse",this.selected.warehouse.id)
                 }
                 if(data.serial != null){
                     this.invoice.serial = +this.options.serials[data.serial]
-                    console.log("selected.serial= "+this.selected.serial+ " - this.invoice.serial= ",this.invoice.serial) 
+                    console.log("selected.serial= "+this.selected.serial+ " - this.invoice.serial= "+this.invoice.serial) 
                 }           
             },
             deep: true
@@ -398,9 +398,7 @@ export default {
     },
     mounted() {         
         console.log("Component <invoice-selling> mounted.")
-        console.log("mounted")
-        this.init()    
-        
+        this.init()            
     },
 }
 </script>

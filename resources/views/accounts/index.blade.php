@@ -33,9 +33,9 @@
     @modalbtn(['modalid'=>'createAccountModal', 'classes'=>'float-left']) {{__('lbl.account.create')}} @endmodalbtn
 
     @if(request('base')->accGuide && count($accounts))
-        <button id="expandAll">+</button>
-        <button id="collapseAll">-</button>
-        <div id="tree"></div>
+        <button id="expandAll" class="btn btn-sm btn-outline-info"><i class="fas fa-plus"></i></button>
+        <button id="collapseAll" class="btn btn-sm btn-outline-info"><i class="fas fa-minus"></i></button>
+        <div id="tree" class="mt-3"></div>
         {{-- @forelse($accounts->where('closing_acc_id', '=', null) as $key=>$account)
             <p>{{$key+1}}.{{$account->title}} -- {{$account->_children->first()['title']}}</p>
         @empty
@@ -47,61 +47,85 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ URL::asset('treeview.min.css') }}" />
+    <!-- <link rel="stylesheet" href="{{ URL::asset('treeview.min.css') }}" /> -->
+    <link rel="stylesheet" href="{{ URL::asset('bootstrap-treeview/bootstrap-treeview.min.css') }}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
     <style>
-        
+
     </style>
 @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="{{ URL::asset('treeview.min.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ URL::asset('treeview.min.js') }}"></script> -->
+    <script type="text/javascript" src="{{ URL::asset('bootstrap-treeview/bootstrap-treeview.min.js') }}"></script>
+    <script type="text/javascript" src="{{ URL::asset('BootstrapMenu.min.js') }}"></script>
     <script>
         $(document).ready(function(){ /***  COLLECT DATA & GENERATE TREE VIEW FROM THE ENTRIES  ***/
-            var acc = <?php echo $accounts; ?>; console.log("acc",acc);
-            acc = Object.values(acc);            
-            var tree = [];
+            var accounts = <?php echo $accounts; ?>; console.log("accounts",accounts);
+            accounts = Object.values(accounts);            
+            var tree = []; 
 
-            acc.forEach(function(item){
+            accounts.forEach(function(item){
                 if(item._parents.length > 0){
                     item._parents.forEach(function(parent){
-                        tree.push({id: item.id, name: item.title+"--"+item.id, parent: parent.id})                    
+                        tree.push({id: item.id, text: item.title/* +"--"+item.id */, parent: parent.id})                    
                     });
                 }else{
-                    tree.push({id: item.id, name: item.title+"--"+item.id, parent: 0}) 
+                    tree.push({id: item.id, text: item.title/* +"--"+item.id */, parent: 0}) 
                 }
-            });     console.log("tree",tree);
+            });     console.log("tree",tree);  
 
             var allowedLevels = 200;
             function getNestedChildren(arr, parent) {   //console.log("allowedLevels", allowedLevels);
-                    var out = [];  var counter = 0; 
-                    for(var i=0; i< arr.length;i++) { //console.log(i);
+                    var output = [], item = {text: ''};
+                    for(var i=0; i< arr.length;i++) { // console.log("item", item);                        
                         if(arr[i].parent == parent) {
                             if(allowedLevels != 0){
                                 allowedLevels--;
                                 var children = getNestedChildren(arr, arr[i].id); //console.log("continue", allowedLevels);
+                                
                             }else{
                                 var children = [];
                             }
                             if(children.length) {
-                                arr[i].children = children
-                            }
-                            out.push(arr[i])
+                                arr[i].nodes = children 
+                            }  
+                            arr[i].text += '<i class="fas fa-chevron-circle-down"></i>'
+                            // arr[i].selectable = false
+                            output.push(arr[i])
                         }
                     }
-                    return JSON.parse(JSON.stringify(out));
-                    //return out
+                    return JSON.parse(JSON.stringify(output));
             }
-            tree = getNestedChildren(tree, 0); console.log("newTree",tree);
+            tree = getNestedChildren(tree, 0); console.log("newTree",tree);  
+            $('#tree').treeview({data: tree, onhoverColor: '#ededed', expandIcon: 'fas fa-plus', collapseIcon: 'fas fa-minus'});
 
-            var t = new TreeView(tree, 'tree'); //console.log(t);
-            t.expandAll();
+            $( "#collapseAll" ).on( "click", function() {
+                $('#tree').treeview('collapseAll', { silent: true });
+            });
+            $( "#expandAll" ).on( "click", function() {
+                $('#tree').treeview('expandAll', { silent: true });
+            }); 
+            // bootstrap treeview link : https://github.com/jonmiles/bootstrap-treeview
 
-            var expandAll = document.getElementById('expandAll');
-            var collapseAll = document.getElementById('collapseAll');
-
-            expandAll.onclick = function () { t.expandAll(); };
-            collapseAll.onclick = function () { t.collapseAll(); };
-            // https://www.cssscript.com/tag/tree-view/
+            var menu = new BootstrapMenu('#tree ul li.node-tree', { menuEvent: 'right-click', menuSource: 'element', menuPosition: 'belowRight',
+                                                                actions: [{
+                                                                    name: 'بطاقة الحساب',
+                                                                    iconClass: 'fas fa-star',
+                                                                    onClick: function(row) {
+                                                                        alert("hello");
+                                                                    }
+                                                                }, {
+                                                                    name: 'خيارات',
+                                                                    iconClass: 'fas fa-lock',
+                                                                    onClick: function(row) {
+                                                                        alert("hello");
+                                                                    }
+                                                                }]
+                                                            });
+            // Bootstrap Menu Link: https://github.com/dgoguerra/bootstrap-menu
+            
         });
     </script>
 @endsection

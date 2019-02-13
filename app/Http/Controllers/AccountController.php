@@ -16,7 +16,8 @@ class AccountController extends Controller
 
     public function index(Base $basis, Profile $profile)
     {
-        return view('accounts.index', ['accounts' => Account::where('profile_id', null)->orWhere('profile_id', $profile->id)->with("_parents")->get() , 'noscript' => 1 ]); // the default accounts have no profile_id
+        return view('accounts.index', ['accounts' => Account::where('profile_id', null) // the default accounts have no profile_id
+                                                            ->orWhere('profile_id', $profile->id)->with("_parents")->get(),   'noscript' => 1 ]); 
     }
     
     public function create()
