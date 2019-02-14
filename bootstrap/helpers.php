@@ -15,5 +15,10 @@ function makeLinkTo($baseID, $profileID, $url="")
 
 function openNewWindow($url, $title="title", $width=800, $height=600){
     // dd($url);
-    // return "MyWindow=window.open('".$url."','$title',[\"width=$width\",\"height=$height\"]); return false;";
+    return "MyWindow=window.open('".$url."','$title',[\"width=$width\",\"height=$height\"]); return false;";
+}
+
+function openNewWindowJS($url, $title="title", $width=800, $height=600){
+    // dd($url);
+    echo "window.open('".$url."','$title',[\"width=$width\",\"height=$height\"]); return false;";
 }

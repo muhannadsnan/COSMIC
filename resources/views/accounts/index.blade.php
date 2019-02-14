@@ -99,7 +99,7 @@
                     return JSON.parse(JSON.stringify(output));
             }
             tree = getNestedChildren(tree, 0); console.log("newTree",tree);  
-            $('#tree').treeview({data: tree, onhoverColor: '#ededed', expandIcon: 'fas fa-plus', collapseIcon: 'fas fa-minus'});
+            var treeview = $('#tree').treeview({data: tree, onhoverColor: '#ededed', expandIcon: 'fas fa-plus', collapseIcon: 'fas fa-minus'});
 
             $( "#collapseAll" ).on( "click", function() {
                 $('#tree').treeview('collapseAll', { silent: true });
@@ -107,25 +107,28 @@
             $( "#expandAll" ).on( "click", function() {
                 $('#tree').treeview('expandAll', { silent: true });
             }); 
-            // bootstrap treeview link : https://github.com/jonmiles/bootstrap-treeview
 
-            var menu = new BootstrapMenu('#tree ul li.node-tree', { menuEvent: 'right-click', menuSource: 'element', menuPosition: 'belowRight',
-                                                                actions: [{
-                                                                    name: 'بطاقة الحساب',
-                                                                    iconClass: 'fas fa-star',
-                                                                    onClick: function(row) {
-                                                                        alert("hello");
-                                                                    }
-                                                                }, {
-                                                                    name: 'خيارات',
-                                                                    iconClass: 'fas fa-lock',
-                                                                    onClick: function(row) {
-                                                                        alert("hello");
-                                                                    }
-                                                                }]
-                                                            });
-            // Bootstrap Menu Link: https://github.com/dgoguerra/bootstrap-menu
-            
+            // bootstrap treeview link : https://github.com/jonmiles/bootstrap-treeview 
+            var nodeid, node;
+            var menu = new BootstrapMenu('#tree ul li.node-tree', { menuEvent: 'right-click',/*  menuSource: 'element', menuPosition: 'belowRight', */
+                                                                    opentEvent: function(event){ alert()},
+                                                                    fetchElementData: function(row) {
+                                                                        nodeid = row[0].dataset.nodeid
+                                                                        node = $('#tree').treeview('getNode', nodeid)
+                                                                    },
+                                                                    actions: [
+                                                                        { name: 'بطاقة الحساب', iconClass: 'fas fa-star', onClick: function(row) { 
+                                                                                window.open("/accounts/"+node.id,'', ["width=600","height=600"]);
+                                                                            }
+                                                                        }, 
+                                                                        { name: 'خيارات', iconClass: 'fas fa-lock', onClick: function(row) {
+                                                                                alert("not set yet")
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                });
+            // Bootstrap Menu Link: https://github.com/dgoguerra/bootstrap-menu  
+
         });
     </script>
 @endsection

@@ -11618,6 +11618,8 @@ ul#NAVBAR li.nav-item .nav-link::after {
   color: #777;
 }
 
+/******************** CONTEXT MENU ********************/
+
 .dropdown.bootstrapMenu ul.dropdown-menu {
   padding: 5px 7px;
   border-color: #888;
