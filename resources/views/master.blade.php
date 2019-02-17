@@ -28,5 +28,7 @@
 
         @include('partials.footer') <!-- with scripts -->
     </div>
+    @yield('scripts')
+    <script src="{{ asset('js/app.js') }}" ></script>
 </body>
 </html>

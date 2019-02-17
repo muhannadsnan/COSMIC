@@ -1,65 +1,33 @@
 <template>
-    <div class="InvoiceSelling d-flex flex-column-reverse">
-        <div class="buttons d-flex justify-content-between">
+    <div class="Account d-flex flex-column-reverse">
+        <div class="buttons d-flex justify-content-between">            
             <div class="" v-if="!settings.editMode">
-                <button @click="submitInvoice()" class="nav-link btn btn-success px-5" id="invoiceSave" :disabled="!changed || !settings.valid">حفظ</button>
+                <button @click="submitAccount()" class="nav-link btn btn-success px-5" id="accountSave" :disabled="!changed || !settings.valid">حفظ</button>
             </div>
             <div class="" v-if="settings.editMode">
-                <button @click="editInvoice()" class="nav-link btn btn-info text-white px-5" id="invoicesettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
+                <button @click="editAccount()" class="nav-link btn btn-info text-white px-5" id="accountsettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
             </div>
             <div class="">
-                <button @click="clearInvoice()" class="nav-link btn btn-dark px-5" id="invoiceClear" :disabled="!changed && selected.serial == null">جديد</button>
+                <button @click="clearAccount()" class="nav-link btn btn-dark px-5" id="accountClear" :disabled="!changed && selected.serial == null">جديد</button>
             </div>
         </div>
 
-        <div class="tab-content" id="v-pills-tabContent">
-            <div id="InvoiceSelling" class="tab-pane fade show active" role="tabpanel">
-                <div class="d-flex">
+        <div class="tab-content" id="v-pills-tabContent"> 
+            <div id="General" class="tab-pane fade show active" role="tabpanel">
+                <div class="d-flex my-0">
                     <div class="col-sm-6 px-0">
                         <div class="d-flex mb-1" id="client">
-                            <label class="col-sm-2 d-flex">العميل</label> 
-                            <div class="Select2 col-sm-10 px-0"> 
-                                <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
-                                        :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
-                                        @search-change="onSearchClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
-                            </div>
+                            <label class="col-sm-2 d-flex">رمز الحساب</label> 
+                            <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10" placeholder="أدخل قيمة...">
                         </div>
-                        <div class="d-flex mb-1">
-                            <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">العملة</label> 
-                                    <div class="Select2 col-sm-8 px-0">
-                                        <select2 v-model="selected.currency" :options="currencies" track-by="id" label="title" :show-labels="false" placeholder="..." 
-                                            :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
-                                            :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">التعادل</label>
-                                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
-                                </div>
-                            </div>
+                        <div class="d-flex mb-1" id="client">
+                            <label class="col-sm-2 d-flex">اسم الحساب</label> 
+                            <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10" placeholder="أدخل قيمة...">
                         </div>
-                        <div class="d-flex mb-1">
-                            <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">التاريخ</label>
-                                    <input type="date" v-model="invoice.NDate" value="2018-09-29" class="form-control col-sm-8" placeholder="أدخل قيمة...">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">الدفع</label> 
-                                    <div class="Select2 col-sm-8 px-0">
-                                        <select2 v-model="selected.payment" :options="pay" track-by="id" label="title" :show-labels="false" placeholder="..." 
-                                            :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false"
-                                            :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="d-flex mb-1" id="client">
+                            <label class="col-sm-2 d-flex">ملاحظات</label> 
+                            <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10" placeholder="أدخل قيمة...">
+                        </div>                        
                     </div>
                     <div class="col-sm-6 px-0">
                         <div class="d-flex mb-1">
@@ -68,46 +36,50 @@
                                 <div class="input-group-prepend order-3">
                                     <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('down')" :disabled="!canDecreaseSerial">-</button>
                                 </div>
-                                <input type="number" v-model="invoice.serial" class="form-control order-2" :placeholder="loading.serial ? 'loading': '...'" @keyup.enter="readInvoice()" :disabled="false">
+                                <input type="number" v-model="selected.currency.buy" class="form-control order-2" :placeholder="loading.serial ? 'loading': '...'" @keyup.enter="readInvoice()" :disabled="false">
                                 <div class="input-group-append order-1">
                                     <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('up')" :disabled="!canIncreaseSerial">+</button>
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex mb-1">
-                            <label class="col-sm-4 d-flex">المستودع</label> 
-                            <div class="Select2 col-sm-8 px-0"> 
-                                <select2 v-model="selected.warehouse" :options="options.warehouses" track-by="id" label="title" :show-labels="false" placeholder="..."  
-                                        :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
-                                        :loading="loading.warehouses" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
-                            </div>
+                            <label class="col-sm-4 d-flex">الاسم اللاتيني</label>
+                            <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                         </div>
                         <div class="d-flex mb-1">
-                            <label class="col-sm-4 d-flex">حساب العميل</label>
-                            <input type="text" v-model="invoice.client_acc" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
+                            <label class="col-sm-4 d-flex">نوع الحساب</label>
+                            <div class="Select2 col-sm-8 px-0">
+                                <select2 v-model="selected.payment" :options="options.pay" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                        :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false"
+                                        :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="d-flex mb-3 mt-0">
-                    <label class="col-sm-1 d-flex">البيان</label>
-                    <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
-                </div>
-                <!--------------- RECORDS ---------------->
-                <records @recordsChanged="onRecordsChanged" @RecordDeleted="onDeleteRec"/>
+                </div> 
             </div>
-
-            <div id="invoiceDetails" class="tab-pane fade" role="tabpanel">
-                <h1>حقول الفاتورة</h1>
+            <div id="Taxes" class="tab-pane fade" role="tabpanel">
+                <h1>الضرائب</h1>
+            </div>
+            <div id="Customers" class="tab-pane fade" role="tabpanel">
+                <h1>الزبائن</h1>
+            </div>
+            <div id="CustomizedFields" class="tab-pane fade" role="tabpanel">
+                <h1>حقول مخصصة</h1>
             </div>
         </div>
-
+        
         <ul class="nav nav-pills pb-4 d-flex justify-content-center" role="tablist">
             <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary active px-5" id="InvoiceSelling" data-toggle="pill" role="tab" href="#InvoiceSelling">الفاتورة</button>
+                <button @click="tabClicked" class="nav-link btn btn-outline-secondary active px-5" id="General" data-toggle="pill" role="tab" href="#General">عام</button>
             </li>
             <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails">المزيد</button>
+                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="Taxes" data-toggle="pill" role="tab" href="#Taxes">الضرائب</button>
+            </li>
+            <li class="nav-item px-1">
+                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="Customers" data-toggle="pill" role="tab" href="#Customers">الزبائن</button>
+            </li>
+            <li class="nav-item px-1">
+                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="CustomizedFields" data-toggle="pill" role="tab" href="#CustomizedFields">حقول مخصصة</button>
             </li>
         </ul>
 
@@ -116,37 +88,37 @@
 </template>
 
 <script>
-import Invoice from '../models/Invoice.class';
+import Account from '../models/Account.class';
 
 export default {
-    props: ["profile", "currencies", "pay"], //placeholders: an array from php with translated placeholders foreach input
+    props: ["profile"], //placeholders: an array from php with translated placeholders foreach input
     data() {
         return {
             originalObj: {},
-            invoice: new Invoice(this.profile),
+            account: new Account(this.profile),
             selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null},
-            settings: {canSave: false, canEdit: false, editMode: false, saved: false, invoiceReady: false, 
+            settings: {canSave: false, canEdit: false, editMode: false, saved: false, accountReady: false, 
                         rtl: true, hasRecords: false, valid: false},
-            options: {clients: [] , warehouses: [], serials: []},    
-            loading: {page: false, clients: false, serial: false}, 
+            options: {clients: [] , warehouses: [], serials: [], pay: []},    
+            loading: {page: false, clients: false, serial: false},   
         }
     },
     methods: {
         tabClicked(event) { /* JQuery tab funcionality */  $(this.$el).tab("show") },       
-        clearInvoice() {
+        clearAccount() {
             if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
-                this.$emit("ClearInvoice")
+                this.$emit("ClearAccount")
                 this.init()
                 // this.$toast.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
             }
         },
-        submitInvoice() {
+        submitAccount() {
             this.loadingPage()
-            axios.post(`/api/invoices/${this.profile.id}`, this.invoice)
+            axios.post(`/api/accounts/${this.profile.id}`, this.account)
                 .then(resp => {
                     console.log(resp)
-                    this.$emit("SubmitInvoice")
-                    this.options.serials.unshift(this.invoice.serial)
+                    this.$emit("SubmitAccount")
+                    this.options.serials.unshift(this.account.serial)
                     this.init()
                     this.$toast.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" })
                 })
@@ -157,28 +129,28 @@ export default {
                 .then(() => this.loadingPage(false))
         },
         init(data = null, callback = function(){}) { 
-            this.invoiceReady(false)
+            /*this.accountReady(false)
             if (data == null) { // reset all
                 this.settings.editMode = false 
-                this.invoice = new Invoice(this.profile)
-                this.invoice.NDate = Store.formatDate(Date.now())
-                this.invoice.NType = +Store.urlParam('type')
-                this.invoice.client_id = 1
+                this.account = new Account(this.profile)
+                this.account.NDate = Store.formatDate(Date.now())
+                this.account.NType = +Store.urlParam('type')
+                this.account.client_id = 1
                 this.options.warehouses = this.profile._warehouses
                 this.selected.client = null
                 this.selected.warehouse = null
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
                 this.selected.serial = null
-                this.getSerials(()=>  this.invoiceReady() )                 
+                this.getSerials(()=>  this.accountReady() )                 
             } 
             else { // fill inv
                 this.settings.editMode = true     
-                var inv = new Invoice(this.profile)
+                var inv = new Account(this.profile)
                 inv.fill(data); console.log("inv.fill", inv)
-                this.invoice = inv ;  console.log("invoice", this.invoice)
+                this.account = inv ;  console.log("account", this.account)
                 this.$emit('gotRecords', data._records)
-                this.invoice.records = data._records//.forEach((rec)=> { return {mat: rec.mat, qty: rec.qty, single: rec.single, total:rec.total} }) || []
+                this.account.records = data._records//.forEach((rec)=> { return {mat: rec.mat, qty: rec.qty, single: rec.single, total:rec.total} }) || []
                 this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
                 this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
                 this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
@@ -186,23 +158,23 @@ export default {
                 if(this.options.clients.length == 0){
                     this.search('getClientsList', 'clients', '', () => { 
                         this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
-                        this.invoiceReady()
+                        this.accountReady()
                     })
                 }else {
                     this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null 
-                    this.invoiceReady()
+                    this.accountReady()
                 }
-            }
+            }*/
             callback();
         }, 
-        readInvoice() { // after reading, settings.editMode mode will become active        
+        readAccount() { // after reading, settings.editMode mode will become active        
             if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
                 this.loadingPage()
-                axios.get(`/api/invoices/${this.profile.id}/findBySerial?serial=${this.invoice.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.invoice.serial
-                    .then(resp => { //console.log("readInvoice: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
+                axios.get(`/api/accounts/${this.profile.id}/findBySerial?serial=${this.account.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.account.serial
+                    .then(resp => { //console.log("readAccount: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
-                                var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Invoice(this.profile))
+                                var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Account(this.profile))
                                 this.init(result) 
                                 // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                                 break
@@ -221,13 +193,13 @@ export default {
                     .then(() => this.loadingPage(false))
             }
         },
-        readInvoiceDebounce: _.debounce(function(){ this.readInvoice() }, 200),
-        editInvoice() {
+        readAccountDebounce: _.debounce(function(){ this.readAccount() }, 200),
+        editAccount() {
             this.loadingPage()
-            axios.put(`/api/invoices/${this.profile.id}`, this.invoice)
+            axios.put(`/api/accounts/${this.profile.id}`, this.account)
                 .then(resp => {
                     console.log(resp)
-                    this.$emit("SubmitInvoice")
+                    this.$emit("SubmitAccount")
                     this.init()
                     this.$toast.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" })
                 })
@@ -240,8 +212,8 @@ export default {
         search: _.debounce(function(filterMethod, entity, query='', callback){ 
             this.loading[entity] = true                 
             if(query != '')
-                query = this.invoice.client_id.replace(' ', ',')
-            axios.get(`/api/invoices/${this.profile.id}/${filterMethod}?search=${query}`) 
+                query = this.account.client_id.replace(' ', ',')
+            axios.get(`/api/accounts/${this.profile.id}/${filterMethod}?search=${query}`) 
                 .then(resp => {    //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
                         case 200: 
@@ -272,23 +244,19 @@ export default {
                 this.search('getClientsList', 'clients')
                 this.settings.canEdit = false
             }
-        },
-        onRecordsChanged(data){
-            this.invoice.records = data
-            // this.settings.canEdit = true
-        },
+        }, 
         getSerials(callback){ // and set the max serial
             this.loading.serial = true
-            axios.get(`/api/invoices/${this.profile.id}/getSerials/${this.invoice.NType}`)
+            axios.get(`/api/accounts/${this.profile.id}/getSerials/${this.account.NType}`)
                 .then(resp => { console.log("getSerials", resp); 
                     switch (resp.status) {
                         case 200:
                             var result = resp.data
                             this.options.serials = result; console.log('options.serials', result);                        
                             if(result.length == 0){
-                                this.invoice.serial = 1
+                                this.account.serial = 1
                             }else{
-                                this.invoice.serial = +this.options.serials[0] + 1
+                                this.account.serial = +this.options.serials[0] + 1
                             } 
                             break 
                         default:
@@ -312,16 +280,13 @@ export default {
                 else
                     this.selected.serial++
             console.log("this.selected.serial= " + this.selected.serial + " - option selected= "+this.options.serials[this.selected.serial])
-            this.readInvoiceDebounce();
+            this.readAccountDebounce();
         },
         loadingPage(param=true){
             this.loading.page = param
-        },
-        onDeleteRec(recID){
-            this.invoice.deletedRecords.push(recID) 
-        },
-        invoiceReady(val=true){
-            this.settings.invoiceReady = val 
+        }, 
+        accountReady(val=true){
+            this.settings.accountReady = val 
         }
     },
     computed: {
@@ -333,11 +298,11 @@ export default {
                 return   this.options.serials.length != 0  
             else
                 return this.selected.serial+1 != this.options.serials.length
-        } ,
+        },
         changed(){
-            // determain whether settings.originalObj and invoice are completely equal 
-            // console.log("originalObj",this.originalObj); console.log("invoice",JSON.stringify(this.invoice));
-            // return ! _.isEqual(this.originalObj, JSON.stringify(this.invoice))
+            // determain whether settings.originalObj and account are completely equal 
+            // console.log("originalObj",this.originalObj); console.log("account",JSON.stringify(this.account));
+            // return ! _.isEqual(this.originalObj, JSON.stringify(this.account))
             return true
         }, 
     },
@@ -349,31 +314,31 @@ export default {
 
                 if(data.currency != null){ 
                     var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
-                    this.invoice.currency_id = currency.id 
+                    this.account.currency_id = currency.id 
                     console.log("selected.currency",currency.id)
                 }
                 if(data.client != null){ 
-                    this.invoice.client_id = +{...this.options.clients.find(function(el) { return el.id == data.client.id })}.id
+                    this.account.client_id = +{...this.options.clients.find(function(el) { return el.id == data.client.id })}.id
                     console.log("selected.client",client.id)
                 }
                 if(data.payment != null){ 
-                    this.invoice.payment_id = +{...this.pay.find(function(el) { return el.id == data.payment.id })}.id
+                    this.account.payment_id = +{...this.pay.find(function(el) { return el.id == data.payment.id })}.id
                     console.log("selected.payment",this.selected.payment.id)
                 }
                 if(data.warehouse != null){ 
-                    this.invoice.warehouse_id = +{...this.options.warehouses.find(function(el) { return el.id == data.warehouse.id })}.id
+                    this.account.warehouse_id = +{...this.options.warehouses.find(function(el) { return el.id == data.warehouse.id })}.id
                     console.log("selected.warehouse",this.selected.warehouse.id)
                 }
                 if(data.serial != null){
-                    this.invoice.serial = +this.options.serials[data.serial]
-                    console.log("selected.serial= "+this.selected.serial+ " - this.invoice.serial= "+this.invoice.serial) 
+                    this.account.serial = +this.options.serials[data.serial]
+                    console.log("selected.serial= "+this.selected.serial+ " - this.account.serial= "+this.account.serial) 
                 }           
             },
             deep: true
         },
-        invoice: {
-            handler: function(invoice) {   
-                if(this.invoice.client_id && this.invoice.client_acc && this.invoice.records.length != 0 && this.invoice.warehouse_id){
+        account: {
+            handler: function(account) {   
+                if(this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id){
                     this.settings.valid = true
                 }
                 else {
@@ -384,9 +349,9 @@ export default {
         },
         settings: {
             handler: function(settings) {   
-                if(settings.invoiceReady){
-                    this.originalObj = JSON.stringify(this.invoice)
-                    this.settings.invoiceReady = false
+                if(settings.accountReady){
+                    this.originalObj = JSON.stringify(this.account)
+                    this.settings.accountReady = false
                 }
             },
             deep: true
@@ -399,7 +364,7 @@ export default {
         },
     },
     mounted() {         
-        console.log("Component <invoice-selling> mounted.")
+        console.log("Component <account> mounted.")
         this.init()            
     },
 }

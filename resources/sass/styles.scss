@@ -3,13 +3,13 @@ html, body, div, ul, li, a{direction: rtl !important; text-align: right !importa
 input[type="radio"], input[type="checkbox"]{vertical-align: middle; margin-left: 5px;}
 input[type="number"]::-webkit-inner-spin-button, input[type="date"]::-webkit-inner-spin-button {display: none;} 
 hr{border-color: darkseagreen;}
+label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important; white-space: nowrap;}
 .form-group {
     label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important; white-space: nowrap;}
 }
-
 /******************** CUSTOM ********************/
 main.master{background: #555; min-height: 80vh;}
-.tab-content .tab-pane{min-height: 350px}
+.tab-content .tab-pane{min-height: 270px}
 nav .navbar-brand{margin-left: 1rem; margin-right: unset;}
 .dropdown-menu{padding: 0 !important; 
     .dropdown-item{text-align: right; 
@@ -24,8 +24,7 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 }
 .sub-menu-btn:hover + .sub-menu{display: block;}
 .sub-menu-btn .dropdown-toggle::before{ float: left; margin-top: 7px; margin-left: -17px; }
-*:disabled{ cursor: not-allowed;}
-.tab-content .tab-pane { min-height: 270px } 
+*:disabled{ cursor: not-allowed;} 
 /******************** MODAL ********************/
 #createBaseModal {
     .modal-footer .btn{margin-right: 10px;}

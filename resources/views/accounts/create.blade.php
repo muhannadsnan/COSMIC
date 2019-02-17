@@ -2,16 +2,16 @@
 @section('title', '........')
 @section('card-header')
     @breadcrumb(['items' =>[
-                        ['href' => '/bases', 'text' => __('lbl.base.0')],
-                        ['href' => '/bases', 'text' => request('base')->title],
-                        ['active' => '', 'text' =>  __('lbl.account.0')],
+                        ['href' => '/bases', 'text' => __('lbl.base.0')], 
+                        ['active' => '', 'text' =>  request('base')->title], 
                     ], 'classes'=>''
                 ]) 
     @endbreadcrumb
+    {{__('lbl.account.create')}}
 @endsection
 
 @section('content')
-    <h1>accounts.create</h1>
+    <account />
 @endsection
 
 @section('styles')

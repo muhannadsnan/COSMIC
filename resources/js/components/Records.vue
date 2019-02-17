@@ -11,7 +11,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item,i in records">
+                <tr v-for="item,i in records" :key="i">
                     <th scope="row">{{i+1}} <button class="btn btn-sm btn-danger deleteRec" @click="deleteRec(item.id, item.mat)">X</button></th>
                     <td><input type="text" v-model="records[i].mat" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
                     <td><input type="number" v-model.number="records[i].qty" class="form-control col-sm-9" @keyup.enter="addRec(i)"></td>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import REC from '../Record.class';
+import REC from '../models/Record.class';
 export default {
         // props: ['value'],
         data(){

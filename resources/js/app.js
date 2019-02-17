@@ -2,6 +2,7 @@ require('./bootstrap')
 
 Vue.component('records', require('./components/Records.vue'))
 Vue.component('invoice-selling', require('./components/InvoiceSelling.vue'))
+Vue.component('account', require('./components/Account.vue'))
 Vue.component('loading-page', require('./components/LoadingPage.vue'))
 
 Vue.component('passport-clients', require('./components/passport/Clients.vue'))

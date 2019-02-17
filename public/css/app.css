@@ -11466,6 +11466,14 @@ hr {
   border-color: darkseagreen;
 }
 
+label {
+  line-height: 36px;
+  margin-bottom: 0;
+  direction: ltr !important;
+  padding: 0 0 0 3px !important;
+  white-space: nowrap;
+}
+
 .form-group label {
   line-height: 36px;
   margin-bottom: 0;
@@ -11482,7 +11490,7 @@ main.master {
 }
 
 .tab-content .tab-pane {
-  min-height: 350px;
+  min-height: 270px;
 }
 
 nav .navbar-brand {
@@ -11535,10 +11543,6 @@ ul#NAVBAR li.nav-item .nav-link::after {
 
 *:disabled {
   cursor: not-allowed;
-}
-
-.tab-content .tab-pane {
-  min-height: 270px;
 }
 
 /******************** MODAL ********************/

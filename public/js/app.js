@@ -14353,6 +14353,7 @@ __webpack_require__(16);
 
 Vue.component('records', __webpack_require__(48));
 Vue.component('invoice-selling', __webpack_require__(55));
+Vue.component('account', __webpack_require__(86));
 Vue.component('loading-page', __webpack_require__(63));
 
 Vue.component('passport-clients', __webpack_require__(68));
@@ -14388,7 +14389,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_cxlt_vue2_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_cxlt_vue2_toastr__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_cxlt_vue2_toastr_dist_css_cxlt_vue2_toastr_css__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_cxlt_vue2_toastr_dist_css_cxlt_vue2_toastr_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_cxlt_vue2_toastr_dist_css_cxlt_vue2_toastr_css__);
-
 window._ = __webpack_require__(17);
 window.Popper = __webpack_require__(6).default;
 
@@ -48767,7 +48767,7 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Record_class__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Record_class__ = __webpack_require__(53);
 //
 //
 //
@@ -48806,7 +48806,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     // props: ['value'],
     data: function data() {
         return {
-            newREC: new __WEBPACK_IMPORTED_MODULE_0__Record_class__["a" /* default */](),
+            newREC: new __WEBPACK_IMPORTED_MODULE_0__models_Record_class__["a" /* default */](),
             records: []
         };
     },
@@ -48816,7 +48816,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!(this.newREC.mat == '' || +this.newREC.qty == 0 || +this.newREC.single == 0)) {
                 this.newREC.total = this.compTotal;
                 this.records.push(this.newREC);
-                this.newREC = new __WEBPACK_IMPORTED_MODULE_0__Record_class__["a" /* default */]();
+                this.newREC = new __WEBPACK_IMPORTED_MODULE_0__models_Record_class__["a" /* default */]();
                 this.$refs.firstInput.focus();
                 this.$emit('recordsChanged', this.records);
             }
@@ -48924,7 +48924,7 @@ var render = function() {
           "tbody",
           [
             _vm._l(_vm.records, function(item, i) {
-              return _c("tr", [
+              return _c("tr", { key: i }, [
                 _c("th", { attrs: { scope: "row" } }, [
                   _vm._v(_vm._s(i + 1) + " "),
                   _c(
@@ -49451,9 +49451,11 @@ exports.push([module.i, "", ""]);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Invoice_class__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Invoice_class__ = __webpack_require__(61);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
 //
 //
 //
@@ -49573,11 +49575,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["profile", "currencies", "pay"],
+    props: ["profile", "currencies", "pay"], //placeholders: an array from php with translated placeholders foreach input
     data: function data() {
         return {
             originalObj: {},
-            invoice: new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile),
+            invoice: new __WEBPACK_IMPORTED_MODULE_0__models_Invoice_class__["a" /* default */](this.profile),
             selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
             settings: { canSave: false, canEdit: false, editMode: false, saved: false, invoiceReady: false,
                 rtl: true, hasRecords: false, valid: false },
@@ -49624,7 +49626,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             if (data == null) {
                 // reset all
                 this.settings.editMode = false;
-                this.invoice = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
+                this.invoice = new __WEBPACK_IMPORTED_MODULE_0__models_Invoice_class__["a" /* default */](this.profile);
                 this.invoice.NDate = Store.formatDate(Date.now());
                 this.invoice.NType = +Store.urlParam('type');
                 this.invoice.client_id = 1;
@@ -49640,7 +49642,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             } else {
                 // fill inv
                 this.settings.editMode = true;
-                var inv = new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](this.profile);
+                var inv = new __WEBPACK_IMPORTED_MODULE_0__models_Invoice_class__["a" /* default */](this.profile);
                 inv.fill(data);console.log("inv.fill", inv);
                 this.invoice = inv;console.log("invoice", this.invoice);
                 this.$emit('gotRecords', data._records);
@@ -49676,7 +49678,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     //console.log("readInvoice: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
                         case 200:
-                            var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__Invoice_class__["a" /* default */](_this3.profile);
+                            var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__models_Invoice_class__["a" /* default */](_this3.profile);
                             _this3.init(result);
                             // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                             break;
@@ -49968,8 +49970,71 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "containerX" },
+    { staticClass: "InvoiceSelling d-flex flex-column-reverse" },
     [
+      _c("div", { staticClass: "buttons d-flex justify-content-between" }, [
+        !_vm.settings.editMode
+          ? _c("div", {}, [
+              _c(
+                "button",
+                {
+                  staticClass: "nav-link btn btn-success px-5",
+                  attrs: {
+                    id: "invoiceSave",
+                    disabled: !_vm.changed || !_vm.settings.valid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.submitInvoice()
+                    }
+                  }
+                },
+                [_vm._v("حفظ")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.settings.editMode
+          ? _c("div", {}, [
+              _c(
+                "button",
+                {
+                  staticClass: "nav-link btn btn-info text-white px-5",
+                  attrs: {
+                    id: "invoicesettings.editMode",
+                    disabled: !_vm.changed || !_vm.settings.valid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.editInvoice()
+                    }
+                  }
+                },
+                [_vm._v("تعديل")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", {}, [
+          _c(
+            "button",
+            {
+              staticClass: "nav-link btn btn-dark px-5",
+              attrs: {
+                id: "invoiceClear",
+                disabled: !_vm.changed && _vm.selected.serial == null
+              },
+              on: {
+                click: function($event) {
+                  _vm.clearInvoice()
+                }
+              }
+            },
+            [_vm._v("جديد")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
       _c(
         "div",
         { staticClass: "tab-content", attrs: { id: "v-pills-tabContent" } },
@@ -49981,14 +50046,11 @@ var render = function() {
               attrs: { id: "InvoiceSelling", role: "tabpanel" }
             },
             [
-              _c("div", { staticClass: "row form-group my-0" }, [
+              _c("div", { staticClass: "d-flex" }, [
                 _c("div", { staticClass: "col-sm-6 px-0" }, [
                   _c(
                     "div",
-                    {
-                      staticClass: "row form-group my-0",
-                      attrs: { id: "client" }
-                    },
+                    { staticClass: "d-flex mb-1", attrs: { id: "client" } },
                     [
                       _c("label", { staticClass: "col-sm-2 d-flex" }, [
                         _vm._v("العميل")
@@ -50031,9 +50093,9 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "row form-group my-0" }, [
+                  _c("div", { staticClass: "d-flex mb-1" }, [
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("div", { staticClass: "d-flex mb-0" }, [
                         _c("label", { staticClass: "col-sm-4 d-flex" }, [
                           _vm._v("العملة")
                         ]),
@@ -50075,7 +50137,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("div", { staticClass: "d-flex mb-0" }, [
                         _c("label", { staticClass: "col-sm-4 d-flex" }, [
                           _vm._v("التعادل")
                         ]),
@@ -50113,9 +50175,9 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "row form-group my-0" }, [
+                  _c("div", { staticClass: "d-flex mb-1" }, [
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("div", { staticClass: "d-flex mb-0" }, [
                         _c("label", { staticClass: "col-sm-4 d-flex" }, [
                           _vm._v("التاريخ")
                         ]),
@@ -50153,7 +50215,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "row form-group mb-0" }, [
+                      _c("div", { staticClass: "d-flex mb-0" }, [
                         _c("label", { staticClass: "col-sm-4 d-flex" }, [
                           _vm._v("الدفع")
                         ]),
@@ -50197,7 +50259,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-sm-6 px-0" }, [
-                  _c("div", { staticClass: "row form-group my-0" }, [
+                  _c("div", { staticClass: "d-flex mb-1" }, [
                     _c("label", { staticClass: "col-sm-4 d-flex" }, [
                       _vm._v("الرقم التسلسلي")
                     ]),
@@ -50302,7 +50364,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "row form-group my-00" }, [
+                  _c("div", { staticClass: "d-flex mb-1" }, [
                     _c("label", { staticClass: "col-sm-4 d-flex" }, [
                       _vm._v("المستودع")
                     ]),
@@ -50342,7 +50404,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "row form-group my-00" }, [
+                  _c("div", { staticClass: "d-flex mb-1" }, [
                     _c("label", { staticClass: "col-sm-4 d-flex" }, [
                       _vm._v("حساب العميل")
                     ]),
@@ -50380,7 +50442,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "row form-group mb-3 mt-0" }, [
+              _c("div", { staticClass: "d-flex mb-3 mt-0" }, [
                 _c("label", { staticClass: "col-sm-1 d-flex" }, [
                   _vm._v("البيان")
                 ]),
@@ -50425,11 +50487,11 @@ var render = function() {
       _c(
         "ul",
         {
-          staticClass: "nav nav-pills nav-fill TABS-bottom",
+          staticClass: "nav nav-pills pb-4 d-flex justify-content-center",
           attrs: { role: "tablist" }
         },
         [
-          _c("li", { staticClass: "nav-item" }, [
+          _c("li", { staticClass: "nav-item px-1" }, [
             _c(
               "button",
               {
@@ -50446,7 +50508,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
+          _c("li", { staticClass: "nav-item px-1" }, [
             _c(
               "button",
               {
@@ -50460,67 +50522,6 @@ var render = function() {
                 on: { click: _vm.tabClicked }
               },
               [_vm._v("المزيد")]
-            )
-          ]),
-          _vm._v(" "),
-          !_vm.settings.editMode
-            ? _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "nav-link btn btn-success px-5",
-                    attrs: {
-                      id: "invoiceSave",
-                      disabled: !_vm.changed || !_vm.settings.valid
-                    },
-                    on: {
-                      click: function($event) {
-                        _vm.submitInvoice()
-                      }
-                    }
-                  },
-                  [_vm._v("حفظ")]
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.settings.editMode
-            ? _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "nav-link btn btn-info text-white px-5",
-                    attrs: {
-                      id: "invoicesettings.editMode",
-                      disabled: !_vm.changed || !_vm.settings.valid
-                    },
-                    on: {
-                      click: function($event) {
-                        _vm.editInvoice()
-                      }
-                    }
-                  },
-                  [_vm._v("تعديل")]
-                )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("li", { staticClass: "nav-item" }, [
-            _c(
-              "button",
-              {
-                staticClass: "nav-link btn btn-dark px-5",
-                attrs: {
-                  id: "invoiceClear",
-                  disabled: !_vm.changed && _vm.selected.serial == null
-                },
-                on: {
-                  click: function($event) {
-                    _vm.clearInvoice()
-                  }
-                }
-              },
-              [_vm._v("جديد")]
             )
           ])
         ]
@@ -52847,6 +52848,1100 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 85 */,
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(87)
+  __webpack_require__(89)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(91)
+/* template */
+var __vue_template__ = __webpack_require__(93)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-0b1dd512"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Account.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0b1dd512", Component.options)
+  } else {
+    hotAPI.reload("data-v-0b1dd512", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(88);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("c6938f1e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../css-loader/index.js!../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b1dd512\",\"scoped\":false,\"hasInlineConfig\":true}!./vue-multiselect.min.css", function() {
+     var newContent = require("!!../../css-loader/index.js!../../vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b1dd512\",\"scoped\":false,\"hasInlineConfig\":true}!./vue-multiselect.min.css");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\nfieldset[disabled] .multiselect{pointer-events:none\n}\n.multiselect__spinner{position:absolute;right:1px;top:1px;width:48px;height:35px;background:#fff;display:block\n}\n.multiselect__spinner:after,.multiselect__spinner:before{position:absolute;content:\"\";top:50%;left:50%;margin:-8px 0 0 -8px;width:16px;height:16px;border-radius:100%;border-color:#41b883 transparent transparent;border-style:solid;border-width:2px;-webkit-box-shadow:0 0 0 1px transparent;box-shadow:0 0 0 1px transparent\n}\n.multiselect__spinner:before{-webkit-animation:a 2.4s cubic-bezier(.41,.26,.2,.62);animation:a 2.4s cubic-bezier(.41,.26,.2,.62);-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite\n}\n.multiselect__spinner:after{-webkit-animation:a 2.4s cubic-bezier(.51,.09,.21,.8);animation:a 2.4s cubic-bezier(.51,.09,.21,.8);-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite\n}\n.multiselect__loading-enter-active,.multiselect__loading-leave-active{-webkit-transition:opacity .4s ease-in-out;transition:opacity .4s ease-in-out;opacity:1\n}\n.multiselect__loading-enter,.multiselect__loading-leave-active{opacity:0\n}\n.multiselect,.multiselect__input,.multiselect__single{font-family:inherit;font-size:16px;-ms-touch-action:manipulation;touch-action:manipulation\n}\n.multiselect{-webkit-box-sizing:content-box;box-sizing:content-box;display:block;position:relative;width:100%;min-height:40px;text-align:left;color:#35495e\n}\n.multiselect *{-webkit-box-sizing:border-box;box-sizing:border-box\n}\n.multiselect:focus{outline:none\n}\n.multiselect--disabled{opacity:.6\n}\n.multiselect--active{z-index:1\n}\n.multiselect--active:not(.multiselect--above) .multiselect__current,.multiselect--active:not(.multiselect--above) .multiselect__input,.multiselect--active:not(.multiselect--above) .multiselect__tags{border-bottom-left-radius:0;border-bottom-right-radius:0\n}\n.multiselect--active .multiselect__select{-webkit-transform:rotate(180deg);transform:rotate(180deg)\n}\n.multiselect--above.multiselect--active .multiselect__current,.multiselect--above.multiselect--active .multiselect__input,.multiselect--above.multiselect--active .multiselect__tags{border-top-left-radius:0;border-top-right-radius:0\n}\n.multiselect__input,.multiselect__single{position:relative;display:inline-block;min-height:20px;line-height:20px;border:none;border-radius:5px;background:#fff;padding:0 0 0 5px;width:100%;-webkit-transition:border .1s ease;transition:border .1s ease;-webkit-box-sizing:border-box;box-sizing:border-box;margin-bottom:8px;vertical-align:top\n}\n.multiselect__input:-ms-input-placeholder{color:#35495e\n}\n.multiselect__input::-webkit-input-placeholder{color:#35495e\n}\n.multiselect__input::-ms-input-placeholder{color:#35495e\n}\n.multiselect__input::placeholder{color:#35495e\n}\n.multiselect__tag~.multiselect__input,.multiselect__tag~.multiselect__single{width:auto\n}\n.multiselect__input:hover,.multiselect__single:hover{border-color:#cfcfcf\n}\n.multiselect__input:focus,.multiselect__single:focus{border-color:#a8a8a8;outline:none\n}\n.multiselect__single{padding-left:5px;margin-bottom:8px\n}\n.multiselect__tags-wrap{display:inline\n}\n.multiselect__tags{min-height:40px;display:block;padding:8px 40px 0 8px;border-radius:5px;border:1px solid #e8e8e8;background:#fff;font-size:14px\n}\n.multiselect__tag{position:relative;display:inline-block;padding:4px 26px 4px 10px;border-radius:5px;margin-right:10px;color:#fff;line-height:1;background:#41b883;margin-bottom:5px;white-space:nowrap;overflow:hidden;max-width:100%;text-overflow:ellipsis\n}\n.multiselect__tag-icon{cursor:pointer;margin-left:7px;position:absolute;right:0;top:0;bottom:0;font-weight:700;font-style:normal;width:22px;text-align:center;line-height:22px;-webkit-transition:all .2s ease;transition:all .2s ease;border-radius:5px\n}\n.multiselect__tag-icon:after{content:\"\\D7\";color:#266d4d;font-size:14px\n}\n.multiselect__tag-icon:focus,.multiselect__tag-icon:hover{background:#369a6e\n}\n.multiselect__tag-icon:focus:after,.multiselect__tag-icon:hover:after{color:#fff\n}\n.multiselect__current{min-height:40px;overflow:hidden;padding:8px 12px 0;padding-right:30px;white-space:nowrap;border-radius:5px;border:1px solid #e8e8e8\n}\n.multiselect__current,.multiselect__select{line-height:16px;-webkit-box-sizing:border-box;box-sizing:border-box;display:block;margin:0;text-decoration:none;cursor:pointer\n}\n.multiselect__select{position:absolute;width:40px;height:38px;right:1px;top:1px;padding:4px 8px;text-align:center;-webkit-transition:-webkit-transform .2s ease;transition:-webkit-transform .2s ease;transition:transform .2s ease;transition:transform .2s ease, -webkit-transform .2s ease\n}\n.multiselect__select:before{position:relative;right:0;top:65%;color:#999;margin-top:4px;border-style:solid;border-width:5px 5px 0;border-color:#999 transparent transparent;content:\"\"\n}\n.multiselect__placeholder{color:#adadad;display:inline-block;margin-bottom:10px;padding-top:2px\n}\n.multiselect--active .multiselect__placeholder{display:none\n}\n.multiselect__content-wrapper{position:absolute;display:block;background:#fff;width:100%;max-height:240px;overflow:auto;border:1px solid #e8e8e8;border-top:none;border-bottom-left-radius:5px;border-bottom-right-radius:5px;z-index:1;-webkit-overflow-scrolling:touch\n}\n.multiselect__content{list-style:none;display:inline-block;padding:0;margin:0;min-width:100%;vertical-align:top\n}\n.multiselect--above .multiselect__content-wrapper{bottom:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;border-top-left-radius:5px;border-top-right-radius:5px;border-bottom:none;border-top:1px solid #e8e8e8\n}\n.multiselect__content::webkit-scrollbar{display:none\n}\n.multiselect__element{display:block\n}\n.multiselect__option{display:block;padding:12px;min-height:40px;line-height:16px;text-decoration:none;text-transform:none;vertical-align:middle;position:relative;cursor:pointer;white-space:nowrap\n}\n.multiselect__option:after{top:0;right:0;position:absolute;line-height:40px;padding-right:12px;padding-left:20px;font-size:13px\n}\n.multiselect__option--highlight{background:#41b883;outline:none;color:#fff\n}\n.multiselect__option--highlight:after{content:attr(data-select);background:#41b883;color:#fff\n}\n.multiselect__option--selected{background:#f3f3f3;color:#35495e;font-weight:700\n}\n.multiselect__option--selected:after{content:attr(data-selected);color:silver\n}\n.multiselect__option--selected.multiselect__option--highlight{background:#ff6a6a;color:#fff\n}\n.multiselect__option--selected.multiselect__option--highlight:after{background:#ff6a6a;content:attr(data-deselect);color:#fff\n}\n.multiselect--disabled{background:#ededed;pointer-events:none\n}\n.multiselect--disabled .multiselect__current,.multiselect--disabled .multiselect__select{background:#ededed;color:#a6a6a6\n}\n.multiselect__option--disabled{background:#ededed!important;color:#a6a6a6!important;cursor:text;pointer-events:none\n}\n.multiselect__option--group{background:#ededed;color:#35495e\n}\n.multiselect__option--group.multiselect__option--highlight{background:#35495e;color:#fff\n}\n.multiselect__option--group.multiselect__option--highlight:after{background:#35495e\n}\n.multiselect__option--disabled.multiselect__option--highlight{background:#dedede\n}\n.multiselect__option--group-selected.multiselect__option--highlight{background:#ff6a6a;color:#fff\n}\n.multiselect__option--group-selected.multiselect__option--highlight:after{background:#ff6a6a;content:attr(data-deselect);color:#fff\n}\n.multiselect-enter-active,.multiselect-leave-active{-webkit-transition:all .15s ease;transition:all .15s ease\n}\n.multiselect-enter,.multiselect-leave-active{opacity:0\n}\n.multiselect__strong{margin-bottom:8px;line-height:20px;display:inline-block;vertical-align:top\n}\n[dir=rtl] .multiselect{text-align:right\n}\n[dir=rtl] .multiselect__select{right:auto;left:1px\n}\n[dir=rtl] .multiselect__tags{padding:8px 8px 0 40px\n}\n[dir=rtl] .multiselect__content{text-align:right\n}\n[dir=rtl] .multiselect__option:after{right:auto;left:0\n}\n[dir=rtl] .multiselect__clear{right:auto;left:12px\n}\n[dir=rtl] .multiselect__spinner{right:auto;left:1px\n}\n@-webkit-keyframes a{\n0%{-webkit-transform:rotate(0);transform:rotate(0)\n}\nto{-webkit-transform:rotate(2turn);transform:rotate(2turn)\n}\n}\n@keyframes a{\n0%{-webkit-transform:rotate(0);transform:rotate(0)\n}\nto{-webkit-transform:rotate(2turn);transform:rotate(2turn)\n}\n}", ""]);
+
+// exports
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(90);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("a6b9a284", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b1dd512\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=1!./Account.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0b1dd512\",\"scoped\":true,\"hasInlineConfig\":true}!../../../node_modules/sass-loader/lib/loader.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=1!./Account.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Account_class__ = __webpack_require__(92);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ["profile"], //placeholders: an array from php with translated placeholders foreach input
+    data: function data() {
+        return {
+            originalObj: {},
+            account: new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](this.profile),
+            selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
+            settings: { canSave: false, canEdit: false, editMode: false, saved: false, accountReady: false,
+                rtl: true, hasRecords: false, valid: false },
+            options: { clients: [], warehouses: [], serials: [], pay: [] },
+            loading: { page: false, clients: false, serial: false }
+        };
+    },
+
+    methods: {
+        tabClicked: function tabClicked(event) {
+            /* JQuery tab funcionality */$(this.$el).tab("show");
+        },
+        clearAccount: function clearAccount() {
+            if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
+                this.$emit("ClearAccount");
+                this.init();
+                // this.$toast.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
+            }
+        },
+        submitAccount: function submitAccount() {
+            var _this = this;
+
+            this.loadingPage();
+            axios.post("/api/accounts/" + this.profile.id, this.account).then(function (resp) {
+                console.log(resp);
+                _this.$emit("SubmitAccount");
+                _this.options.serials.unshift(_this.account.serial);
+                _this.init();
+                _this.$toast.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" });
+            }).catch(function (error) {
+                _this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" });
+                console.log("error", error);
+            }).then(function () {
+                return _this.loadingPage(false);
+            });
+        },
+        init: function init() {
+            var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+            var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+
+            /*this.accountReady(false)
+            if (data == null) { // reset all
+                this.settings.editMode = false 
+                this.account = new Account(this.profile)
+                this.account.NDate = Store.formatDate(Date.now())
+                this.account.NType = +Store.urlParam('type')
+                this.account.client_id = 1
+                this.options.warehouses = this.profile._warehouses
+                this.selected.client = null
+                this.selected.warehouse = null
+                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
+                this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
+                this.selected.serial = null
+                this.getSerials(()=>  this.accountReady() )                 
+            } 
+            else { // fill inv
+                this.settings.editMode = true     
+                var inv = new Account(this.profile)
+                inv.fill(data); console.log("inv.fill", inv)
+                this.account = inv ;  console.log("account", this.account)
+                this.$emit('gotRecords', data._records)
+                this.account.records = data._records//.forEach((rec)=> { return {mat: rec.mat, qty: rec.qty, single: rec.single, total:rec.total} }) || []
+                this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
+                this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
+                this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
+                this.selected.serial = this.options.serials.indexOf(data.serial) 
+                if(this.options.clients.length == 0){
+                    this.search('getClientsList', 'clients', '', () => { 
+                        this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
+                        this.accountReady()
+                    })
+                }else {
+                    this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null 
+                    this.accountReady()
+                }
+            }*/
+            callback();
+        },
+        readAccount: function readAccount() {
+            var _this2 = this;
+
+            // after reading, settings.editMode mode will become active        
+            if (!this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
+                this.loadingPage();
+                axios.get("/api/accounts/" + this.profile.id + "/findBySerial?serial=" + this.account.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.account.serial
+                .then(function (resp) {
+                    //console.log("readAccount: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
+                    switch (resp.status) {
+                        case 200:
+                            var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](_this2.profile);
+                            _this2.init(result);
+                            // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
+                            break;
+                        case 204:
+                            _this2.$toast.info({ title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة" });
+                            break;
+                        default:
+                            _this2.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                            break;
+                    }
+                }).catch(function (error) {
+                    _this2.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                    console.log("error", error);
+                }).then(function () {
+                    return _this2.loadingPage(false);
+                });
+            }
+        },
+
+        readAccountDebounce: _.debounce(function () {
+            this.readAccount();
+        }, 200),
+        editAccount: function editAccount() {
+            var _this3 = this;
+
+            this.loadingPage();
+            axios.put("/api/accounts/" + this.profile.id, this.account).then(function (resp) {
+                console.log(resp);
+                _this3.$emit("SubmitAccount");
+                _this3.init();
+                _this3.$toast.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" });
+            }).catch(function (error) {
+                _this3.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة" });
+                console.log("error", error);
+            }).then(function () {
+                return _this3.loadingPage(false);
+            });
+        },
+
+        search: _.debounce(function (filterMethod, entity) {
+            var _this4 = this;
+
+            var query = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+            var callback = arguments[3];
+
+            this.loading[entity] = true;
+            if (query != '') query = this.account.client_id.replace(' ', ',');
+            axios.get("/api/accounts/" + this.profile.id + "/" + filterMethod + "?search=" + query).then(function (resp) {
+                //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
+                switch (resp.status) {
+                    case 200:
+                        _this4.options[entity] = resp.data.data;
+                        // this.settings.canEdit = false
+                        break;
+                    case 204:
+                        _this4.$toast.info({ title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث" });
+                        break;
+                    default:
+                        _this4.$toast.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
+                        break;
+                }
+            }).catch(function (error) {
+                _this4.$toast.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
+                console.log("error", error);
+            }).then(function () {
+                // always executed
+                _this4.loading[entity] = false;
+            }).then(callback);
+        }, 300),
+
+        onSearchClient: function onSearchClient(data) {
+            // fetch data
+            if (this.options.clients.length == 0 && data != '') {
+                this.search('getClientsList', 'clients');
+                this.settings.canEdit = false;
+            }
+        },
+        getSerials: function getSerials(callback) {
+            var _this5 = this;
+
+            // and set the max serial
+            this.loading.serial = true;
+            axios.get("/api/accounts/" + this.profile.id + "/getSerials/" + this.account.NType).then(function (resp) {
+                console.log("getSerials", resp);
+                switch (resp.status) {
+                    case 200:
+                        var result = resp.data;
+                        _this5.options.serials = result;console.log('options.serials', result);
+                        if (result.length == 0) {
+                            _this5.account.serial = 1;
+                        } else {
+                            _this5.account.serial = +_this5.options.serials[0] + 1;
+                        }
+                        break;
+                    default:
+                        _this5.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                        break;
+                }
+            }).catch(function (error) {
+                _this5.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                console.log("error", error);
+            }).then(function () /* finally */{
+                _this5.loading.serial = false;
+            }).then(callback);
+        },
+        changeSerial: function changeSerial(change) {
+            if (change == 'up' && this.canIncreaseSerial) // go up in value, down in index                
+                this.selected.serial--;else if (change == 'down' && this.canDecreaseSerial) if (this.selected.serial == null) this.selected.serial = 0;else this.selected.serial++;
+            console.log("this.selected.serial= " + this.selected.serial + " - option selected= " + this.options.serials[this.selected.serial]);
+            this.readAccountDebounce();
+        },
+        loadingPage: function loadingPage() {
+            var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            this.loading.page = param;
+        },
+        accountReady: function accountReady() {
+            var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            this.settings.accountReady = val;
+        }
+    },
+    computed: {
+        canIncreaseSerial: function canIncreaseSerial() {
+            return this.selected.serial != 0 && this.selected.serial != null;
+        },
+        canDecreaseSerial: function canDecreaseSerial() {
+            if (this.selected.serial == null) return this.options.serials.length != 0;else return this.selected.serial + 1 != this.options.serials.length;
+        },
+        changed: function changed() {
+            // determain whether settings.originalObj and account are completely equal 
+            // console.log("originalObj",this.originalObj); console.log("account",JSON.stringify(this.account));
+            // return ! _.isEqual(this.originalObj, JSON.stringify(this.account))
+            return true;
+        }
+    },
+    watch: {
+        selected: {
+            handler: function handler(newValue) {
+                var data = JSON.parse(JSON.stringify(newValue));
+                // console.log("selected",data)
+
+                if (data.currency != null) {
+                    var currency = this.currencies.find(function (el) {
+                        return el.id == data.currency.id;
+                    });
+                    this.account.currency_id = currency.id;
+                    console.log("selected.currency", currency.id);
+                }
+                if (data.client != null) {
+                    this.account.client_id = +_extends({}, this.options.clients.find(function (el) {
+                        return el.id == data.client.id;
+                    })).id;
+                    console.log("selected.client", client.id);
+                }
+                if (data.payment != null) {
+                    this.account.payment_id = +_extends({}, this.pay.find(function (el) {
+                        return el.id == data.payment.id;
+                    })).id;
+                    console.log("selected.payment", this.selected.payment.id);
+                }
+                if (data.warehouse != null) {
+                    this.account.warehouse_id = +_extends({}, this.options.warehouses.find(function (el) {
+                        return el.id == data.warehouse.id;
+                    })).id;
+                    console.log("selected.warehouse", this.selected.warehouse.id);
+                }
+                if (data.serial != null) {
+                    this.account.serial = +this.options.serials[data.serial];
+                    console.log("selected.serial= " + this.selected.serial + " - this.account.serial= " + this.account.serial);
+                }
+            },
+            deep: true
+        },
+        account: {
+            handler: function handler(account) {
+                if (this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id) {
+                    this.settings.valid = true;
+                } else {
+                    this.settings.valid = false;
+                }
+            },
+            deep: true
+        },
+        settings: {
+            handler: function handler(settings) {
+                if (settings.accountReady) {
+                    this.originalObj = JSON.stringify(this.account);
+                    this.settings.accountReady = false;
+                }
+            },
+            deep: true
+        },
+        loading: {
+            handler: function handler(loading) {
+                this.$emit('LoadingPage', loading.page);
+            },
+            deep: true
+        }
+    },
+    mounted: function mounted() {
+        console.log("Component <account> mounted.");
+        this.init();
+    }
+});
+
+/***/ }),
+/* 92 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Account = function Account() {
+    var mat = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    var qty = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    var single = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var total = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
+    _classCallCheck(this, Account);
+
+    this.mat = mat;
+    this.qty = qty;
+    this.single = single;
+    this.total = total;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Account);
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "Account d-flex flex-column-reverse" },
+    [
+      _c("div", { staticClass: "buttons d-flex justify-content-between" }, [
+        !_vm.settings.editMode
+          ? _c("div", {}, [
+              _c(
+                "button",
+                {
+                  staticClass: "nav-link btn btn-success px-5",
+                  attrs: {
+                    id: "accountSave",
+                    disabled: !_vm.changed || !_vm.settings.valid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.submitAccount()
+                    }
+                  }
+                },
+                [_vm._v("حفظ")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.settings.editMode
+          ? _c("div", {}, [
+              _c(
+                "button",
+                {
+                  staticClass: "nav-link btn btn-info text-white px-5",
+                  attrs: {
+                    id: "accountsettings.editMode",
+                    disabled: !_vm.changed || !_vm.settings.valid
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.editAccount()
+                    }
+                  }
+                },
+                [_vm._v("تعديل")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", {}, [
+          _c(
+            "button",
+            {
+              staticClass: "nav-link btn btn-dark px-5",
+              attrs: {
+                id: "accountClear",
+                disabled: !_vm.changed && _vm.selected.serial == null
+              },
+              on: {
+                click: function($event) {
+                  _vm.clearAccount()
+                }
+              }
+            },
+            [_vm._v("جديد")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "tab-content", attrs: { id: "v-pills-tabContent" } },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade show active",
+              attrs: { id: "General", role: "tabpanel" }
+            },
+            [
+              _c("div", { staticClass: "d-flex my-0" }, [
+                _c("div", { staticClass: "col-sm-6 px-0" }, [
+                  _c(
+                    "div",
+                    { staticClass: "d-flex mb-1", attrs: { id: "client" } },
+                    [
+                      _c("label", { staticClass: "col-sm-2 d-flex" }, [
+                        _vm._v("رمز الحساب")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selected.currency.buy,
+                            expression: "selected.currency.buy"
+                          }
+                        ],
+                        staticClass: "form-control col-sm-10",
+                        attrs: {
+                          type: "text",
+                          id: "",
+                          placeholder: "أدخل قيمة..."
+                        },
+                        domProps: { value: _vm.selected.currency.buy },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.selected.currency,
+                              "buy",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "d-flex mb-1", attrs: { id: "client" } },
+                    [
+                      _c("label", { staticClass: "col-sm-2 d-flex" }, [
+                        _vm._v("اسم الحساب")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selected.currency.buy,
+                            expression: "selected.currency.buy"
+                          }
+                        ],
+                        staticClass: "form-control col-sm-10",
+                        attrs: {
+                          type: "text",
+                          id: "",
+                          placeholder: "أدخل قيمة..."
+                        },
+                        domProps: { value: _vm.selected.currency.buy },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.selected.currency,
+                              "buy",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "d-flex mb-1", attrs: { id: "client" } },
+                    [
+                      _c("label", { staticClass: "col-sm-2 d-flex" }, [
+                        _vm._v("ملاحظات")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selected.currency.buy,
+                            expression: "selected.currency.buy"
+                          }
+                        ],
+                        staticClass: "form-control col-sm-10",
+                        attrs: {
+                          type: "text",
+                          id: "",
+                          placeholder: "أدخل قيمة..."
+                        },
+                        domProps: { value: _vm.selected.currency.buy },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.selected.currency,
+                              "buy",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-sm-6 px-0" }, [
+                  _c("div", { staticClass: "d-flex mb-1" }, [
+                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _vm._v("الرقم التسلسلي")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "input-group col-sm-8 align-self-center" },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "input-group-prepend order-3" },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-primary",
+                                attrs: {
+                                  type: "button",
+                                  id: "button-addon1",
+                                  disabled: !_vm.canDecreaseSerial
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.changeSerial("down")
+                                  }
+                                }
+                              },
+                              [_vm._v("-")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.selected.currency.buy,
+                              expression: "selected.currency.buy"
+                            }
+                          ],
+                          staticClass: "form-control order-2",
+                          attrs: {
+                            type: "number",
+                            placeholder: _vm.loading.serial ? "loading" : "...",
+                            disabled: false
+                          },
+                          domProps: { value: _vm.selected.currency.buy },
+                          on: {
+                            keyup: function($event) {
+                              if (
+                                !("button" in $event) &&
+                                _vm._k(
+                                  $event.keyCode,
+                                  "enter",
+                                  13,
+                                  $event.key,
+                                  "Enter"
+                                )
+                              ) {
+                                return null
+                              }
+                              _vm.readInvoice()
+                            },
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.selected.currency,
+                                "buy",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "input-group-append order-1" },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-primary",
+                                attrs: {
+                                  type: "button",
+                                  id: "button-addon1",
+                                  disabled: !_vm.canIncreaseSerial
+                                },
+                                on: {
+                                  click: function($event) {
+                                    _vm.changeSerial("up")
+                                  }
+                                }
+                              },
+                              [_vm._v("+")]
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex mb-1" }, [
+                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _vm._v("الاسم اللاتيني")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selected.currency.buy,
+                          expression: "selected.currency.buy"
+                        }
+                      ],
+                      staticClass: "form-control col-sm-8",
+                      attrs: {
+                        type: "text",
+                        id: "",
+                        placeholder: "أدخل قيمة..."
+                      },
+                      domProps: { value: _vm.selected.currency.buy },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.selected.currency,
+                            "buy",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex mb-1" }, [
+                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _vm._v("نوع الحساب")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "Select2 col-sm-8 px-0" },
+                      [
+                        _c("select2", {
+                          attrs: {
+                            options: _vm.options.pay,
+                            "track-by": "id",
+                            label: "title",
+                            "show-labels": false,
+                            placeholder: "...",
+                            "allow-empty": false,
+                            "preselect-first": true,
+                            preserveSearch: false,
+                            internalSearch: false,
+                            searchable: false,
+                            loading: false,
+                            showNoResults: false,
+                            multiple: false,
+                            taggable: false,
+                            max: null
+                          },
+                          model: {
+                            value: _vm.selected.payment,
+                            callback: function($$v) {
+                              _vm.$set(_vm.selected, "payment", $$v)
+                            },
+                            expression: "selected.payment"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ])
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2)
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "ul",
+        {
+          staticClass: "nav nav-pills pb-4 d-flex justify-content-center",
+          attrs: { role: "tablist" }
+        },
+        [
+          _c("li", { staticClass: "nav-item px-1" }, [
+            _c(
+              "button",
+              {
+                staticClass: "nav-link btn btn-outline-secondary active px-5",
+                attrs: {
+                  id: "General",
+                  "data-toggle": "pill",
+                  role: "tab",
+                  href: "#General"
+                },
+                on: { click: _vm.tabClicked }
+              },
+              [_vm._v("عام")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item px-1" }, [
+            _c(
+              "button",
+              {
+                staticClass: "nav-link btn btn-outline-secondary px-5",
+                attrs: {
+                  id: "Taxes",
+                  "data-toggle": "pill",
+                  role: "tab",
+                  href: "#Taxes"
+                },
+                on: { click: _vm.tabClicked }
+              },
+              [_vm._v("الضرائب")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item px-1" }, [
+            _c(
+              "button",
+              {
+                staticClass: "nav-link btn btn-outline-secondary px-5",
+                attrs: {
+                  id: "Customers",
+                  "data-toggle": "pill",
+                  role: "tab",
+                  href: "#Customers"
+                },
+                on: { click: _vm.tabClicked }
+              },
+              [_vm._v("الزبائن")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "nav-item px-1" }, [
+            _c(
+              "button",
+              {
+                staticClass: "nav-link btn btn-outline-secondary px-5",
+                attrs: {
+                  id: "CustomizedFields",
+                  "data-toggle": "pill",
+                  role: "tab",
+                  href: "#CustomizedFields"
+                },
+                on: { click: _vm.tabClicked }
+              },
+              [_vm._v("حقول مخصصة")]
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("loading-page")
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { id: "Taxes", role: "tabpanel" }
+      },
+      [_c("h1", [_vm._v("الضرائب")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { id: "Customers", role: "tabpanel" }
+      },
+      [_c("h1", [_vm._v("الزبائن")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tab-pane fade",
+        attrs: { id: "CustomizedFields", role: "tabpanel" }
+      },
+      [_c("h1", [_vm._v("حقول مخصصة")])]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0b1dd512", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

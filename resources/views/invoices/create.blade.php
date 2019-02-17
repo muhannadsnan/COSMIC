@@ -24,13 +24,11 @@
             @case (2) 
                 <?php
                     $profile = request('profile');
-                    $profile->load(['_warehouses']);
-                    // dd($profile);
+                    $profile->load(['_warehouses']); 
                 ?>
                 <invoice-selling 
                         :currencies="{{json_encode($currencies)}}" :pay="{{json_encode($payment)}}" 
-                        :profile="{{json_encode($profile)}}">
-                </invoice-selling>
+                        :profile="{{json_encode($profile)}}" /> 
                 @break
             @default
                 <h1>default</h1>

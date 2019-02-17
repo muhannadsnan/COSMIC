@@ -23,8 +23,10 @@
                     </div>
                 </div>
             </div>
-        </main>
-        @yield('scripts')
+        </main>        
     </div>
+
+    @yield('scripts')
+    <script src="{{ asset('js/app.js') }}" ></script>
 </body>
 </html>

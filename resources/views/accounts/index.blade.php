@@ -96,7 +96,7 @@
                             },
                             actions: [
                                 { name: 'بطاقة الحساب', iconClass: 'fas fa-star', onClick: function(row) { 
-                                        window.open("accounts/"+node.id,'', ["width=800","height=600"]);
+                                        window.open("accounts/"+node.id,'', ["width=800","height=600"]); 
                                     }
                                 }, 
                                 { name: 'خيارات', iconClass: 'fas fa-lock', onClick: function(row) {
