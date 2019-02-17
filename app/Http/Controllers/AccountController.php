@@ -17,19 +17,12 @@ class AccountController extends Controller
     public function index(Base $basis, Profile $profile)
     {
         return view('accounts.index', ['accounts' => Account::where('profile_id', null) // the default accounts have no profile_id
-                                                            ->orWhere('profile_id', $profile->id)->with("_parents")->get(),   'noscript' => 1 ]); 
+                                                            ->orWhere('profile_id', $profile->id)->with("_parents")->get()/* ,   'noscript' => 1  */]); // noscript because I use script to make the treeview
     }
     
-    public function create()
+    public function create(Base $basis, Profile $profile)
     {
-        $account = new Account([
-            'title' => 't1',
-            'desc' => 'd1',
-            'code' => 'c1',
-            'group_id' => '1',
-        ]);
-        $account->save();
-        return $account;
+        return view('accounts.create');
     }
     
     public function store(Request $request)
@@ -37,31 +30,24 @@ class AccountController extends Controller
         //
     }
     
-    public function show(Account $account)
+    public function show(Base $basis, Profile $profile, Account $account)
     { 
-        return $account;
-        return $account->_invoices;
-        return $account->_currency;
-        return $account->_clients;
-        return $account->_profile;
-        return $account->_users;
-        return $account->_closingAccount;
-        return $account->_childAccount;
+        return view('accounts.show', []);
     }
     
-    public function edit(Account $account)
+    public function edit(Base $basis, Profile $profile, Account $account)
     {
         $account->title = 'T1';
         $account->save();
         return $account;
     }
     
-    public function update(Request $request, Account $account)
+    public function update(Request $request, Base $basis, Profile $profile, Account $account)
     {
         //
     }
     
-    public function destroy(Account $account)
+    public function destroy(Base $basis, Profile $profile, Account $account)
     {
         //
     }

@@ -1,46 +1,24 @@
 @extends('window')
 @section('title', '........')
 @section('card-header')
-    @breadcrumb(['items' =>[
+    @breadcrumb(['items' => [
                         ['href' => '/bases', 'text' => __('lbl.base.0')],
                         ['href' => '/bases', 'text' => request('base')->title],
                         ['active' => '', 'text' =>  __('lbl.account.0')],
                     ], 'classes'=>''
                 ]) 
     @endbreadcrumb
+    <!-- @modalbtn(['modalid'=>'createAccountModal', 'classes'=>'float-left']) {{__('lbl.account.create')}} @endmodalbtn  -->
+
+    <a id="createAccountBtn" href="#" class="btn btn-success float-left">{{__('lbl.account.create')}}</a>
 @endsection
 
 @section('content')
-    @modal(['title' => __('lbl.account.create'), 'showBtn' => false, 'footer' => ['ok'=>__('lbl.save'), 'cancel'=>__('lbl.close')], 'btn' =>['text'=>__('lbl.account.create'), 'type'=>'warning', 'classes'=>'mb-2'], 'id'=>'createAccountModal'])
-        <form action="/profiles" method="post" class="px-5X" id="form1">
-            @csrf
-            <div class="form-group row">
-                <label class="col-sm-4">{{__('lbl.account.title')}}</label>
-                <input type="text" name="title" placeholder="Enter a profile title.." class="form-control col-sm-8">
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-4">Start period date</label>
-                <input type="text" name="startPeriodDate" placeholder="Enter a start period date.." class="form-control col-sm-8">
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-4">End period date</label>
-                <input type="text" name="endPeriodDate" placeholder="Enter an end period date.." class="form-control col-sm-8">
-            </div> 
-            <input type="hidden" name="base_id" value="{{request('base')->id}}">
-        </form>
-    @endmodal   
-
-    @modalbtn(['modalid'=>'createAccountModal', 'classes'=>'float-left']) {{__('lbl.account.create')}} @endmodalbtn
-
+     
     @if(request('base')->accGuide && count($accounts))
         <button id="expandAll" class="btn btn-sm btn-outline-info"><i class="fas fa-plus"></i></button>
         <button id="collapseAll" class="btn btn-sm btn-outline-info"><i class="fas fa-minus"></i></button>
-        <div id="tree" class="mt-3"></div>
-        {{-- @forelse($accounts->where('closing_acc_id', '=', null) as $key=>$account)
-            <p>{{$key+1}}.{{$account->title}} -- {{$account->_children->first()['title']}}</p>
-        @empty
-            @alert You don't have any accounts. You can create one. @endalert
-        @endforelse --}}
+        <div id="tree" class="mt-3"></div> 
     @else
         @alert {{__('msg.entity_is_empty', ['entity'=>'دليل الحسابات'])}} @endalert
     @endif
@@ -61,7 +39,7 @@
     <script type="text/javascript" src="{{ URL::asset('bootstrap-treeview/bootstrap-treeview.min.js') }}"></script>
     <script type="text/javascript" src="{{ URL::asset('BootstrapMenu.min.js') }}"></script>
     <script>
-        $(document).ready(function(){ /***  COLLECT DATA & GENERATE TREE VIEW FROM THE ENTRIES  ***/
+        $(document).ready(function(){ /***  COLLECT DATA & GENERATE TREE VIEW FROM THE ENTRIES  ***/ 
             var accounts = <?php echo $accounts; ?>; console.log("accounts",accounts);
             accounts = Object.values(accounts);            
             var tree = []; 
@@ -91,7 +69,7 @@
                             if(children.length) {
                                 arr[i].nodes = children 
                             }  
-                            arr[i].text += '<i class="fas fa-chevron-circle-down"></i>'
+                            arr[i].text += '<i class="fas fa-chevron-circle-down px-2"></i>'
                             // arr[i].selectable = false
                             output.push(arr[i])
                         }
@@ -110,25 +88,28 @@
 
             // bootstrap treeview link : https://github.com/jonmiles/bootstrap-treeview 
             var nodeid, node;
-            var menu = new BootstrapMenu('#tree ul li.node-tree', { menuEvent: 'right-click',/*  menuSource: 'element', menuPosition: 'belowRight', */
-                                                                    opentEvent: function(event){ alert()},
-                                                                    fetchElementData: function(row) {
-                                                                        nodeid = row[0].dataset.nodeid
-                                                                        node = $('#tree').treeview('getNode', nodeid)
-                                                                    },
-                                                                    actions: [
-                                                                        { name: 'بطاقة الحساب', iconClass: 'fas fa-star', onClick: function(row) { 
-                                                                                window.open("/accounts/"+node.id,'', ["width=600","height=600"]);
-                                                                            }
-                                                                        }, 
-                                                                        { name: 'خيارات', iconClass: 'fas fa-lock', onClick: function(row) {
-                                                                                alert("not set yet")
-                                                                            }
-                                                                        }
-                                                                    ]
-                                                                });
+            var menu = new BootstrapMenu('#tree ul li.node-tree', { 
+                            menuEvent: 'right-click',  
+                            fetchElementData: function(row) {
+                                nodeid = row[0].dataset.nodeid
+                                node = $('#tree').treeview('getNode', nodeid)
+                            },
+                            actions: [
+                                { name: 'بطاقة الحساب', iconClass: 'fas fa-star', onClick: function(row) { 
+                                        window.open("accounts/"+node.id,'', ["width=800","height=600"]);
+                                    }
+                                }, 
+                                { name: 'خيارات', iconClass: 'fas fa-lock', onClick: function(row) {
+                                        alert("not set yet")
+                                    }
+                                }
+                            ]
+                        });
             // Bootstrap Menu Link: https://github.com/dgoguerra/bootstrap-menu  
 
+            $("#createAccountBtn").on("click", function(){
+                window.open("accounts/create", "", ["width=800","height=600"])
+            })
         });
     </script>
 @endsection

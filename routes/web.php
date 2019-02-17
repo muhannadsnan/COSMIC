@@ -3,7 +3,7 @@
 Auth::routes();
 
 Route::resource('/', 'HomeController');
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'HomeController@dashboard'); 
 
 Route::resource('/bases', 'BaseController');
@@ -20,6 +20,8 @@ Route::resource('/warehouses', 'WarehouseController');
 
 Route::resource('/accounts', 'AccountController');
 Route::get('/bases/{basis}/profiles/{profile}/accounts', 'AccountController@index');
+Route::get('/bases/{basis}/profiles/{profile}/accounts/create', 'AccountController@create');
+Route::get('/bases/{basis}/profiles/{profile}/accounts/{account}', 'AccountController@show');
 
 Route::resource('/users', 'UserController');
 Route::resource('/clients', 'ClientController');
@@ -33,10 +35,4 @@ Route::resource('/currencies', 'CurrencyController');
 Route::resource('/entryinfos', 'EntryinfoController');
 Route::resource('/invoiceinfos', 'InvoiceinfoController');
 Route::resource('/invoicetypes', 'InvoicetypeController');
-Route::resource('/payments', 'PaymentController');
-
-
-// Route::get('/', 'HomeController@index')->name('home');
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('/payments', 'PaymentController'); 

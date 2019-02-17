@@ -1,10 +1,9 @@
-<!-- @modal(['title' => 'Create Base','footer' => ['ok'=>'yes', 'cancel'=>'no'], 'btn' =>['text'=>'Create Base', 'type'=>'warning', 'classes'=>'btn-1 btn-2 btn-3']]) -->
 <?php
     if(!isset($btn)){ // text for the button
         $btn['text'] = "text";
         $btn['type'] = "primary";
         $btn['classes'] = "modal-trigger-btn otherClasses";
-        $btn['text'] = "text";
+        $btn['text'] = "modal btn";
     }
     if(!isset($id)) // id for the modal
         $id = "exampleModalCenter";

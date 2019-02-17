@@ -71,14 +71,13 @@ class InvoiceController extends Controller
     
     public function create(Base $basis, Profile $profile)
     {
-        // return request('profile')->_warehouses;
         return view('invoices.create', ['currencies' => Currency::all(), 'payment' => Payment::all()]); 
     }
     
-    public function store(Request $request)
-    {  //return $request->base;
-        $base = Base::find($request->base_id);
-        $profile = $base->_profiles->find($request->profile_id);
+    public function store(Request $request, Base $basis, Profile $profile )
+    { 
+        // $base = Base::find($request->base_id);
+        // $profile = $base->_profiles->find($request->profile_id);
         $newInvoice = Invoice::insert($request->all());
         if(!$newInvoice)
             return ['ok' => false, 'msg' => 'خطأ أثناء إضافة الفاتورة'];
@@ -86,24 +85,24 @@ class InvoiceController extends Controller
         return ['ok' => true, 'msg' => 'تم إضافة الفاتورة بنجاح!', 'data' => $newInvoice];
     }
     
-    public function show(Invoice $invoice)
+    public function show(Base $basis, Profile $profile, Invoice $invoice)
     { 
         return $invoice;
     }
     
-    public function edit(Invoice $invoice)
+    public function edit(Base $basis, Profile $profile, Invoice $invoice)
     {
         $invoice->title = 'T1';
         $invoice->save();
         return $invoice;
     }
     
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, Base $basis, Profile $profile, Invoice $invoice)
     {
         //
     }
     
-    public function destroy(Invoice $invoice)
+    public function destroy(Base $basis, Profile $profile, Invoice $invoice)
     {
         //
     }

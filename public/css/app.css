@@ -11594,7 +11594,7 @@ ul#NAVBAR li.nav-item .nav-link::after {
   margin: 10px 20px 0px 10px;
 }
 
-/******************** TREE ********************/
+/******************** TREE VIEW ********************/
 
 #tree ul {
   padding: 0;
@@ -11615,6 +11615,10 @@ ul#NAVBAR li.nav-item .nav-link::after {
 
 #tree ul li .dropdown {
   padding: 0px 10px;
+  color: #777;
+}
+
+#tree ul li i {
   color: #777;
 }
 
