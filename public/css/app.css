@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);/*!
+@import url(https://fonts.googleapis.com/css?family=Nunito);@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);/*!
  * Bootstrap v4.2.1 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
@@ -11462,8 +11462,29 @@ input[type="date"]::-webkit-inner-spin-button {
   display: none;
 }
 
+input[type=checkbox] {
+  display: none;
+  /* checked icon */
+}
+
+input[type=checkbox] + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\F096";
+  letter-spacing: 10px;
+  font-size: 24px;
+  direction: rtl;
+  vertical-align: middle;
+}
+
+input[type=checkbox]:checked + label:before {
+  content: "\F046";
+  letter-spacing: 5px;
+}
+
 hr {
-  border-color: darkseagreen;
+  border-color: #b2d4c0 !important;
+  border-width: 1px !important;
 }
 
 label {
@@ -11474,12 +11495,16 @@ label {
   white-space: nowrap;
 }
 
-.form-group label {
-  line-height: 36px;
-  margin-bottom: 0;
-  direction: ltr !important;
-  padding: 0 0 0 3px !important;
-  white-space: nowrap;
+fieldset {
+  border: 1px solid #b2d4c0  !important;
+  padding: 0 1.4em 1.4em 1.4em !important;
+  margin: 0 0 0.5em 0 !important;
+}
+
+fieldset legend {
+  width: unset !important;
+  padding: 0 10px;
+  font-size: 16px;
 }
 
 /******************** CUSTOM ********************/

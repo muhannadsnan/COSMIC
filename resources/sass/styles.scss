@@ -1,11 +1,18 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 /******************** INITIALS ********************/
 html, body, div, ul, li, a{direction: rtl !important; text-align: right !important;}
 input[type="radio"], input[type="checkbox"]{vertical-align: middle; margin-left: 5px;}
 input[type="number"]::-webkit-inner-spin-button, input[type="date"]::-webkit-inner-spin-button {display: none;} 
-hr{border-color: darkseagreen;}
+input[type=checkbox] { display:none; 
+    & + label:before { font-family: FontAwesome; display: inline-block; content: "\f096"; letter-spacing: 10px; font-size: 24px; direction: rtl; vertical-align: middle;}
+    &:checked + label:before { content: "\f046"; letter-spacing: 5px; } /* checked icon */
+}
+  
+
+hr{border-color: #b2d4c0 !important; border-width: 1px !important;}
 label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important; white-space: nowrap;}
-.form-group {
-    label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important; white-space: nowrap;}
+fieldset { border: 1px solid #b2d4c0  !important; padding: 0 1.4em 1.4em 1.4em !important; margin: 0 0 0.5em 0 !important;
+    legend { width: unset !important; padding: 0 10px; font-size: 16px;}
 }
 /******************** CUSTOM ********************/
 main.master{background: #555; min-height: 80vh;}
