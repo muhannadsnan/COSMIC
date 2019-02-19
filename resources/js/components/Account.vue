@@ -1,93 +1,145 @@
 <template>
     <div class="Account d-flex flex-column-reverse">
-        <div class="buttons d-flex justify-content-between">            
-            <div class="" v-if="!settings.editMode">
-                <button @click="submitAccount()" class="nav-link btn btn-success px-5" id="accountSave" :disabled="!changed || !settings.valid">حفظ</button>
-            </div>
-
-            <div class="" v-if="settings.editMode">
-                <button @click="editAccount()" class="nav-link btn btn-info text-white px-5" id="accountsettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
-            </div>
-
-            <div class="">
-                <button @click="clearAccount()" class="nav-link btn btn-dark px-5" id="accountClear" :disabled="!changed && selected.serial == null">جديد</button>
-            </div>
+        <div class="buttons d-flex justify-content-between mt-4">            
+            <button v-if="!settings.editMode" @click="submitAccount()" class="nav-link col-4 col-md-3 btn btn-success" 
+                    id="accountSave" :disabled="!changed || !settings.valid">حفظ</button>
+            <button v-if="settings.editMode" @click="editAccount()" class="nav-link col-4 col-md-3 btn btn-info text-white" 
+                    id="accountsettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
+            <button @click="clearAccount()" class="nav-link col-4 col-md-3 btn btn-dark" 
+                    id="accountClear" :disabled="!changed && selected.serial == null">جديد</button>
         </div>
 
         <div class="tab-content" id="v-pills-tabContent"> 
             <hr>
             <div id="General" class="tab-pane fade show active" role="tabpanel">
-                <div class="d-flex align-items-start">
-                    <div class="col-sm-6 px-0">
-                        <div class="d-flex mb-1">
-                            <label class="col-sm-3 d-flex">الحساب الرئيسي</label> 
+                <div class="d-sm-flex align-items-start">
+                    <div class="col-sm-6 px-1">
+                        <div class="d-sm-flex">
+                            <label class="col-sm-3 d-sm-flex">الحساب الرئيسي</label> 
                             <div class="Select2 col-sm-9 px-0"> 
                                 <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
                                         :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
                                         @search-change="onSearchClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
-                        <div class="d-flex mb-1">
-                            <label class="col-sm-3 d-flex">الحساب الختامي</label> 
+                        <div class="d-sm-flex mt-1">
+                            <label class="col-sm-3 d-sm-flex">الحساب الختامي</label> 
                             <div class="Select2 col-sm-9 px-0"> 
                                 <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
                                         :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
                                         @search-change="onSearchClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
-                        <fieldset class=" mt-1 px-2">
+                        <fieldset class="mt-3 px-2">
                             <legend>الموازنة التقديرية</legend>
-                            <div class="d-flex justify-content-center mb-0">
-                                <button class="btn btn-outline-secondary col-2 mx-1" :class="{'bg-secondary text-white': true}">مدينة</button>
-                                <button class="btn btn-outline-secondary col-2 mx-1" :class="{'bg-secondary text-white': false}">دائنة</button>
-                                <button class="btn btn-outline-secondary col-2 mx-1" :class="{'bg-secondary text-white': false}">بدون</button>
+                            <div class="d-sm-flex justify-content-center mb-0">
+                                <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': true}">مدينة</button>
+                                <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': false}">دائنة</button>
+                                <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': false}">بدون</button>
                             </div>
-                            <div class="d-flex mt-2">
-                                <label class="col-sm-3 d-flex">القيمة</label> 
+                            <div class="d-sm-flex mt-2">
+                                <label class="col-sm-2 d-sm-flex">القيمة</label> 
                                 <input type="number" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="">
                             </div>
-                            <div class="d-flex mt-2">
-                                <label class="col-sm-3 d-flex">القيمة</label> 
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-2 d-sm-flex">العملة</label> 
                                 <div class="Select2 col-sm-8 px-0">
                                     <select2 v-model="selected.currency" :options="options.clients" track-by="id" label="title" :show-labels="false" placeholder="..." 
                                         :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
                                         :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                                 </div>
                             </div>
-                            <div class="d-flex mt-2">
-                                <label class="col-sm-3 d-flex">التعادل</label> 
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-2 d-sm-flex">التعادل</label> 
                                 <input type="number" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="">
                             </div>
-                            <div class="d-flex mt-2" :disabled="true">
+                            <div class="d-sm-flex mt-1" :disabled="true">
                                 <input type="checkbox" checked> <label >اعتبار الاوراق التجارية المستحقة جزءاً من الموازنة</label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="mt-3 px-2">
+                            <legend>تبويبات القوائم المالية</legend>
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-4 d-sm-flex">قائمة الدخل</label> 
+                                <div class="Select2 col-sm-7 px-0" :disabled="true">
+                                    <select2 v-model="selected.currency" :options="options.clients" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                        :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
+                                        :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null" :disabled="true"></select2>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-4 d-sm-flex">حقوق الملكية</label> 
+                                <div class="Select2 col-sm-7 px-0" :disabled="true">
+                                    <select2 v-model="selected.currency" :options="options.clients" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                        :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
+                                        :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null" :disabled="true"></select2>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-4 d-sm-flex">المركز المالي</label> 
+                                <div class="Select2 col-sm-7 px-0" :disabled="true">
+                                    <select2 v-model="selected.currency" :options="options.clients" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                        :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
+                                        :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null" :disabled="true"></select2>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-4 d-sm-flex">التدفق النقدي</label> 
+                                <div class="Select2 col-sm-7 px-0" :disabled="true">
+                                    <select2 v-model="selected.currency" :options="options.clients" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                        :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
+                                        :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null" :disabled="true"></select2>
+                                </div>
+                            </div>
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-4 d-sm-flex">تفصيلات التبويبات</label> 
+                                <div class="Select2 col-sm-7 px-0" :disabled="true"> 
+                                    <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
+                                            :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
+                                            @search-change="onSearchClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null" :disabled="true"></select2>
+                                </div>
                             </div>
                         </fieldset>
                     </div> 
 
-                    <div class="col-sm-6 px-0">
-                        <div class="d-flex mb-0">
-                            <label class="col-sm-4 d-flex">طبيعة الحساب</label> 
-                            <div class="d-flex justify-content-around mb-0">
-                                <button class="btn btn-outline-secondary mx-1" :class="{'bg-secondary text-white': true}">مدين</button>
+                    <div class="col-sm-6 px-1">
+                        <div class="d-sm-flex flex-column mb-0 pb-1">
+                            <label class="col-sm-4 d-sm-flexX">طبيعة الحساب</label> 
+                            <div class="col-sm-8 d-sm-flex align-items-start justify-content-around mb-0 px-1">
+                                <button class="btn btn-outline-secondary mx-0" :class="{'bg-secondary text-white': true}">مدين</button>
                                 <button class="btn btn-outline-secondary mx-1" :class="{'bg-secondary text-white': false}">دائن</button>
-                                <button class="btn btn-outline-secondary mx-1" :class="{'bg-secondary text-white': false}">مدين ودائن</button>
+                                <button class="btn btn-outline-secondary mx-0" :class="{'bg-secondary text-white': false}">مدين ودائن</button>
                             </div>
                         </div>
-                        <fieldset class="mx-1 mt-1 px-2">
+                        <fieldset class="mt-2 px-2">
                             <legend>الرصيد الحالي</legend>
-                            <div class="d-flex mt-2">
-                                <label class="col-sm-3 d-flex">مدين</label> 
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-2 d-sm-flex">مدين</label> 
                                 <input type="number" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="">
                             </div>
-                            <div class="d-flex mt-2">
-                                <label class="col-sm-3 d-flex">دائن</label> 
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-2 d-sm-flex">دائن</label> 
                                 <input type="number" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="">
                             </div>
-                            <div class="d-flex mt-2">
-                                <label class="col-sm-3 d-flex">ؤصيد</label> 
+                            <div class="d-sm-flex mt-1">
+                                <label class="col-sm-2 d-sm-flex">رصيد</label> 
                                 <input type="number" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="">
                             </div>
-                        </fieldset>
+                        </fieldset> 
+                        <div class="d-sm-flex mt-1">
+                            <input type="checkbox" checked> <label>إخفاء في نافذة البحث</label>
+                        </div>
+                        <div class="d-sm-flex mt-1">
+                            <input type="checkbox" checked> <label>فرض مركز الكلفة</label>
+                        </div>
+                        <div class="d-sm-flex mt-1">
+                            <label class="col-sm-3 d-sm-flex">مركز الكلفة</label> 
+                            <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="">
+                        </div> 
+                        <fieldset class="mt-3 px-2">
+                            <legend>اخر مطابقة</legend> 
+                            لم يتم إجراء أي عمليات مطابقة على هذا الحساب, يمكن أن يتم تخزين المطابقات على هذا الحساب من خلال الأمر (مطابقة رصيد حساب) ضمن القائمة: حسابات - أدوات.
+                        </fieldset> 
                     </div>
                 </div> 
             </div>
@@ -102,24 +154,24 @@
             </div>
         </div>
 
-        <div class="d-flex my-0">
+        <div class="d-sm-flex my-0">
             <div class="col-sm-6 px-0">
-                <div class="d-flex mb-1">
-                    <label class="col-sm-2 d-flex">رمز الحساب</label> 
-                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10"placeholder="">
+                <div class="d-sm-flex mb-1">
+                    <label class="col-sm-2 d-sm-flex">رمز الحساب</label> 
+                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10" placeholder="">
                 </div>
-                <div class="d-flex mb-1">
-                    <label class="col-sm-2 d-flex">اسم الحساب</label> 
-                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10"placeholder="">
+                <div class="d-sm-flex mb-1">
+                    <label class="col-sm-2 d-sm-flex">اسم الحساب</label> 
+                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10" placeholder="">
                 </div>
-                <div class="d-flex mb-1">
-                    <label class="col-sm-2 d-flex">ملاحظات</label> 
-                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10"placeholder="">
+                <div class="d-sm-flex mb-1">
+                    <label class="col-sm-2 d-sm-flex">ملاحظات</label> 
+                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-10" placeholder="">
                 </div>                        
             </div>
             <div class="col-sm-6 px-0">
-                <div class="d-flex mb-1">
-                    <label class="col-sm-4 d-flex">الرقم التسلسلي</label>
+                <div class="d-sm-flex mb-1">
+                    <label class="col-sm-4 d-sm-flex">الرقم التسلسلي</label>
                     <div class="input-group col-sm-8 align-self-center">
                         <div class="input-group-prepend order-3">
                             <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('down')" :disabled="!canDecreaseSerial">-</button>
@@ -130,12 +182,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex mb-1">
-                    <label class="col-sm-4 d-flex">الاسم اللاتيني</label>
+                <div class="d-sm-flex mb-1">
+                    <label class="col-sm-4 d-sm-flex">الاسم اللاتيني</label>
                     <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8"placeholder="">
                 </div>
-                <div class="d-flex mb-1">
-                    <label class="col-sm-4 d-flex">نوع الحساب</label>
+                <div class="d-sm-flex mb-1">
+                    <label class="col-sm-4 d-sm-flex">نوع الحساب</label>
                     <div class="Select2 col-sm-8 px-0">
                         <select2 v-model="selected.payment" :options="options.pay" track-by="id" label="title" :show-labels="false" placeholder="..." 
                                 :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false"
@@ -145,18 +197,18 @@
             </div>            
         </div> 
 
-        <ul class="nav nav-pills pb-4 d-flex justify-content-center" role="tablist">
-            <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary active px-5" id="General" data-toggle="pill" role="tab" href="#General">عام</button>
+        <ul class="nav nav-pills pb-4 px-0 d-sm-flex justify-content-center" role="tablist">
+            <li class="nav-item col-6 col-md-3 px-1 pb-1">
+                <button @click="tabClicked" class="nav-link col-12 btn btn-outline-secondary active " id="General" data-toggle="pill" role="tab" href="#General">عام</button>
             </li>
-            <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="Taxes" data-toggle="pill" role="tab" href="#Taxes">الضرائب</button>
+            <li class="nav-item col-6 col-md-3 px-1 pb-1">
+                <button @click="tabClicked" class="nav-link col-12 btn btn-outline-secondary " id="Taxes" data-toggle="pill" role="tab" href="#Taxes">الضرائب</button>
             </li>
-            <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="Customers" data-toggle="pill" role="tab" href="#Customers">الزبائن</button>
+            <li class="nav-item col-6 col-md-3 px-1 pb-1">
+                <button @click="tabClicked" class="nav-link col-12 btn btn-outline-secondary " id="Customers" data-toggle="pill" role="tab" href="#Customers">الزبائن</button>
             </li>
-            <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="CustomizedFields" data-toggle="pill" role="tab" href="#CustomizedFields">حقول مخصصة</button>
+            <li class="nav-item col-6 col-md-3 px-1 pb-1">
+                <button @click="tabClicked" class="nav-link col-12 btn btn-outline-secondary " id="CustomizedFields" data-toggle="pill" role="tab" href="#CustomizedFields">حقول مخصصة</button>
             </li>
         </ul>
 

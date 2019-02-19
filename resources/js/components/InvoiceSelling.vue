@@ -1,33 +1,30 @@
 <template>
     <div class="InvoiceSelling d-flex flex-column-reverse">
-        <div class="buttons d-flex justify-content-between">
-            <div class="" v-if="!settings.editMode">
-                <button @click="submitInvoice()" class="nav-link btn btn-success px-5" id="invoiceSave" :disabled="!changed || !settings.valid">حفظ</button>
-            </div>
-            <div class="" v-if="settings.editMode">
-                <button @click="editInvoice()" class="nav-link btn btn-info text-white px-5" id="invoicesettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
-            </div>
-            <div class="">
-                <button @click="clearInvoice()" class="nav-link btn btn-dark px-5" id="invoiceClear" :disabled="!changed && selected.serial == null">جديد</button>
-            </div>
+        <div class="buttons d-sm-flex justify-content-between mt-4"> 
+            <button v-if="!settings.editMode" @click="submitAccount()" class="nav-link col-4 col-md-3 btn btn-success" 
+                    id="accountSave" :disabled="!changed || !settings.valid">حفظ</button>
+            <button v-if="settings.editMode" @click="editAccount()" class="nav-link col-4 col-md-3 btn btn-info text-white" 
+                    id="accountsettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
+            <button @click="clearAccount()" class="nav-link col-4 col-md-3 btn btn-dark" 
+                    id="accountClear" :disabled="!changed && selected.serial == null">جديد</button>
         </div>
 
         <div class="tab-content" id="v-pills-tabContent">
             <div id="InvoiceSelling" class="tab-pane fade show active" role="tabpanel">
-                <div class="d-flex">
+                <div class="d-sm-flex">
                     <div class="col-sm-6 px-0">
-                        <div class="d-flex mb-1" id="client">
-                            <label class="col-sm-2 d-flex">العميل</label> 
+                        <div class="d-sm-flex mb-1" id="client">
+                            <label class="col-sm-2 d-sm-flex">العميل</label> 
                             <div class="Select2 col-sm-10 px-0"> 
                                 <select2 v-model="selected.client" :options="options.clients" track-by="id" label="name" :show-labels="false" placeholder="..."  
                                         :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
                                         @search-change="onSearchClient" :loading="loading.clients" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
-                        <div class="d-flex mb-1">
+                        <div class="d-sm-flex mb-1">
                             <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">العملة</label> 
+                                <div class="d-sm-flex mb-0">
+                                    <label class="col-sm-4 d-sm-flex">العملة</label> 
                                     <div class="Select2 col-sm-8 px-0">
                                         <select2 v-model="selected.currency" :options="currencies" track-by="id" label="title" :show-labels="false" placeholder="..." 
                                             :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
@@ -36,22 +33,22 @@
                                 </div>
                             </div>
                             <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">التعادل</label>
+                                <div class="d-sm-flex mb-0">
+                                    <label class="col-sm-4 d-sm-flex">التعادل</label>
                                     <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex mb-1">
+                        <div class="d-sm-flex mb-1">
                             <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">التاريخ</label>
+                                <div class="d-sm-flex mb-0">
+                                    <label class="col-sm-4 d-sm-flex">التاريخ</label>
                                     <input type="date" v-model="invoice.NDate" value="2018-09-29" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                                 </div>
                             </div>
                             <div class="col-sm-6 px-0">
-                                <div class="d-flex mb-0">
-                                    <label class="col-sm-4 d-flex">الدفع</label> 
+                                <div class="d-sm-flex mb-0">
+                                    <label class="col-sm-4 d-sm-flex">الدفع</label> 
                                     <div class="Select2 col-sm-8 px-0">
                                         <select2 v-model="selected.payment" :options="pay" track-by="id" label="title" :show-labels="false" placeholder="..." 
                                             :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false"
@@ -62,8 +59,8 @@
                         </div>
                     </div>
                     <div class="col-sm-6 px-0">
-                        <div class="d-flex mb-1">
-                            <label class="col-sm-4 d-flex">الرقم التسلسلي</label>
+                        <div class="d-sm-flex mb-1">
+                            <label class="col-sm-4 d-sm-flex">الرقم التسلسلي</label>
                             <div class="input-group col-sm-8 align-self-center">
                                 <div class="input-group-prepend order-3">
                                     <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('down')" :disabled="!canDecreaseSerial">-</button>
@@ -74,23 +71,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex mb-1">
-                            <label class="col-sm-4 d-flex">المستودع</label> 
+                        <div class="d-sm-flex mb-1">
+                            <label class="col-sm-4 d-sm-flex">المستودع</label> 
                             <div class="Select2 col-sm-8 px-0"> 
                                 <select2 v-model="selected.warehouse" :options="options.warehouses" track-by="id" label="title" :show-labels="false" placeholder="..."  
                                         :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
                                         :loading="loading.warehouses" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
-                        <div class="d-flex mb-1">
-                            <label class="col-sm-4 d-flex">حساب العميل</label>
+                        <div class="d-sm-flex mb-1">
+                            <label class="col-sm-4 d-sm-flex">حساب العميل</label>
                             <input type="text" v-model="invoice.client_acc" id="" class="form-control col-sm-8" placeholder="أدخل قيمة...">
                         </div>
                     </div>
                 </div>
 
-                <div class="d-flex mb-3 mt-0">
-                    <label class="col-sm-1 d-flex">البيان</label>
+                <div class="d-sm-flex mb-3 mt-0">
+                    <label class="col-sm-1 d-sm-flex">البيان</label>
                     <input type="text" v-model="invoice.desc" id="" class="form-control col-sm-11" placeholder="أدخل قيمة...">
                 </div>
                 <!--------------- RECORDS ---------------->
@@ -102,12 +99,12 @@
             </div>
         </div>
 
-        <ul class="nav nav-pills pb-4 d-flex justify-content-center" role="tablist">
-            <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary active px-5" id="InvoiceSelling" data-toggle="pill" role="tab" href="#InvoiceSelling">الفاتورة</button>
+        <ul class="nav nav-pills pb-4 px-0 d-sm-flex justify-content-center" role="tablist">
+            <li class="nav-item col-6 col-md-3 px-1 pb-1">
+                <button @click="tabClicked" class="nav-link col-12 btn btn-outline-secondary active " id="InvoiceSelling" data-toggle="pill" role="tab" href="#InvoiceSelling">الفاتورة</button>
             </li>
-            <li class="nav-item px-1">
-                <button @click="tabClicked" class="nav-link btn btn-outline-secondary px-5" id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails">المزيد</button>
+            <li class="nav-item col-6 col-md-3 px-1 pb-1">
+                <button @click="tabClicked" class="nav-link col-12 btn btn-outline-secondary " id="invoiceDetails" data-toggle="pill" role="tab" href="#invoiceDetails">المزيد</button>
             </li>
         </ul>
 

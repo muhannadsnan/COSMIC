@@ -1,19 +1,19 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 /******************** INITIALS ********************/
 html, body, div, ul, li, a{direction: rtl !important; text-align: right !important;}
-input[type="radio"], input[type="checkbox"]{vertical-align: middle; margin-left: 5px;}
-input[type="number"]::-webkit-inner-spin-button, input[type="date"]::-webkit-inner-spin-button {display: none;} 
+input[type=radio], input[type=checkbox]{vertical-align: middle; margin-left: 5px;}
+input[type=number]::-webkit-inner-spin-button, input[type=date]::-webkit-inner-spin-button {display: none;} 
 input[type=checkbox] { display:none; 
-    & + label:before { font-family: FontAwesome; display: inline-block; content: "\f096"; letter-spacing: 10px; font-size: 24px; direction: rtl; vertical-align: middle;}
-    &:checked + label:before { content: "\f046"; letter-spacing: 5px; } /* checked icon */
+    & + label:before { font-family: FontAwesome; display: inline-block; content: "\f096"; padding: 0px 6px; font-size: 24px; direction: rtl; vertical-align: middle;}
+    &:checked + label:before { content: "\f046"; } /* checked icon */
 }
-  
-
+input[type=text], input[type=number], input[type=date] { height: 30px; padding: .25rem .5rem; font-size: .875rem; line-height: 1.5; border-radius: .2rem;}
 hr{border-color: #b2d4c0 !important; border-width: 1px !important;}
-label{line-height: 36px; margin-bottom: 0; direction: ltr !important; padding: 0 0 0 3px !important; white-space: nowrap;}
+label{ height: 30px; line-height: 30px; margin-bottom: 0; direction: rtl !important; padding: 0 0 0 3px !important; white-space: nowrap; flex-direction: row-reverse !important;}
 fieldset { border: 1px solid #b2d4c0  !important; padding: 0 1.4em 1.4em 1.4em !important; margin: 0 0 0.5em 0 !important;
-    legend { width: unset !important; padding: 0 10px; font-size: 16px;}
+    legend { width: unset !important; padding: 0 10px !important; font-size: 16px;}
 }
+button{ white-space: nowrap; padding: 8px 5px; }
 /******************** CUSTOM ********************/
 main.master{background: #555; min-height: 80vh;}
 .tab-content .tab-pane{min-height: 270px}
@@ -31,7 +31,11 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
 }
 .sub-menu-btn:hover + .sub-menu{display: block;}
 .sub-menu-btn .dropdown-toggle::before{ float: left; margin-top: 7px; margin-left: -17px; }
-*:disabled{ cursor: not-allowed;} 
+*:disabled, *[disabled] { cursor: not-allowed;}  
+/******************** INPUT GROUP ********************/
+.input-group{ padding: 0;
+    button{height: 30px; padding: 0 10px;}
+}
 /******************** MODAL ********************/
 #createBaseModal {
     .modal-footer .btn{margin-right: 10px;}
@@ -76,23 +80,22 @@ ul#NAVBAR li.nav-item .nav-link::after{display: none !important; }
         }
     }
 }
-/******************** SELECT2 ********************/
-.multiselect{ min-height: 37px !important;
-    .multiselect__select{padding: 0; width: 10px; margin: 0 10px;}
-    .multiselect__content-wrapper{
-        border-color: #ced4da !important;
-        .multiselect__option{}
-    }
-    .multiselect__tags{border-color: #ced4da !important; min-height: 37px !important; height: 37px !important; padding: 0 15px !important;
-        .multiselect__select{padding: 0 !important; height: 37px !important;
-            &:before{top: 65% !important; right: 30% !important;}
+/******************** SELECT2 ********************/ 
+.Select2 {    
+    .multiselect{ height: 30px !important; min-height: unset !important;
+        .multiselect__select{padding: 0; width: 10px; margin: 0 10px; height: 30px !important;}
+        .multiselect__content-wrapper{
+            border-color: #ced4da !important;
+            .multiselect__option{}
         }
-        .multiselect__placeholder{margin: 10px 15px;}
-        .multiselect__input, .multiselect__single {margin: 0 10px;  height: 35px; width: 82% !important; border: 0px solid #555;}
-        .multiselect__spinner{right: 4px ; z-index: 1; width: 20px;}
-        .multiselect__single{vertical-align: middle; line-height: 37px; padding: 0 7px;}
-    }
-}
-
-/******************** INPUT GROUP ********************/
-.input-group{ padding: 0;}
+        .multiselect__tags{border-color: #ced4da !important; min-height: unset !important; height: 30px !important; padding: 0 15px !important;
+            .multiselect__select{padding: 0 !important; height: calc(1.8125rem + 3px) !important;
+                &:before{top: 70% !important; right: 30% !important;}
+            }
+            .multiselect__placeholder{margin: 2px 15px;}
+            .multiselect__input, .multiselect__single {margin: 0 10px; height: 28px !important; width: 82% !important; border: 0px solid #555;}
+            .multiselect__spinner{right: 4px ; z-index: 1; width: 20px;}
+            .multiselect__single{vertical-align: middle; padding: 0 7px; line-height: 30px;}
+        } 
+    }    
+}  

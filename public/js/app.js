@@ -48915,7 +48915,7 @@ var render = function() {
       "table",
       {
         staticClass:
-          "table table-striped table-dark table-bordered table-hover table-sm"
+          "table table-striped table-dark table-bordered table-hover table-sm mb-0"
       },
       [
         _vm._m(0),
@@ -49568,9 +49568,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
 
 
 
@@ -49972,68 +49969,67 @@ var render = function() {
     "div",
     { staticClass: "InvoiceSelling d-flex flex-column-reverse" },
     [
-      _c("div", { staticClass: "buttons d-flex justify-content-between" }, [
-        !_vm.settings.editMode
-          ? _c("div", {}, [
-              _c(
+      _c(
+        "div",
+        { staticClass: "buttons d-sm-flex justify-content-between mt-4" },
+        [
+          !_vm.settings.editMode
+            ? _c(
                 "button",
                 {
-                  staticClass: "nav-link btn btn-success px-5",
+                  staticClass: "nav-link col-4 col-md-3 btn btn-success",
                   attrs: {
-                    id: "invoiceSave",
+                    id: "accountSave",
                     disabled: !_vm.changed || !_vm.settings.valid
                   },
                   on: {
                     click: function($event) {
-                      _vm.submitInvoice()
+                      _vm.submitAccount()
                     }
                   }
                 },
                 [_vm._v("حفظ")]
               )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.settings.editMode
-          ? _c("div", {}, [
-              _c(
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.settings.editMode
+            ? _c(
                 "button",
                 {
-                  staticClass: "nav-link btn btn-info text-white px-5",
+                  staticClass:
+                    "nav-link col-4 col-md-3 btn btn-info text-white",
                   attrs: {
-                    id: "invoicesettings.editMode",
+                    id: "accountsettings.editMode",
                     disabled: !_vm.changed || !_vm.settings.valid
                   },
                   on: {
                     click: function($event) {
-                      _vm.editInvoice()
+                      _vm.editAccount()
                     }
                   }
                 },
                 [_vm._v("تعديل")]
               )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("div", {}, [
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "button",
             {
-              staticClass: "nav-link btn btn-dark px-5",
+              staticClass: "nav-link col-4 col-md-3 btn btn-dark",
               attrs: {
-                id: "invoiceClear",
+                id: "accountClear",
                 disabled: !_vm.changed && _vm.selected.serial == null
               },
               on: {
                 click: function($event) {
-                  _vm.clearInvoice()
+                  _vm.clearAccount()
                 }
               }
             },
             [_vm._v("جديد")]
           )
-        ])
-      ]),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -50046,13 +50042,13 @@ var render = function() {
               attrs: { id: "InvoiceSelling", role: "tabpanel" }
             },
             [
-              _c("div", { staticClass: "d-flex" }, [
+              _c("div", { staticClass: "d-sm-flex" }, [
                 _c("div", { staticClass: "col-sm-6 px-0" }, [
                   _c(
                     "div",
-                    { staticClass: "d-flex mb-1", attrs: { id: "client" } },
+                    { staticClass: "d-sm-flex mb-1", attrs: { id: "client" } },
                     [
-                      _c("label", { staticClass: "col-sm-2 d-flex" }, [
+                      _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
                         _vm._v("العميل")
                       ]),
                       _vm._v(" "),
@@ -50093,10 +50089,10 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "d-flex mb-1" }, [
+                  _c("div", { staticClass: "d-sm-flex mb-1" }, [
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "d-flex mb-0" }, [
-                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _c("div", { staticClass: "d-sm-flex mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
                           _vm._v("العملة")
                         ]),
                         _vm._v(" "),
@@ -50137,8 +50133,8 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "d-flex mb-0" }, [
-                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _c("div", { staticClass: "d-sm-flex mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
                           _vm._v("التعادل")
                         ]),
                         _vm._v(" "),
@@ -50175,10 +50171,10 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "d-flex mb-1" }, [
+                  _c("div", { staticClass: "d-sm-flex mb-1" }, [
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "d-flex mb-0" }, [
-                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _c("div", { staticClass: "d-sm-flex mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
                           _vm._v("التاريخ")
                         ]),
                         _vm._v(" "),
@@ -50215,8 +50211,8 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-6 px-0" }, [
-                      _c("div", { staticClass: "d-flex mb-0" }, [
-                        _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                      _c("div", { staticClass: "d-sm-flex mb-0" }, [
+                        _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
                           _vm._v("الدفع")
                         ]),
                         _vm._v(" "),
@@ -50259,8 +50255,8 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-sm-6 px-0" }, [
-                  _c("div", { staticClass: "d-flex mb-1" }, [
-                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                  _c("div", { staticClass: "d-sm-flex mb-1" }, [
+                    _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
                       _vm._v("الرقم التسلسلي")
                     ]),
                     _vm._v(" "),
@@ -50364,8 +50360,8 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "d-flex mb-1" }, [
-                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                  _c("div", { staticClass: "d-sm-flex mb-1" }, [
+                    _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
                       _vm._v("المستودع")
                     ]),
                     _vm._v(" "),
@@ -50404,8 +50400,8 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "d-flex mb-1" }, [
-                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
+                  _c("div", { staticClass: "d-sm-flex mb-1" }, [
+                    _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
                       _vm._v("حساب العميل")
                     ]),
                     _vm._v(" "),
@@ -50442,8 +50438,8 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "d-flex mb-3 mt-0" }, [
-                _c("label", { staticClass: "col-sm-1 d-flex" }, [
+              _c("div", { staticClass: "d-sm-flex mb-3 mt-0" }, [
+                _c("label", { staticClass: "col-sm-1 d-sm-flex" }, [
                   _vm._v("البيان")
                 ]),
                 _vm._v(" "),
@@ -50487,15 +50483,17 @@ var render = function() {
       _c(
         "ul",
         {
-          staticClass: "nav nav-pills pb-4 d-flex justify-content-center",
+          staticClass:
+            "nav nav-pills pb-4 px-0 d-sm-flex justify-content-center",
           attrs: { role: "tablist" }
         },
         [
-          _c("li", { staticClass: "nav-item px-1" }, [
+          _c("li", { staticClass: "nav-item col-6 col-md-3 px-1 pb-1" }, [
             _c(
               "button",
               {
-                staticClass: "nav-link btn btn-outline-secondary active px-5",
+                staticClass:
+                  "nav-link col-12 btn btn-outline-secondary active ",
                 attrs: {
                   id: "InvoiceSelling",
                   "data-toggle": "pill",
@@ -50508,11 +50506,11 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "nav-item px-1" }, [
+          _c("li", { staticClass: "nav-item col-6 col-md-3 px-1 pb-1" }, [
             _c(
               "button",
               {
-                staticClass: "nav-link btn btn-outline-secondary px-5",
+                staticClass: "nav-link col-12 btn btn-outline-secondary ",
                 attrs: {
                   id: "invoiceDetails",
                   "data-toggle": "pill",
@@ -50697,6 +50695,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Account_class__ = __webpack_require__(69);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -51203,13 +51253,15 @@ var render = function() {
     "div",
     { staticClass: "Account d-flex flex-column-reverse" },
     [
-      _c("div", { staticClass: "buttons d-flex justify-content-between" }, [
-        !_vm.settings.editMode
-          ? _c("div", {}, [
-              _c(
+      _c(
+        "div",
+        { staticClass: "buttons d-flex justify-content-between mt-4" },
+        [
+          !_vm.settings.editMode
+            ? _c(
                 "button",
                 {
-                  staticClass: "nav-link btn btn-success px-5",
+                  staticClass: "nav-link col-4 col-md-3 btn btn-success",
                   attrs: {
                     id: "accountSave",
                     disabled: !_vm.changed || !_vm.settings.valid
@@ -51222,15 +51274,14 @@ var render = function() {
                 },
                 [_vm._v("حفظ")]
               )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.settings.editMode
-          ? _c("div", {}, [
-              _c(
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.settings.editMode
+            ? _c(
                 "button",
                 {
-                  staticClass: "nav-link btn btn-info text-white px-5",
+                  staticClass:
+                    "nav-link col-4 col-md-3 btn btn-info text-white",
                   attrs: {
                     id: "accountsettings.editMode",
                     disabled: !_vm.changed || !_vm.settings.valid
@@ -51243,14 +51294,12 @@ var render = function() {
                 },
                 [_vm._v("تعديل")]
               )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("div", {}, [
+            : _vm._e(),
+          _vm._v(" "),
           _c(
             "button",
             {
-              staticClass: "nav-link btn btn-dark px-5",
+              staticClass: "nav-link col-4 col-md-3 btn btn-dark",
               attrs: {
                 id: "accountClear",
                 disabled: !_vm.changed && _vm.selected.serial == null
@@ -51263,8 +51312,8 @@ var render = function() {
             },
             [_vm._v("جديد")]
           )
-        ])
-      ]),
+        ]
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -51279,10 +51328,10 @@ var render = function() {
               attrs: { id: "General", role: "tabpanel" }
             },
             [
-              _c("div", { staticClass: "d-flex align-items-start" }, [
-                _c("div", { staticClass: "col-sm-6 px-0" }, [
-                  _c("div", { staticClass: "d-flex mb-1" }, [
-                    _c("label", { staticClass: "col-sm-3 d-flex" }, [
+              _c("div", { staticClass: "d-sm-flex align-items-start" }, [
+                _c("div", { staticClass: "col-sm-6 px-1" }, [
+                  _c("div", { staticClass: "d-sm-flex" }, [
+                    _c("label", { staticClass: "col-sm-3 d-sm-flex" }, [
                       _vm._v("الحساب الرئيسي")
                     ]),
                     _vm._v(" "),
@@ -51322,8 +51371,8 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "d-flex mb-1" }, [
-                    _c("label", { staticClass: "col-sm-3 d-flex" }, [
+                  _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                    _c("label", { staticClass: "col-sm-3 d-sm-flex" }, [
                       _vm._v("الحساب الختامي")
                     ]),
                     _vm._v(" "),
@@ -51363,17 +51412,17 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("fieldset", { staticClass: " mt-1 px-2" }, [
+                  _c("fieldset", { staticClass: "mt-3 px-2" }, [
                     _c("legend", [_vm._v("الموازنة التقديرية")]),
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "d-flex justify-content-center mb-0" },
+                      { staticClass: "d-sm-flex justify-content-center mb-0" },
                       [
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-outline-secondary col-2 mx-1",
+                            staticClass: "btn btn-outline-secondary col-3 mx-1",
                             class: { "bg-secondary text-white": true }
                           },
                           [_vm._v("مدينة")]
@@ -51382,7 +51431,7 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-outline-secondary col-2 mx-1",
+                            staticClass: "btn btn-outline-secondary col-3 mx-1",
                             class: { "bg-secondary text-white": false }
                           },
                           [_vm._v("دائنة")]
@@ -51391,7 +51440,7 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass: "btn btn-outline-secondary col-2 mx-1",
+                            staticClass: "btn btn-outline-secondary col-3 mx-1",
                             class: { "bg-secondary text-white": false }
                           },
                           [_vm._v("بدون")]
@@ -51399,8 +51448,8 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex mt-2" }, [
-                      _c("label", { staticClass: "col-sm-3 d-flex" }, [
+                    _c("div", { staticClass: "d-sm-flex mt-2" }, [
+                      _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
                         _vm._v("القيمة")
                       ]),
                       _vm._v(" "),
@@ -51431,9 +51480,9 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex mt-2" }, [
-                      _c("label", { staticClass: "col-sm-3 d-flex" }, [
-                        _vm._v("القيمة")
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
+                        _vm._v("العملة")
                       ]),
                       _vm._v(" "),
                       _c(
@@ -51471,8 +51520,8 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex mt-2" }, [
-                      _c("label", { staticClass: "col-sm-3 d-flex" }, [
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
                         _vm._v("التعادل")
                       ]),
                       _vm._v(" "),
@@ -51505,7 +51554,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "d-flex mt-2", attrs: { disabled: true } },
+                      {
+                        staticClass: "d-sm-flex mt-1",
+                        attrs: { disabled: true }
+                      },
                       [
                         _c("input", {
                           attrs: { type: "checkbox", checked: "" }
@@ -51518,54 +51570,286 @@ var render = function() {
                         ])
                       ]
                     )
+                  ]),
+                  _vm._v(" "),
+                  _c("fieldset", { staticClass: "mt-3 px-2" }, [
+                    _c("legend", [_vm._v("تبويبات القوائم المالية")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
+                        _vm._v("قائمة الدخل")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "Select2 col-sm-7 px-0",
+                          attrs: { disabled: true }
+                        },
+                        [
+                          _c("select2", {
+                            attrs: {
+                              options: _vm.options.clients,
+                              "track-by": "id",
+                              label: "title",
+                              "show-labels": false,
+                              placeholder: "...",
+                              "allow-empty": false,
+                              "preselect-first": true,
+                              preserveSearch: false,
+                              internalSearch: false,
+                              searchable: false,
+                              loading: false,
+                              showNoResults: false,
+                              multiple: false,
+                              taggable: false,
+                              max: null,
+                              disabled: true
+                            },
+                            model: {
+                              value: _vm.selected.currency,
+                              callback: function($$v) {
+                                _vm.$set(_vm.selected, "currency", $$v)
+                              },
+                              expression: "selected.currency"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
+                        _vm._v("حقوق الملكية")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "Select2 col-sm-7 px-0",
+                          attrs: { disabled: true }
+                        },
+                        [
+                          _c("select2", {
+                            attrs: {
+                              options: _vm.options.clients,
+                              "track-by": "id",
+                              label: "title",
+                              "show-labels": false,
+                              placeholder: "...",
+                              "allow-empty": false,
+                              "preselect-first": true,
+                              preserveSearch: false,
+                              internalSearch: false,
+                              searchable: false,
+                              loading: false,
+                              showNoResults: false,
+                              multiple: false,
+                              taggable: false,
+                              max: null,
+                              disabled: true
+                            },
+                            model: {
+                              value: _vm.selected.currency,
+                              callback: function($$v) {
+                                _vm.$set(_vm.selected, "currency", $$v)
+                              },
+                              expression: "selected.currency"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
+                        _vm._v("المركز المالي")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "Select2 col-sm-7 px-0",
+                          attrs: { disabled: true }
+                        },
+                        [
+                          _c("select2", {
+                            attrs: {
+                              options: _vm.options.clients,
+                              "track-by": "id",
+                              label: "title",
+                              "show-labels": false,
+                              placeholder: "...",
+                              "allow-empty": false,
+                              "preselect-first": true,
+                              preserveSearch: false,
+                              internalSearch: false,
+                              searchable: false,
+                              loading: false,
+                              showNoResults: false,
+                              multiple: false,
+                              taggable: false,
+                              max: null,
+                              disabled: true
+                            },
+                            model: {
+                              value: _vm.selected.currency,
+                              callback: function($$v) {
+                                _vm.$set(_vm.selected, "currency", $$v)
+                              },
+                              expression: "selected.currency"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
+                        _vm._v("التدفق النقدي")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "Select2 col-sm-7 px-0",
+                          attrs: { disabled: true }
+                        },
+                        [
+                          _c("select2", {
+                            attrs: {
+                              options: _vm.options.clients,
+                              "track-by": "id",
+                              label: "title",
+                              "show-labels": false,
+                              placeholder: "...",
+                              "allow-empty": false,
+                              "preselect-first": true,
+                              preserveSearch: false,
+                              internalSearch: false,
+                              searchable: false,
+                              loading: false,
+                              showNoResults: false,
+                              multiple: false,
+                              taggable: false,
+                              max: null,
+                              disabled: true
+                            },
+                            model: {
+                              value: _vm.selected.currency,
+                              callback: function($$v) {
+                                _vm.$set(_vm.selected, "currency", $$v)
+                              },
+                              expression: "selected.currency"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
+                        _vm._v("تفصيلات التبويبات")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "Select2 col-sm-7 px-0",
+                          attrs: { disabled: true }
+                        },
+                        [
+                          _c("select2", {
+                            attrs: {
+                              options: _vm.options.clients,
+                              "track-by": "id",
+                              label: "name",
+                              "show-labels": false,
+                              placeholder: "...",
+                              "allow-empty": false,
+                              "preselect-first": false,
+                              limit: 5,
+                              preserveSearch: true,
+                              internalSearch: true,
+                              loading: _vm.loading.clients,
+                              showNoResults: false,
+                              multiple: false,
+                              taggable: false,
+                              max: null,
+                              disabled: true
+                            },
+                            on: { "search-change": _vm.onSearchClient },
+                            model: {
+                              value: _vm.selected.client,
+                              callback: function($$v) {
+                                _vm.$set(_vm.selected, "client", $$v)
+                              },
+                              expression: "selected.client"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ])
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6 px-0" }, [
-                  _c("div", { staticClass: "d-flex mb-0" }, [
-                    _c("label", { staticClass: "col-sm-4 d-flex" }, [
-                      _vm._v("طبيعة الحساب")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "d-flex justify-content-around mb-0" },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-secondary mx-1",
-                            class: { "bg-secondary text-white": true }
-                          },
-                          [_vm._v("مدين")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-secondary mx-1",
-                            class: { "bg-secondary text-white": false }
-                          },
-                          [_vm._v("دائن")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-secondary mx-1",
-                            class: { "bg-secondary text-white": false }
-                          },
-                          [_vm._v("مدين ودائن")]
-                        )
-                      ]
-                    )
-                  ]),
+                _c("div", { staticClass: "col-sm-6 px-1" }, [
+                  _c(
+                    "div",
+                    { staticClass: "d-sm-flex flex-column mb-0 pb-1" },
+                    [
+                      _c("label", { staticClass: "col-sm-4 d-sm-flexX" }, [
+                        _vm._v("طبيعة الحساب")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-sm-8 d-sm-flex align-items-start justify-content-around mb-0 px-1"
+                        },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-secondary mx-0",
+                              class: { "bg-secondary text-white": true }
+                            },
+                            [_vm._v("مدين")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-secondary mx-1",
+                              class: { "bg-secondary text-white": false }
+                            },
+                            [_vm._v("دائن")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-secondary mx-0",
+                              class: { "bg-secondary text-white": false }
+                            },
+                            [_vm._v("مدين ودائن")]
+                          )
+                        ]
+                      )
+                    ]
+                  ),
                   _vm._v(" "),
-                  _c("fieldset", { staticClass: "mx-1 mt-1 px-2" }, [
+                  _c("fieldset", { staticClass: "mt-2 px-2" }, [
                     _c("legend", [_vm._v("الرصيد الحالي")]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex mt-2" }, [
-                      _c("label", { staticClass: "col-sm-3 d-flex" }, [
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
                         _vm._v("مدين")
                       ]),
                       _vm._v(" "),
@@ -51596,8 +51880,8 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex mt-2" }, [
-                      _c("label", { staticClass: "col-sm-3 d-flex" }, [
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
                         _vm._v("دائن")
                       ]),
                       _vm._v(" "),
@@ -51628,9 +51912,9 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "d-flex mt-2" }, [
-                      _c("label", { staticClass: "col-sm-3 d-flex" }, [
-                        _vm._v("ؤصيد")
+                    _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                      _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
+                        _vm._v("رصيد")
                       ]),
                       _vm._v(" "),
                       _c("input", {
@@ -51659,24 +51943,62 @@ var render = function() {
                         }
                       })
                     ])
-                  ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-sm-flex mt-1" }, [
+                    _c("label", { staticClass: "col-sm-3 d-sm-flex" }, [
+                      _vm._v("مركز الكلفة")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.selected.currency.buy,
+                          expression: "selected.currency.buy"
+                        }
+                      ],
+                      staticClass: "form-control col-sm-8",
+                      attrs: { type: "text", id: "", placeholder: "" },
+                      domProps: { value: _vm.selected.currency.buy },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.selected.currency,
+                            "buy",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(2)
                 ])
               ])
             ]
           ),
           _vm._v(" "),
-          _vm._m(0),
+          _vm._m(3),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(4),
           _vm._v(" "),
-          _vm._m(2)
+          _vm._m(5)
         ]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "d-flex my-0" }, [
+      _c("div", { staticClass: "d-sm-flex my-0" }, [
         _c("div", { staticClass: "col-sm-6 px-0" }, [
-          _c("div", { staticClass: "d-flex mb-1" }, [
-            _c("label", { staticClass: "col-sm-2 d-flex" }, [
+          _c("div", { staticClass: "d-sm-flex mb-1" }, [
+            _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
               _vm._v("رمز الحساب")
             ]),
             _vm._v(" "),
@@ -51703,8 +52025,8 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex mb-1" }, [
-            _c("label", { staticClass: "col-sm-2 d-flex" }, [
+          _c("div", { staticClass: "d-sm-flex mb-1" }, [
+            _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
               _vm._v("اسم الحساب")
             ]),
             _vm._v(" "),
@@ -51731,8 +52053,8 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex mb-1" }, [
-            _c("label", { staticClass: "col-sm-2 d-flex" }, [
+          _c("div", { staticClass: "d-sm-flex mb-1" }, [
+            _c("label", { staticClass: "col-sm-2 d-sm-flex" }, [
               _vm._v("ملاحظات")
             ]),
             _vm._v(" "),
@@ -51761,8 +52083,8 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-sm-6 px-0" }, [
-          _c("div", { staticClass: "d-flex mb-1" }, [
-            _c("label", { staticClass: "col-sm-4 d-flex" }, [
+          _c("div", { staticClass: "d-sm-flex mb-1" }, [
+            _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
               _vm._v("الرقم التسلسلي")
             ]),
             _vm._v(" "),
@@ -51852,8 +52174,8 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex mb-1" }, [
-            _c("label", { staticClass: "col-sm-4 d-flex" }, [
+          _c("div", { staticClass: "d-sm-flex mb-1" }, [
+            _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
               _vm._v("الاسم اللاتيني")
             ]),
             _vm._v(" "),
@@ -51880,8 +52202,8 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "d-flex mb-1" }, [
-            _c("label", { staticClass: "col-sm-4 d-flex" }, [
+          _c("div", { staticClass: "d-sm-flex mb-1" }, [
+            _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
               _vm._v("نوع الحساب")
             ]),
             _vm._v(" "),
@@ -51925,15 +52247,17 @@ var render = function() {
       _c(
         "ul",
         {
-          staticClass: "nav nav-pills pb-4 d-flex justify-content-center",
+          staticClass:
+            "nav nav-pills pb-4 px-0 d-sm-flex justify-content-center",
           attrs: { role: "tablist" }
         },
         [
-          _c("li", { staticClass: "nav-item px-1" }, [
+          _c("li", { staticClass: "nav-item col-6 col-md-3 px-1 pb-1" }, [
             _c(
               "button",
               {
-                staticClass: "nav-link btn btn-outline-secondary active px-5",
+                staticClass:
+                  "nav-link col-12 btn btn-outline-secondary active ",
                 attrs: {
                   id: "General",
                   "data-toggle": "pill",
@@ -51946,11 +52270,11 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "nav-item px-1" }, [
+          _c("li", { staticClass: "nav-item col-6 col-md-3 px-1 pb-1" }, [
             _c(
               "button",
               {
-                staticClass: "nav-link btn btn-outline-secondary px-5",
+                staticClass: "nav-link col-12 btn btn-outline-secondary ",
                 attrs: {
                   id: "Taxes",
                   "data-toggle": "pill",
@@ -51963,11 +52287,11 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "nav-item px-1" }, [
+          _c("li", { staticClass: "nav-item col-6 col-md-3 px-1 pb-1" }, [
             _c(
               "button",
               {
-                staticClass: "nav-link btn btn-outline-secondary px-5",
+                staticClass: "nav-link col-12 btn btn-outline-secondary ",
                 attrs: {
                   id: "Customers",
                   "data-toggle": "pill",
@@ -51980,11 +52304,11 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("li", { staticClass: "nav-item px-1" }, [
+          _c("li", { staticClass: "nav-item col-6 col-md-3 px-1 pb-1" }, [
             _c(
               "button",
               {
-                staticClass: "nav-link btn btn-outline-secondary px-5",
+                staticClass: "nav-link col-12 btn btn-outline-secondary ",
                 attrs: {
                   id: "CustomizedFields",
                   "data-toggle": "pill",
@@ -52005,6 +52329,37 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-sm-flex mt-1" }, [
+      _c("input", { attrs: { type: "checkbox", checked: "" } }),
+      _vm._v(" "),
+      _c("label", [_vm._v("إخفاء في نافذة البحث")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-sm-flex mt-1" }, [
+      _c("input", { attrs: { type: "checkbox", checked: "" } }),
+      _vm._v(" "),
+      _c("label", [_vm._v("فرض مركز الكلفة")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("fieldset", { staticClass: "mt-3 px-2" }, [
+      _c("legend", [_vm._v("اخر مطابقة")]),
+      _vm._v(
+        " \n                        لم يتم إجراء أي عمليات مطابقة على هذا الحساب, يمكن أن يتم تخزين المطابقات على هذا الحساب من خلال الأمر (مطابقة رصيد حساب) ضمن القائمة: حسابات - أدوات.\n                    "
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
