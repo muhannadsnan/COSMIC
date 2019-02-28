@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <account />
+    <account :profile = "{{request('profile')}}"/>
 @endsection
 
 @section('styles')

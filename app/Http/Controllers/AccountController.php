@@ -14,6 +14,21 @@ class AccountController extends Controller
         $this->middleware('auth', ['except' => []]);
     }
 
+/***************** API ******************/
+    public function findBySerial(Request $request, Profile $profile)
+    { 
+        if(!($acc = Account::searchBySerial($request, $profile->id)))
+            return response()->json(['msg' => 'حدث خطأ أثناء البحث'], 500); 
+        if(count($acc) == 0)
+            return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204 
+        return response()->json(['data' => $acc, 'msg' => 'تم ايجاد الفاتورة'], 200);
+    }
+    public function getSerials(Request $request, Profile $profile, $NType=1)
+    {
+        return Account::getSerials($profile->id, $NType);
+    }
+
+/********************************************/
     public function index(Base $basis, Profile $profile)
     {
         return view('accounts.index', ['accounts' => Account::where('profile_id', null) // the default accounts have no profile_id

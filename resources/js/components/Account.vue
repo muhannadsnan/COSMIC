@@ -176,15 +176,15 @@
                         <div class="input-group-prepend order-3">
                             <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('down')" :disabled="!canDecreaseSerial">-</button>
                         </div>
-                        <input type="number" v-model="selected.currency.buy" class="form-control order-2" :placeholder="loading.serial ? 'loading': '...'" @keyup.enter="readInvoice()" :disabled="false">
+                        <input type="number" v-model="account.serial" class="form-control order-2" :placeholder="loading.serial ? 'loading': '...'" @keyup.enter="readInvoice()" :disabled="false">
                         <div class="input-group-append order-1">
                             <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('up')" :disabled="!canIncreaseSerial">+</button>
                         </div>
                     </div>
                 </div>
                 <div class="d-sm-flex mb-1">
-                    <label class="col-sm-4 d-sm-flex">الاسم اللاتيني</label>
-                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8"placeholder="">
+                    <label class="col-sm-4 d-sm-flex">الاسم الانكليزي</label>
+                    <input type="text" v-model="selected.currency.buy" id="" class="form-control col-sm-8" placeholder="">
                 </div>
                 <div class="d-sm-flex mb-1">
                     <label class="col-sm-4 d-sm-flex">نوع الحساب</label>
@@ -220,25 +220,25 @@
 import Account from '../models/Account.class';
 
 export default {
-    props: ["profile"], //placeholders: an array from php with translated placeholders foreach input
+    props: ["profile"], // placeholders: array from PHP with labels and placeholders
     data() {
         return {
             originalObj: {},
-            account: new Account(this.profile),
+            account: new Account(/* this.profile */),
             selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null},
             settings: {canSave: false, canEdit: false, editMode: false, saved: false, accountReady: false, 
                         rtl: true, hasRecords: false, valid: false},
             options: {clients: [] , warehouses: [], serials: [], pay: []},    
-            loading: {page: false, clients: false, serial: false},   
+            loading: {page: false, serial: false},   
         }
     },
     methods: {
-        tabClicked(event) { /* JQuery tab funcionality */  $(this.$el).tab("show") },       
+        tabClicked(event) { /* JQuery tabs funcionality */  $(this.$el).tab("show") },       
         clearAccount() {
             if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
                 this.$emit("ClearAccount")
                 this.init()
-                // this.$toast.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
+                // this.$toast.success({ title: "تم بنجاح!", message: "حذف الحساب" })
             }
         },
         submitAccount() {
@@ -249,74 +249,55 @@ export default {
                     this.$emit("SubmitAccount")
                     this.options.serials.unshift(this.account.serial)
                     this.init()
-                    this.$toast.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" })
+                    this.$toast.success({ title: "تم بنجاح!", message: "حفظ الحساب" })
                 })
                 .catch(error => {
-                    this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" })
+                    this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الحساب" })
                     console.log("error", error)
                 })
                 .then(() => this.loadingPage(false))
         },
         init(data = null, callback = function(){}) { 
-            /*this.accountReady(false)
+            this.accountReady(false)
             if (data == null) { // reset all
                 this.settings.editMode = false 
-                this.account = new Account(this.profile)
-                this.account.NDate = Store.formatDate(Date.now())
-                this.account.NType = +Store.urlParam('type')
-                this.account.client_id = 1
-                this.options.warehouses = this.profile._warehouses
-                this.selected.client = null
-                this.selected.warehouse = null
-                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
-                this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
+                this.account = new Account(/* this.profile */) 
+                this.account.NType = 'N'; 
                 this.selected.serial = null
-                this.getSerials(()=>  this.accountReady() )                 
+                //this.options.warehouses = this.profile._warehouses
+                this.selected.client = null
+                this.getSerials(() => this.accountReady() )                 
             } 
-            else { // fill inv
+            else { // fill acc
                 this.settings.editMode = true     
-                var inv = new Account(this.profile)
-                inv.fill(data); console.log("inv.fill", inv)
-                this.account = inv ;  console.log("account", this.account)
-                this.$emit('gotRecords', data._records)
-                this.account.records = data._records//.forEach((rec)=> { return {mat: rec.mat, qty: rec.qty, single: rec.single, total:rec.total} }) || []
-                this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
-                this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
-                this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
+                var acc = new Account(/* this.profile */)
+                acc.fill(data); console.log("acc.fill", acc)
+                this.account = acc ;  console.log("account", this.account)  
                 this.selected.serial = this.options.serials.indexOf(data.serial) 
-                if(this.options.clients.length == 0){
-                    this.search('getClientsList', 'clients', '', () => { 
-                        this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
-                        this.accountReady()
-                    })
-                }else {
-                    this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null 
-                    this.accountReady()
-                }
-            }*/
+            }
             callback();
         }, 
         readAccount() { // after reading, settings.editMode mode will become active        
-            if ( !this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة") ) {
+            if ( !this.settings.canSave || confirm("هل تريد قراءة الحساب؟ سوف تخسر البيانات غير المحفوظة") ) {
                 this.loadingPage()
-                axios.get(`/api/accounts/${this.profile.id}/findBySerial?serial=${this.account.serial}&NType=${Store.urlParam('type')}`) //?ser='+this.account.serial
+                axios.get(`/api/accounts/${this.profile.id}/findBySerial?serial=${this.account.serial}&NType=${this.account.NType}`) //?ser='+this.account.serial
                     .then(resp => { //console.log("readAccount: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
-                                var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Account(this.profile))
+                                var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Account(/* this.profile */))
                                 this.init(result) 
                                 // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                                 break
                             case 204:
-                                this.$toast.info({title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة"})
+                                this.$toast.info({title: "لا يوجد حساب", message: "لم يتم ايجاد حساب"})
                                 break
                             default:
-                                this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                                this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الحساب" })
                                 break
                         }
                     })
                     .catch(error => {
-                        this.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                        this.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الحساب" })
                         console.log("error", error)
                     })
                     .then(() => this.loadingPage(false))
@@ -330,10 +311,10 @@ export default {
                     console.log(resp)
                     this.$emit("SubmitAccount")
                     this.init()
-                    this.$toast.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" })
+                    this.$toast.success({ title: "تم بنجاح!", message: "تعديل الحساب" })
                 })
                 .catch(error => {
-                    this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة"})
+                    this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الحساب"})
                     console.log("error", error)
                 })
                 .then(() => this.loadingPage(false))
@@ -387,14 +368,15 @@ export default {
                             }else{
                                 this.account.serial = +this.options.serials[0] + 1
                             } 
+                            // this.selected.serial = this.account.serial
                             break 
                         default:
-                            this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                            this.$toast.error({title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الحساب" })
                             break
                     }
                 })
                 .catch(error => {
-                    this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
+                    this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الحساب" })
                     console.log("error", error)
                 })
                 .then((/* finally */)=> {this.loading.serial = false})
@@ -424,12 +406,12 @@ export default {
         },
         canDecreaseSerial(){ 
             if(this.selected.serial == null)
-                return   this.options.serials.length != 0  
+                return this.options.serials.length != 0  
             else
                 return this.selected.serial+1 != this.options.serials.length
         },
         changed(){
-            // determain whether settings.originalObj and account are completely equal 
+            // DONT CHANGE : determain whether settings.originalObj and account are completely equal 
             // console.log("originalObj",this.originalObj); console.log("account",JSON.stringify(this.account));
             // return ! _.isEqual(this.originalObj, JSON.stringify(this.account))
             return true
@@ -441,38 +423,21 @@ export default {
                 var data = JSON.parse(JSON.stringify( newValue )) 
                 // console.log("selected",data)
 
-                if(data.currency != null){ 
-                    var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
-                    this.account.currency_id = currency.id 
-                    console.log("selected.currency",currency.id)
-                }
-                if(data.client != null){ 
-                    this.account.client_id = +{...this.options.clients.find(function(el) { return el.id == data.client.id })}.id
-                    console.log("selected.client",client.id)
-                }
-                if(data.payment != null){ 
-                    this.account.payment_id = +{...this.pay.find(function(el) { return el.id == data.payment.id })}.id
-                    console.log("selected.payment",this.selected.payment.id)
-                }
-                if(data.warehouse != null){ 
-                    this.account.warehouse_id = +{...this.options.warehouses.find(function(el) { return el.id == data.warehouse.id })}.id
-                    console.log("selected.warehouse",this.selected.warehouse.id)
-                }
                 if(data.serial != null){
                     this.account.serial = +this.options.serials[data.serial]
                     console.log("selected.serial= "+this.selected.serial+ " - this.account.serial= "+this.account.serial) 
-                }           
+                }       
             },
             deep: true
         },
         account: {
             handler: function(account) {   
-                if(this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id){
-                    this.settings.valid = true
-                }
-                else {
-                    this.settings.valid = false
-                }
+            //     if(this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id){
+            //         this.settings.valid = true
+            //     }
+            //     else {
+            //         this.settings.valid = false
+            //     }
             },
             deep: true
         },

@@ -3,9 +3,24 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Account;
 
 class Account extends _Model
 {
+    public static function searchBySerial($request, $profile_id){ // should bring only a record
+        $res = Account::where('serial', $request->serial)->where('NType', $request->NType)->where('profile_id', $profile_id)
+                        //->with('_payment', '_currency', '_records', '_clients', '_warehouses')
+                        ->get(); 
+        if(!$res) return false;
+        return $res;
+    }
+
+    public static function getSerials($profile_id=1, $NType=1){  
+        return Account::where('NType', $NType)->where('profile_id', $profile_id)->orderBy('serial', 'desc')->pluck('serial');
+    }
+
+    /********************   RELATIIONSHIPS   *********************/
+
     public function _users()
     {
         return $this->belongsToMany(User::class, 'account_user', 'account_id'/* this */, 'user_id');

@@ -49572,7 +49572,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["profile", "currencies", "pay"], //placeholders: an array from php with translated placeholders foreach input
+    props: ["profile", "currencies", "pay"], // placeholders: array from PHP with labels and placeholders
     data: function data() {
         return {
             originalObj: {},
@@ -49587,7 +49587,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
     methods: {
         tabClicked: function tabClicked(event) {
-            /* JQuery tab funcionality */$(this.$el).tab("show");
+            /* JQuery tabs funcionality */$(this.$el).tab("show");
         },
         clearInvoice: function clearInvoice() {
             if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
@@ -50693,8 +50693,6 @@ exports.push([module.i, "", ""]);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_Account_class__ = __webpack_require__(69);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 //
 //
 //
@@ -50917,28 +50915,28 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["profile"], //placeholders: an array from php with translated placeholders foreach input
+    props: ["profile"], // placeholders: array from PHP with labels and placeholders
     data: function data() {
         return {
             originalObj: {},
-            account: new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](this.profile),
+            account: new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](),
             selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
             settings: { canSave: false, canEdit: false, editMode: false, saved: false, accountReady: false,
                 rtl: true, hasRecords: false, valid: false },
             options: { clients: [], warehouses: [], serials: [], pay: [] },
-            loading: { page: false, clients: false, serial: false }
+            loading: { page: false, serial: false }
         };
     },
 
     methods: {
         tabClicked: function tabClicked(event) {
-            /* JQuery tab funcionality */$(this.$el).tab("show");
+            /* JQuery tabs funcionality */$(this.$el).tab("show");
         },
         clearAccount: function clearAccount() {
             if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
                 this.$emit("ClearAccount");
                 this.init();
-                // this.$toast.success({ title: "تم بنجاح!", message: "حذف الفاتورة" })
+                // this.$toast.success({ title: "تم بنجاح!", message: "حذف الحساب" })
             }
         },
         submitAccount: function submitAccount() {
@@ -50950,83 +50948,69 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 _this.$emit("SubmitAccount");
                 _this.options.serials.unshift(_this.account.serial);
                 _this.init();
-                _this.$toast.success({ title: "تم بنجاح!", message: "حفظ الفاتورة" });
+                _this.$toast.success({ title: "تم بنجاح!", message: "حفظ الحساب" });
             }).catch(function (error) {
-                _this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الفاتورة" });
+                _this.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء حفظ الحساب" });
                 console.log("error", error);
             }).then(function () {
                 return _this.loadingPage(false);
             });
         },
         init: function init() {
+            var _this2 = this;
+
             var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
             var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
 
-            /*this.accountReady(false)
-            if (data == null) { // reset all
-                this.settings.editMode = false 
-                this.account = new Account(this.profile)
-                this.account.NDate = Store.formatDate(Date.now())
-                this.account.NType = +Store.urlParam('type')
-                this.account.client_id = 1
-                this.options.warehouses = this.profile._warehouses
-                this.selected.client = null
-                this.selected.warehouse = null
-                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
-                this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
-                this.selected.serial = null
-                this.getSerials(()=>  this.accountReady() )                 
-            } 
-            else { // fill inv
-                this.settings.editMode = true     
-                var inv = new Account(this.profile)
-                inv.fill(data); console.log("inv.fill", inv)
-                this.account = inv ;  console.log("account", this.account)
-                this.$emit('gotRecords', data._records)
-                this.account.records = data._records//.forEach((rec)=> { return {mat: rec.mat, qty: rec.qty, single: rec.single, total:rec.total} }) || []
-                this.selected.warehouse = typeof data._warehouses[0] != 'undefined'? data._warehouses[0] : null
-                this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
-                this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
-                this.selected.serial = this.options.serials.indexOf(data.serial) 
-                if(this.options.clients.length == 0){
-                    this.search('getClientsList', 'clients', '', () => { 
-                        this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
-                        this.accountReady()
-                    })
-                }else {
-                    this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null 
-                    this.accountReady()
-                }
-            }*/
+            this.accountReady(false);
+            if (data == null) {
+                // reset all
+                this.settings.editMode = false;
+                this.account = new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
+                this.account.NType = 'N';
+                this.selected.serial = null;
+                //this.options.warehouses = this.profile._warehouses
+                this.selected.client = null;
+                this.getSerials(function () {
+                    return _this2.accountReady();
+                });
+            } else {
+                // fill acc
+                this.settings.editMode = true;
+                var acc = new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
+                acc.fill(data);console.log("acc.fill", acc);
+                this.account = acc;console.log("account", this.account);
+                this.selected.serial = this.options.serials.indexOf(data.serial);
+            }
             callback();
         },
         readAccount: function readAccount() {
-            var _this2 = this;
+            var _this3 = this;
 
             // after reading, settings.editMode mode will become active        
-            if (!this.settings.canSave || confirm("هل تريد قراءة الفاتورة؟ سوف تخسر البيانات غير المحفوظة")) {
+            if (!this.settings.canSave || confirm("هل تريد قراءة الحساب؟ سوف تخسر البيانات غير المحفوظة")) {
                 this.loadingPage();
-                axios.get("/api/accounts/" + this.profile.id + "/findBySerial?serial=" + this.account.serial + "&NType=" + Store.urlParam('type')) //?ser='+this.account.serial
+                axios.get("/api/accounts/" + this.profile.id + "/findBySerial?serial=" + this.account.serial + "&NType=" + this.account.NType) //?ser='+this.account.serial
                 .then(function (resp) {
                     //console.log("readAccount: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
                         case 200:
-                            var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](_this2.profile);
-                            _this2.init(result);
+                            var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
+                            _this3.init(result);
                             // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                             break;
                         case 204:
-                            _this2.$toast.info({ title: "لا يوجد فاتورة", message: "لم يتم ايجاد فاتورة" });
+                            _this3.$toast.info({ title: "لا يوجد حساب", message: "لم يتم ايجاد حساب" });
                             break;
                         default:
-                            _this2.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                            _this3.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الحساب" });
                             break;
                     }
                 }).catch(function (error) {
-                    _this2.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                    _this3.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الحساب" });
                     console.log("error", error);
                 }).then(function () {
-                    return _this2.loadingPage(false);
+                    return _this3.loadingPage(false);
                 });
             }
         },
@@ -51035,24 +51019,24 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.readAccount();
         }, 200),
         editAccount: function editAccount() {
-            var _this3 = this;
+            var _this4 = this;
 
             this.loadingPage();
             axios.put("/api/accounts/" + this.profile.id, this.account).then(function (resp) {
                 console.log(resp);
-                _this3.$emit("SubmitAccount");
-                _this3.init();
-                _this3.$toast.success({ title: "تم بنجاح!", message: "تعديل الفاتورة" });
+                _this4.$emit("SubmitAccount");
+                _this4.init();
+                _this4.$toast.success({ title: "تم بنجاح!", message: "تعديل الحساب" });
             }).catch(function (error) {
-                _this3.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الفاتورة" });
+                _this4.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء تعديل الحساب" });
                 console.log("error", error);
             }).then(function () {
-                return _this3.loadingPage(false);
+                return _this4.loadingPage(false);
             });
         },
 
         search: _.debounce(function (filterMethod, entity) {
-            var _this4 = this;
+            var _this5 = this;
 
             var query = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
             var callback = arguments[3];
@@ -51063,22 +51047,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 //console.log("resp", resp);            //console.log("resp.data.data[0]", resp.data.data[0])
                 switch (resp.status) {
                     case 200:
-                        _this4.options[entity] = resp.data.data;
+                        _this5.options[entity] = resp.data.data;
                         // this.settings.canEdit = false
                         break;
                     case 204:
-                        _this4.$toast.info({ title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث" });
+                        _this5.$toast.info({ title: "لا يوجد نتيجة", message: "لا يوجد نتائج مطابقة للبحث" });
                         break;
                     default:
-                        _this4.$toast.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
+                        _this5.$toast.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
                         break;
                 }
             }).catch(function (error) {
-                _this4.$toast.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
+                _this5.$toast.error({ title: "حدث خطأ!", message: " خطأ أثناء البحث " });
                 console.log("error", error);
             }).then(function () {
                 // always executed
-                _this4.loading[entity] = false;
+                _this5.loading[entity] = false;
             }).then(callback);
         }, 300),
 
@@ -51090,7 +51074,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
         },
         getSerials: function getSerials(callback) {
-            var _this5 = this;
+            var _this6 = this;
 
             // and set the max serial
             this.loading.serial = true;
@@ -51099,22 +51083,23 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 switch (resp.status) {
                     case 200:
                         var result = resp.data;
-                        _this5.options.serials = result;console.log('options.serials', result);
+                        _this6.options.serials = result;console.log('options.serials', result);
                         if (result.length == 0) {
-                            _this5.account.serial = 1;
+                            _this6.account.serial = 1;
                         } else {
-                            _this5.account.serial = +_this5.options.serials[0] + 1;
+                            _this6.account.serial = +_this6.options.serials[0] + 1;
                         }
+                        // this.selected.serial = this.account.serial
                         break;
                     default:
-                        _this5.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                        _this6.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الحساب" });
                         break;
                 }
             }).catch(function (error) {
-                _this5.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
+                _this6.$toast.error({ title: "حدث خطأ!", message: "حدث خطأ أثناء البحث عن الحساب" });
                 console.log("error", error);
             }).then(function () /* finally */{
-                _this5.loading.serial = false;
+                _this6.loading.serial = false;
             }).then(callback);
         },
         changeSerial: function changeSerial(change) {
@@ -51142,7 +51127,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             if (this.selected.serial == null) return this.options.serials.length != 0;else return this.selected.serial + 1 != this.options.serials.length;
         },
         changed: function changed() {
-            // determain whether settings.originalObj and account are completely equal 
+            // DONT CHANGE : determain whether settings.originalObj and account are completely equal 
             // console.log("originalObj",this.originalObj); console.log("account",JSON.stringify(this.account));
             // return ! _.isEqual(this.originalObj, JSON.stringify(this.account))
             return true;
@@ -51154,31 +51139,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 var data = JSON.parse(JSON.stringify(newValue));
                 // console.log("selected",data)
 
-                if (data.currency != null) {
-                    var currency = this.currencies.find(function (el) {
-                        return el.id == data.currency.id;
-                    });
-                    this.account.currency_id = currency.id;
-                    console.log("selected.currency", currency.id);
-                }
-                if (data.client != null) {
-                    this.account.client_id = +_extends({}, this.options.clients.find(function (el) {
-                        return el.id == data.client.id;
-                    })).id;
-                    console.log("selected.client", client.id);
-                }
-                if (data.payment != null) {
-                    this.account.payment_id = +_extends({}, this.pay.find(function (el) {
-                        return el.id == data.payment.id;
-                    })).id;
-                    console.log("selected.payment", this.selected.payment.id);
-                }
-                if (data.warehouse != null) {
-                    this.account.warehouse_id = +_extends({}, this.options.warehouses.find(function (el) {
-                        return el.id == data.warehouse.id;
-                    })).id;
-                    console.log("selected.warehouse", this.selected.warehouse.id);
-                }
                 if (data.serial != null) {
                     this.account.serial = +this.options.serials[data.serial];
                     console.log("selected.serial= " + this.selected.serial + " - this.account.serial= " + this.account.serial);
@@ -51188,11 +51148,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         account: {
             handler: function handler(account) {
-                if (this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id) {
-                    this.settings.valid = true;
-                } else {
-                    this.settings.valid = false;
-                }
+                //     if(this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id){
+                //         this.settings.valid = true
+                //     }
+                //     else {
+                //         this.settings.valid = false
+                //     }
             },
             deep: true
         },
@@ -51223,21 +51184,77 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Account = function Account() {
-    var mat = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-    var qty = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-    var single = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-    var total = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+var Account = function () {
+    function Account() {
+        var code = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+        var desc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+        var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+        var NType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+        var parentAcc = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+        var closeAcc = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
+        var KType = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 0;
+        var EType = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
+        var EVal = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 0;
+        var ECrurrency = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : 0;
+        var EBuy = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : 0;
+        var EisPart = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : 0;
+        var hideInSearch = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
+        var CCisReq = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
+        var CCTitle = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : "";
+        var TOFL_income = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : 0;
+        var TOFL_ownership = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : 0;
+        var TOFL_finCenter = arguments.length > 18 && arguments[18] !== undefined ? arguments[18] : 0;
+        var TOFL_cashFlow = arguments.length > 19 && arguments[19] !== undefined ? arguments[19] : 0;
+        var TOFL_clasDet = arguments.length > 20 && arguments[20] !== undefined ? arguments[20] : 0;
 
-    _classCallCheck(this, Account);
+        _classCallCheck(this, Account);
 
-    this.mat = mat;
-    this.qty = qty;
-    this.single = single;
-    this.total = total;
-};
+        this.code = code;
+        this.title = title; // ['ar'=>'', 'en'=>'', 'tr'=>'']
+        this.desc = desc;
+        this.serial = serial;
+        this.NType = NType;
+
+        this.parentAcc = parentAcc;
+        this.closeAcc = closeAcc;
+        this.KType = KType;
+
+        this.EType = EType; // Evaluation Budgeting
+        this.EVal = EVal;
+        this.ECrurrency = ECrurrency;
+        this.EBuy = EBuy;
+        this.EisPart = EisPart;
+
+        this.hideInSearch = hideInSearch;
+        this.CCisReq = CCisReq; // Cost Center
+        this.CCTitle = CCTitle;
+
+        this.TOFL_income = TOFL_income; // Tabs Of Financial Lists
+        this.TOFL_ownership = TOFL_ownership;
+        this.TOFL_finCenter = TOFL_finCenter; // Financial Center
+        this.TOFL_cashFlow = TOFL_cashFlow;
+        this.TOFL_clasDet = TOFL_clasDet; // classifications details
+    }
+
+    _createClass(Account, [{
+        key: "fill",
+        value: function fill(obj) {
+            console.log('fill', obj);
+            this.code = obj.code;this.title = obj.title;this.desc = obj.desc;this.serial = obj.serial;this.NType = obj.NType;
+            this.parentAcc = obj.parentAcc;this.closeAcc = obj.closeAcc;this.KType = obj.KType;
+            this.EType = obj.EType;this.EVal = obj.EVal;this.ECrurrency = obj.ECrurrency;this.EBuy = obj.EBuy;this.EisPart = obj.EisPart;
+            this.hideInSearch = obj.hideInSearch;this.CCisReq = obj.CCisReq;this.CCTitle = obj.CCTitle;
+            this.TOFL_income = obj.TOFL_income;this.TOFL_ownership = obj.TOFL_ownership;this.TOFL_finCenter = obj.TOFL_finCenter;this.TOFL_cashFlow = obj.TOFL_cashFlow;this.TOFL_clasDet = obj.TOFL_clasDet;
+        }
+    }]);
+
+    return Account;
+}();
 
 /* harmony default export */ __webpack_exports__["a"] = (Account);
 
@@ -52117,8 +52134,8 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.selected.currency.buy,
-                      expression: "selected.currency.buy"
+                      value: _vm.account.serial,
+                      expression: "account.serial"
                     }
                   ],
                   staticClass: "form-control order-2",
@@ -52127,7 +52144,7 @@ var render = function() {
                     placeholder: _vm.loading.serial ? "loading" : "...",
                     disabled: false
                   },
-                  domProps: { value: _vm.selected.currency.buy },
+                  domProps: { value: _vm.account.serial },
                   on: {
                     keyup: function($event) {
                       if (
@@ -52142,11 +52159,7 @@ var render = function() {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(
-                        _vm.selected.currency,
-                        "buy",
-                        $event.target.value
-                      )
+                      _vm.$set(_vm.account, "serial", $event.target.value)
                     }
                   }
                 }),
@@ -52176,7 +52189,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "d-sm-flex mb-1" }, [
             _c("label", { staticClass: "col-sm-4 d-sm-flex" }, [
-              _vm._v("الاسم اللاتيني")
+              _vm._v("الاسم الانكليزي")
             ]),
             _vm._v(" "),
             _c("input", {

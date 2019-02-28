@@ -15,12 +15,31 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('closing_acc_id')->nullable();
+            $table->integer('serial');
             $table->string('code');
             $table->string('title');
-            // $table->boolean('isDefault')->default(false);
             $table->text('desc')->nullable();
-            $table->string('nType')->default("N"); // Normal, Closing, Aggregative, Distributive
+            $table->string('NType')->default("N"); // Normal, Closing, Aggregative, Distributive
+            
+            $table->unsignedInteger('closeAcc')->nullable();
+            $table->string('KType')->default("M"); // M, D, MD
+
+            $table->string('EType')->nullable();
+            $table->string('EVal')->nullable();
+            $table->unsignedInteger('ECrurrency')->nullable();
+            $table->float('EBuy')->nullable();
+            $table->boolean('EisPart')->default(0);
+            
+            $table->boolean('hideInSearch')->default(0);
+            $table->boolean('CCisReq')->default(0);
+            $table->string('CCTitle')->nullable();
+
+            $table->float('TOFL_income')->nullable();
+            $table->string('TOFL_ownership')->nullable();
+            $table->float('TOFL_finCenter')->nullable();
+            $table->float('TOFL_cashFlow')->nullable();
+            $table->string('TOFL_clasDet')->nullable();
+
             $table->timestamps();
         });
     }

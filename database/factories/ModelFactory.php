@@ -34,14 +34,14 @@ $factory->define(App\Account::class, function (Faker $faker) {
     $profiles = App\Profile::all()->pluck('id')->toArray();
     $currencies = App\Currency::all()->pluck('id')->toArray();
     return [               
-        'title' => $faker->name,
+        'serial' => $faker->randomDigit,
         'code' => $faker->ean13,
-        'desc' => $faker->text,
-        // 'isDefault' => false, >> deleted
-        'nType' => $faker->randomElement(['N', 'C', 'A', 'D']),
+        'title' => $faker->name,
+        'desc' => $faker->text, 
+        'NType' => $faker->randomElement(['N', 'C', 'A', 'D']),
+        'KType' => $faker->randomElement(['M', 'D', 'MD']),  
         'profile_id' => $faker->randomElement($profiles),
-        'currency_id' => $faker->randomElement($currencies),
-        // 'currency_id' => $faker->randomElement($accounts),
+        'currency_id' => $faker->randomElement($currencies), 
     ];
 });
 $factory->define(App\Warehouse::class, function (Faker $faker) {
@@ -137,25 +137,7 @@ $factory->define(App\Entryinfo::class, function (Faker $faker) {
         'd1' => $faker->word,
         'd2' => $faker->word,
     ];
-});
-// $factory->define(App\Invoiceinfo::class, function (Faker $faker) { 
-//     return [
-//         'd1' => $faker->word,
-//         'd2' => $faker->word,
-//     ];
-// });
-// $factory->define(App\Invoicetype::class, function (Faker $faker) { 
-//     return [
-//         'title' => $faker->sentence,
-//     ];
-// });
-// $factory->define(App\Payment::class, function (Faker $faker) { 
-//     return [
-//         'title' => $faker->word,
-//     ];
-// });
-
-
+}); 
 
 /*
   >  php artisan migrate:refresh --seed

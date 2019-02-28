@@ -17,14 +17,12 @@ class InvoiceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['store']]);
-        // $this->middleware('client', ['except' => []]);
-        // $this->middleware('belongToMe', ['except' => []]);
+        $this->middleware('auth', ['except' => ['store']]); 
     }
 /***************** API ******************/
     public function findBySerial(Request $request, Profile $profile)
     { 
-        if(!($inv=Invoice::searchBySerial($request, $profile->id)))
+        if(!($inv = Invoice::searchBySerial($request, $profile->id)))
             return response()->json(['msg' => 'حدث خطأ أثناء البحث'], 500); 
         if(count($inv) == 0)
             return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204 

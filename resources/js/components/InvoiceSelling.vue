@@ -116,7 +116,7 @@
 import Invoice from '../models/Invoice.class';
 
 export default {
-    props: ["profile", "currencies", "pay"], //placeholders: an array from php with translated placeholders foreach input
+    props: ["profile", "currencies", "pay"], // placeholders: array from PHP with labels and placeholders
     data() {
         return {
             originalObj: {},
@@ -129,7 +129,7 @@ export default {
         }
     },
     methods: {
-        tabClicked(event) { /* JQuery tab funcionality */  $(this.$el).tab("show") },       
+        tabClicked(event) { /* JQuery tabs funcionality */  $(this.$el).tab("show") },       
         clearInvoice() {
             if (confirm("سوف يتم فقدان البيانات غير المحفوظة, هل تريد الاستمرار؟")) {
                 this.$emit("ClearInvoice")
@@ -167,7 +167,7 @@ export default {
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
                 this.selected.payment = this.pay.length == 0 ? null : this.pay[0]
                 this.selected.serial = null
-                this.getSerials(()=>  this.invoiceReady() )                 
+                this.getSerials(() => this.invoiceReady() )                 
             } 
             else { // fill inv
                 this.settings.editMode = true     
