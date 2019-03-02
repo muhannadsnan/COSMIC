@@ -50920,11 +50920,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             originalObj: {},
             account: new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](),
-            selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
+            currBal: {},
+            selected: { currBal: {}, serial: null, test: {} },
             settings: { canSave: false, canEdit: false, editMode: false, saved: false, accountReady: false,
                 rtl: true, hasRecords: false, valid: false },
-            options: { clients: [], warehouses: [], serials: [], pay: [] },
-            loading: { page: false, serial: false }
+            options: { currency: [], NType: [], serials: [], parentAcc: [], test: [] },
+            loading: { page: false, serial: false, parentAcc: false }
         };
     },
 
@@ -50968,9 +50969,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.settings.editMode = false;
                 this.account = new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
                 this.account.NType = 'N';
+                this.account.KType = 'M';
+                this.account.EType = 'M';
                 this.selected.serial = null;
                 //this.options.warehouses = this.profile._warehouses
-                this.selected.client = null;
+                this.selected.test = null;
                 this.getSerials(function () {
                     return _this2.accountReady();
                 });
@@ -51108,6 +51111,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log("this.selected.serial= " + this.selected.serial + " - option selected= " + this.options.serials[this.selected.serial]);
             this.readAccountDebounce();
         },
+        changeKType: function changeKType(data) {
+            this.account.KType = data;
+        },
+        changeEBudget: function changeEBudget(data) {
+            this.account.EType = data;
+        },
         loadingPage: function loadingPage() {
             var param = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
@@ -51191,7 +51200,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Account = function () {
     function Account() {
         var code = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
         var desc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
         var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
         var NType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
@@ -51202,9 +51211,9 @@ var Account = function () {
         var EVal = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 0;
         var ECrurrency = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : 0;
         var EBuy = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : 0;
-        var EisPart = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : 0;
-        var hideInSearch = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : 0;
-        var CCisReq = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : 0;
+        var EisPart = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : false;
+        var hideInSearch = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : false;
+        var CCisReq = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : false;
         var CCTitle = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : "";
         var TOFL_income = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : 0;
         var TOFL_ownership = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : 0;
@@ -51215,7 +51224,7 @@ var Account = function () {
         _classCallCheck(this, Account);
 
         this.code = code;
-        this.title = title; // ['ar'=>'', 'en'=>'', 'tr'=>'']
+        this.title = title; // {ar: '', en: '', tr: ''}
         this.desc = desc;
         this.serial = serial;
         this.NType = NType;
@@ -51270,67 +51279,62 @@ var render = function() {
     "div",
     { staticClass: "Account d-flex flex-column-reverse" },
     [
-      _c(
-        "div",
-        { staticClass: "buttons d-flex justify-content-between mt-4" },
-        [
-          !_vm.settings.editMode
-            ? _c(
-                "button",
-                {
-                  staticClass: "nav-link col-4 col-md-3 btn btn-success",
-                  attrs: {
-                    id: "accountSave",
-                    disabled: !_vm.changed || !_vm.settings.valid
-                  },
-                  on: {
-                    click: function($event) {
-                      _vm.submitAccount()
-                    }
-                  }
+      _c("div", { staticClass: "bottom d-flex justify-content-between mt-4" }, [
+        !_vm.settings.editMode
+          ? _c(
+              "button",
+              {
+                staticClass: "nav-link col-4 col-md-3 btn btn-success",
+                attrs: {
+                  id: "accountSave",
+                  disabled: !_vm.changed || !_vm.settings.valid
                 },
-                [_vm._v("حفظ")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.settings.editMode
-            ? _c(
-                "button",
-                {
-                  staticClass:
-                    "nav-link col-4 col-md-3 btn btn-info text-white",
-                  attrs: {
-                    id: "accountsettings.editMode",
-                    disabled: !_vm.changed || !_vm.settings.valid
-                  },
-                  on: {
-                    click: function($event) {
-                      _vm.editAccount()
-                    }
+                on: {
+                  click: function($event) {
+                    _vm.submitAccount()
                   }
-                },
-                [_vm._v("تعديل")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "nav-link col-4 col-md-3 btn btn-dark",
-              attrs: {
-                id: "accountClear",
-                disabled: !_vm.changed && _vm.selected.serial == null
-              },
-              on: {
-                click: function($event) {
-                  _vm.clearAccount()
                 }
-              }
+              },
+              [_vm._v("حفظ")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.settings.editMode
+          ? _c(
+              "button",
+              {
+                staticClass: "nav-link col-4 col-md-3 btn btn-info text-white",
+                attrs: {
+                  id: "accountsettings.editMode",
+                  disabled: !_vm.changed || !_vm.settings.valid
+                },
+                on: {
+                  click: function($event) {
+                    _vm.editAccount()
+                  }
+                }
+              },
+              [_vm._v("تعديل")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "nav-link col-4 col-md-3 btn btn-dark",
+            attrs: {
+              id: "accountClear",
+              disabled: !_vm.changed && _vm.selected.serial == null
             },
-            [_vm._v("جديد")]
-          )
-        ]
-      ),
+            on: {
+              click: function($event) {
+                _vm.clearAccount()
+              }
+            }
+          },
+          [_vm._v("جديد")]
+        )
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -51358,7 +51362,7 @@ var render = function() {
                       [
                         _c("select2", {
                           attrs: {
-                            options: _vm.options.clients,
+                            options: _vm.options.parentAcc,
                             "track-by": "id",
                             label: "name",
                             "show-labels": false,
@@ -51368,7 +51372,7 @@ var render = function() {
                             limit: 5,
                             preserveSearch: true,
                             internalSearch: true,
-                            loading: _vm.loading.clients,
+                            loading: _vm.loading.parentAcc,
                             showNoResults: false,
                             multiple: false,
                             taggable: false,
@@ -51376,11 +51380,11 @@ var render = function() {
                           },
                           on: { "search-change": _vm.onSearchClient },
                           model: {
-                            value: _vm.selected.client,
+                            value: _vm.selected.test,
                             callback: function($$v) {
-                              _vm.$set(_vm.selected, "client", $$v)
+                              _vm.$set(_vm.selected, "test", $$v)
                             },
-                            expression: "selected.client"
+                            expression: "selected.test"
                           }
                         })
                       ],
@@ -51399,7 +51403,7 @@ var render = function() {
                       [
                         _c("select2", {
                           attrs: {
-                            options: _vm.options.clients,
+                            options: _vm.options.parentAcc,
                             "track-by": "id",
                             label: "name",
                             "show-labels": false,
@@ -51409,7 +51413,7 @@ var render = function() {
                             limit: 5,
                             preserveSearch: true,
                             internalSearch: true,
-                            loading: _vm.loading.clients,
+                            loading: _vm.loading.parentAcc,
                             showNoResults: false,
                             multiple: false,
                             taggable: false,
@@ -51417,11 +51421,11 @@ var render = function() {
                           },
                           on: { "search-change": _vm.onSearchClient },
                           model: {
-                            value: _vm.selected.client,
+                            value: _vm.selected.test,
                             callback: function($$v) {
-                              _vm.$set(_vm.selected, "client", $$v)
+                              _vm.$set(_vm.selected, "test", $$v)
                             },
-                            expression: "selected.client"
+                            expression: "selected.test"
                           }
                         })
                       ],
@@ -51440,7 +51444,15 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-outline-secondary col-3 mx-1",
-                            class: { "bg-secondary text-white": true }
+                            class: {
+                              "bg-secondary text-white":
+                                _vm.account.EType == "M"
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.changeEBudget("M")
+                              }
+                            }
                           },
                           [_vm._v("مدينة")]
                         ),
@@ -51449,7 +51461,15 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-outline-secondary col-3 mx-1",
-                            class: { "bg-secondary text-white": false }
+                            class: {
+                              "bg-secondary text-white":
+                                _vm.account.EType == "D"
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.changeEBudget("D")
+                              }
+                            }
                           },
                           [_vm._v("دائنة")]
                         ),
@@ -51458,7 +51478,15 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-outline-secondary col-3 mx-1",
-                            class: { "bg-secondary text-white": false }
+                            class: {
+                              "bg-secondary text-white":
+                                _vm.account.EType == "MD"
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.changeEBudget("MD")
+                              }
+                            }
                           },
                           [_vm._v("بدون")]
                         )
@@ -51475,23 +51503,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.selected.currency.buy,
-                            expression: "selected.currency.buy"
+                            value: _vm.account.EVal,
+                            expression: "account.EVal"
                           }
                         ],
                         staticClass: "form-control col-sm-8",
                         attrs: { type: "number", id: "", placeholder: "" },
-                        domProps: { value: _vm.selected.currency.buy },
+                        domProps: { value: _vm.account.EVal },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(
-                              _vm.selected.currency,
-                              "buy",
-                              $event.target.value
-                            )
+                            _vm.$set(_vm.account, "EVal", $event.target.value)
                           }
                         }
                       })
@@ -51508,7 +51532,7 @@ var render = function() {
                         [
                           _c("select2", {
                             attrs: {
-                              options: _vm.options.clients,
+                              options: _vm.options.currency,
                               "track-by": "id",
                               label: "title",
                               "show-labels": false,
@@ -51525,11 +51549,11 @@ var render = function() {
                               max: null
                             },
                             model: {
-                              value: _vm.selected.currency,
+                              value: _vm.account.ECrurrency,
                               callback: function($$v) {
-                                _vm.$set(_vm.selected, "currency", $$v)
+                                _vm.$set(_vm.account, "ECrurrency", $$v)
                               },
-                              expression: "selected.currency"
+                              expression: "account.ECrurrency"
                             }
                           })
                         ],
@@ -51547,23 +51571,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.selected.currency.buy,
-                            expression: "selected.currency.buy"
+                            value: _vm.account.EBuy,
+                            expression: "account.EBuy"
                           }
                         ],
                         staticClass: "form-control col-sm-8",
                         attrs: { type: "number", id: "", placeholder: "" },
-                        domProps: { value: _vm.selected.currency.buy },
+                        domProps: { value: _vm.account.EBuy },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(
-                              _vm.selected.currency,
-                              "buy",
-                              $event.target.value
-                            )
+                            _vm.$set(_vm.account, "EBuy", $event.target.value)
                           }
                         }
                       })
@@ -51573,11 +51593,59 @@ var render = function() {
                       "div",
                       {
                         staticClass: "d-sm-flex mt-1",
-                        attrs: { disabled: true }
+                        attrs: { disabled: true },
+                        on: {
+                          click: function($event) {
+                            _vm.account.EisPart = !_vm.account.EisPart
+                          }
+                        }
                       },
                       [
                         _c("input", {
-                          attrs: { type: "checkbox", checked: "" }
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.account.EisPart,
+                              expression: "account.EisPart"
+                            }
+                          ],
+                          attrs: { type: "checkbox", checked: "" },
+                          domProps: {
+                            checked: Array.isArray(_vm.account.EisPart)
+                              ? _vm._i(_vm.account.EisPart, null) > -1
+                              : _vm.account.EisPart
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.account.EisPart,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    _vm.$set(
+                                      _vm.account,
+                                      "EisPart",
+                                      $$a.concat([$$v])
+                                    )
+                                } else {
+                                  $$i > -1 &&
+                                    _vm.$set(
+                                      _vm.account,
+                                      "EisPart",
+                                      $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1))
+                                    )
+                                }
+                              } else {
+                                _vm.$set(_vm.account, "EisPart", $$c)
+                              }
+                            }
+                          }
                         }),
                         _vm._v(" "),
                         _c("label", [
@@ -51606,7 +51674,7 @@ var render = function() {
                         [
                           _c("select2", {
                             attrs: {
-                              options: _vm.options.clients,
+                              options: _vm.options.test,
                               "track-by": "id",
                               label: "title",
                               "show-labels": false,
@@ -51624,11 +51692,11 @@ var render = function() {
                               disabled: true
                             },
                             model: {
-                              value: _vm.selected.currency,
+                              value: _vm.selected.test,
                               callback: function($$v) {
-                                _vm.$set(_vm.selected, "currency", $$v)
+                                _vm.$set(_vm.selected, "test", $$v)
                               },
-                              expression: "selected.currency"
+                              expression: "selected.test"
                             }
                           })
                         ],
@@ -51650,7 +51718,7 @@ var render = function() {
                         [
                           _c("select2", {
                             attrs: {
-                              options: _vm.options.clients,
+                              options: _vm.options.test,
                               "track-by": "id",
                               label: "title",
                               "show-labels": false,
@@ -51668,11 +51736,11 @@ var render = function() {
                               disabled: true
                             },
                             model: {
-                              value: _vm.selected.currency,
+                              value: _vm.selected.test,
                               callback: function($$v) {
-                                _vm.$set(_vm.selected, "currency", $$v)
+                                _vm.$set(_vm.selected, "test", $$v)
                               },
-                              expression: "selected.currency"
+                              expression: "selected.test"
                             }
                           })
                         ],
@@ -51694,7 +51762,7 @@ var render = function() {
                         [
                           _c("select2", {
                             attrs: {
-                              options: _vm.options.clients,
+                              options: _vm.options.test,
                               "track-by": "id",
                               label: "title",
                               "show-labels": false,
@@ -51712,11 +51780,11 @@ var render = function() {
                               disabled: true
                             },
                             model: {
-                              value: _vm.selected.currency,
+                              value: _vm.selected.test,
                               callback: function($$v) {
-                                _vm.$set(_vm.selected, "currency", $$v)
+                                _vm.$set(_vm.selected, "test", $$v)
                               },
-                              expression: "selected.currency"
+                              expression: "selected.test"
                             }
                           })
                         ],
@@ -51738,7 +51806,7 @@ var render = function() {
                         [
                           _c("select2", {
                             attrs: {
-                              options: _vm.options.clients,
+                              options: _vm.options.test,
                               "track-by": "id",
                               label: "title",
                               "show-labels": false,
@@ -51756,11 +51824,11 @@ var render = function() {
                               disabled: true
                             },
                             model: {
-                              value: _vm.selected.currency,
+                              value: _vm.selected.test,
                               callback: function($$v) {
-                                _vm.$set(_vm.selected, "currency", $$v)
+                                _vm.$set(_vm.selected, "test", $$v)
                               },
-                              expression: "selected.currency"
+                              expression: "selected.test"
                             }
                           })
                         ],
@@ -51782,7 +51850,7 @@ var render = function() {
                         [
                           _c("select2", {
                             attrs: {
-                              options: _vm.options.clients,
+                              options: _vm.options.test,
                               "track-by": "id",
                               label: "name",
                               "show-labels": false,
@@ -51792,7 +51860,7 @@ var render = function() {
                               limit: 5,
                               preserveSearch: true,
                               internalSearch: true,
-                              loading: _vm.loading.clients,
+                              loading: _vm.loading.test,
                               showNoResults: false,
                               multiple: false,
                               taggable: false,
@@ -51801,11 +51869,11 @@ var render = function() {
                             },
                             on: { "search-change": _vm.onSearchClient },
                             model: {
-                              value: _vm.selected.client,
+                              value: _vm.selected.test,
                               callback: function($$v) {
-                                _vm.$set(_vm.selected, "client", $$v)
+                                _vm.$set(_vm.selected, "test", $$v)
                               },
-                              expression: "selected.client"
+                              expression: "selected.test"
                             }
                           })
                         ],
@@ -51835,7 +51903,15 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-outline-secondary mx-0",
-                              class: { "bg-secondary text-white": true }
+                              class: {
+                                "bg-secondary text-white":
+                                  _vm.account.KType == "M"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.changeKType("M")
+                                }
+                              }
                             },
                             [_vm._v("مدين")]
                           ),
@@ -51844,7 +51920,15 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-outline-secondary mx-1",
-                              class: { "bg-secondary text-white": false }
+                              class: {
+                                "bg-secondary text-white":
+                                  _vm.account.KType == "D"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.changeKType("D")
+                                }
+                              }
                             },
                             [_vm._v("دائن")]
                           ),
@@ -51853,7 +51937,15 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-outline-secondary mx-0",
-                              class: { "bg-secondary text-white": false }
+                              class: {
+                                "bg-secondary text-white":
+                                  _vm.account.KType == "MD"
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.changeKType("MD")
+                                }
+                              }
                             },
                             [_vm._v("مدين ودائن")]
                           )
@@ -51875,23 +51967,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.selected.currency.buy,
-                            expression: "selected.currency.buy"
+                            value: _vm.currBal.M,
+                            expression: "currBal.M"
                           }
                         ],
                         staticClass: "form-control col-sm-8",
                         attrs: { type: "number", id: "", placeholder: "" },
-                        domProps: { value: _vm.selected.currency.buy },
+                        domProps: { value: _vm.currBal.M },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(
-                              _vm.selected.currency,
-                              "buy",
-                              $event.target.value
-                            )
+                            _vm.$set(_vm.currBal, "M", $event.target.value)
                           }
                         }
                       })
@@ -51907,23 +51995,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.selected.currency.buy,
-                            expression: "selected.currency.buy"
+                            value: _vm.currBal.D,
+                            expression: "currBal.D"
                           }
                         ],
                         staticClass: "form-control col-sm-8",
                         attrs: { type: "number", id: "", placeholder: "" },
-                        domProps: { value: _vm.selected.currency.buy },
+                        domProps: { value: _vm.currBal.D },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(
-                              _vm.selected.currency,
-                              "buy",
-                              $event.target.value
-                            )
+                            _vm.$set(_vm.currBal, "D", $event.target.value)
                           }
                         }
                       })
@@ -51939,21 +52023,21 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.selected.currency.buy,
-                            expression: "selected.currency.buy"
+                            value: _vm.currBal.balance,
+                            expression: "currBal.balance"
                           }
                         ],
                         staticClass: "form-control col-sm-8",
                         attrs: { type: "number", id: "", placeholder: "" },
-                        domProps: { value: _vm.selected.currency.buy },
+                        domProps: { value: _vm.currBal.balance },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.selected.currency,
-                              "buy",
+                              _vm.currBal,
+                              "balance",
                               $event.target.value
                             )
                           }
@@ -51962,9 +52046,125 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(0),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "d-sm-flex mt-1",
+                      on: {
+                        click: function($event) {
+                          _vm.account.hideInSearch = !_vm.account.hideInSearch
+                        }
+                      }
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.account.hideInSearch,
+                            expression: "account.hideInSearch"
+                          }
+                        ],
+                        attrs: { type: "checkbox", checked: "" },
+                        domProps: {
+                          checked: Array.isArray(_vm.account.hideInSearch)
+                            ? _vm._i(_vm.account.hideInSearch, null) > -1
+                            : _vm.account.hideInSearch
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.account.hideInSearch,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.account,
+                                    "hideInSearch",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.account,
+                                    "hideInSearch",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.account, "hideInSearch", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("إخفاء في نافذة البحث")])
+                    ]
+                  ),
                   _vm._v(" "),
-                  _vm._m(1),
+                  _c(
+                    "div",
+                    {
+                      staticClass: "d-sm-flex mt-1",
+                      on: {
+                        click: function($event) {
+                          _vm.account.CCisReq = !_vm.account.CCisReq
+                        }
+                      }
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.account.CCisReq,
+                            expression: "account.CCisReq"
+                          }
+                        ],
+                        attrs: { type: "checkbox", checked: "" },
+                        domProps: {
+                          checked: Array.isArray(_vm.account.CCisReq)
+                            ? _vm._i(_vm.account.CCisReq, null) > -1
+                            : _vm.account.CCisReq
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.account.CCisReq,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.account,
+                                    "CCisReq",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.account,
+                                    "CCisReq",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.account, "CCisReq", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("فرض مركز الكلفة")])
+                    ]
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "d-sm-flex mt-1" }, [
                     _c("label", { staticClass: "col-sm-3 d-sm-flex" }, [
@@ -51976,39 +52176,35 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.selected.currency.buy,
-                          expression: "selected.currency.buy"
+                          value: _vm.account.CCTitle,
+                          expression: "account.CCTitle"
                         }
                       ],
                       staticClass: "form-control col-sm-8",
                       attrs: { type: "text", id: "", placeholder: "" },
-                      domProps: { value: _vm.selected.currency.buy },
+                      domProps: { value: _vm.account.CCTitle },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.selected.currency,
-                            "buy",
-                            $event.target.value
-                          )
+                          _vm.$set(_vm.account, "CCTitle", $event.target.value)
                         }
                       }
                     })
                   ]),
                   _vm._v(" "),
-                  _vm._m(2)
+                  _vm._m(0)
                 ])
               ])
             ]
           ),
           _vm._v(" "),
-          _vm._m(3),
+          _vm._m(1),
           _vm._v(" "),
-          _vm._m(4),
+          _vm._m(2),
           _vm._v(" "),
-          _vm._m(5)
+          _vm._m(3)
         ]
       ),
       _vm._v(" "),
@@ -52024,19 +52220,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.selected.currency.buy,
-                  expression: "selected.currency.buy"
+                  value: _vm.account.code,
+                  expression: "account.code"
                 }
               ],
               staticClass: "form-control col-sm-10",
               attrs: { type: "text", id: "", placeholder: "" },
-              domProps: { value: _vm.selected.currency.buy },
+              domProps: { value: _vm.account.code },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.selected.currency, "buy", $event.target.value)
+                  _vm.$set(_vm.account, "code", $event.target.value)
                 }
               }
             })
@@ -52052,19 +52248,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.selected.currency.buy,
-                  expression: "selected.currency.buy"
+                  value: _vm.account.title.ar,
+                  expression: "account.title.ar"
                 }
               ],
               staticClass: "form-control col-sm-10",
               attrs: { type: "text", id: "", placeholder: "" },
-              domProps: { value: _vm.selected.currency.buy },
+              domProps: { value: _vm.account.title.ar },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.selected.currency, "buy", $event.target.value)
+                  _vm.$set(_vm.account.title, "ar", $event.target.value)
                 }
               }
             })
@@ -52080,19 +52276,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.selected.currency.buy,
-                  expression: "selected.currency.buy"
+                  value: _vm.account.desc,
+                  expression: "account.desc"
                 }
               ],
               staticClass: "form-control col-sm-10",
               attrs: { type: "text", id: "", placeholder: "" },
-              domProps: { value: _vm.selected.currency.buy },
+              domProps: { value: _vm.account.desc },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.selected.currency, "buy", $event.target.value)
+                  _vm.$set(_vm.account, "desc", $event.target.value)
                 }
               }
             })
@@ -52197,19 +52393,19 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.selected.currency.buy,
-                  expression: "selected.currency.buy"
+                  value: _vm.account.title.en,
+                  expression: "account.title.en"
                 }
               ],
               staticClass: "form-control col-sm-8",
               attrs: { type: "text", id: "", placeholder: "" },
-              domProps: { value: _vm.selected.currency.buy },
+              domProps: { value: _vm.account.title.en },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.selected.currency, "buy", $event.target.value)
+                  _vm.$set(_vm.account.title, "en", $event.target.value)
                 }
               }
             })
@@ -52226,7 +52422,7 @@ var render = function() {
               [
                 _c("select2", {
                   attrs: {
-                    options: _vm.options.pay,
+                    options: _vm.options.NType,
                     "track-by": "id",
                     label: "title",
                     "show-labels": false,
@@ -52342,26 +52538,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-sm-flex mt-1" }, [
-      _c("input", { attrs: { type: "checkbox", checked: "" } }),
-      _vm._v(" "),
-      _c("label", [_vm._v("إخفاء في نافذة البحث")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "d-sm-flex mt-1" }, [
-      _c("input", { attrs: { type: "checkbox", checked: "" } }),
-      _vm._v(" "),
-      _c("label", [_vm._v("فرض مركز الكلفة")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

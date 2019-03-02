@@ -1,8 +1,8 @@
 export default class Account {
-    constructor(code="", title=[], desc="", serial=0, NType=0, parentAcc=0, closeAcc=0, KType=0, EType=0, EVal=0, ECrurrency=0, EBuy=0, EisPart=0, 
-                hideInSearch=0, CCisReq=0, CCTitle="", TOFL_income=0, TOFL_ownership=0, TOFL_finCenter=0, TOFL_cashFlow=0, TOFL_clasDet=0) {
+    constructor(code="", title={}, desc="", serial=0, NType=0, parentAcc=0, closeAcc=0, KType=0, EType=0, EVal=0, ECrurrency=0, EBuy=0, EisPart=false, 
+                hideInSearch=false, CCisReq=false, CCTitle="", TOFL_income=0, TOFL_ownership=0, TOFL_finCenter=0, TOFL_cashFlow=0, TOFL_clasDet=0) {
         this.code = code; 
-        this.title = title; // ['ar'=>'', 'en'=>'', 'tr'=>'']
+        this.title = title; // {ar: '', en: '', tr: ''}
         this.desc = desc; 
         this.serial = serial; 
         this.NType = NType; 
