@@ -8,15 +8,18 @@ use App\Account;
 class Account extends _Model
 {
     public static function searchBySerial($request, $profile_id){ // should bring only a record
-        $res = Account::where('serial', $request->serial)->where('NType', $request->NType)->where('profile_id', $profile_id)
-                        //->with('_payment', '_currency', '_records', '_clients', '_warehouses')
-                        ->get(); 
+        $res = Account::where('profile_id', $profile_id)->where('serial', $request->serial)->get(); 
+        if($request->NType != null)
+            $res = $res->where('NType', $request->NType)->get();
         if(!$res) return false;
         return $res;
     }
 
-    public static function getSerials($profile_id=1, $NType=1){  
-        return Account::where('NType', $NType)->where('profile_id', $profile_id)->orderBy('serial', 'desc')->pluck('serial');
+    public static function getSerials($profile_id=1, $NType=0){  
+        $res = Account::where('profile_id', $profile_id)->orderBy('serial', 'desc')->pluck('serial');
+        if($NType != 0)
+            $res = $res->where('NType', $NType)->get;
+        return $res;
     }
 
     /********************   RELATIIONSHIPS   *********************/

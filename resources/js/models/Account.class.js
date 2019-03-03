@@ -1,5 +1,5 @@
 export default class Account {
-    constructor(code="", title={}, desc="", serial=0, NType=0, parentAcc=0, closeAcc=0, KType=0, EType=0, EVal=0, ECrurrency=0, EBuy=0, EisPart=false, 
+    constructor(code="", title={ar: '', en: '', tr: ''}, desc="", serial=0, NType=0, parentAcc=0, closeAcc=0, KType=0, EType=0, EVal=0, ECurrency=0, EBuy=0, EisPart=false, 
                 hideInSearch=false, CCisReq=false, CCTitle="", TOFL_income=0, TOFL_ownership=0, TOFL_finCenter=0, TOFL_cashFlow=0, TOFL_clasDet=0) {
         this.code = code; 
         this.title = title; // {ar: '', en: '', tr: ''}
@@ -13,7 +13,7 @@ export default class Account {
 
         this.EType = EType; // Evaluation Budgeting
         this.EVal = EVal; 
-        this.ECrurrency = ECrurrency; 
+        this.ECurrency = ECurrency; 
         this.EBuy = EBuy; 
         this.EisPart = EisPart; 
  
@@ -29,9 +29,9 @@ export default class Account {
     }
 
     fill(obj) { console.log('fill', obj);
-        this.code = obj.code; this.title = obj.title; this.desc = obj.desc;  this.serial = obj.serial;  this.NType = obj.NType; 
+        this.code = obj.code; this.title.ar = obj.title; this.desc = obj.desc;  this.serial = obj.serial;  this.NType = obj.NType; 
         this.parentAcc = obj.parentAcc;  this.closeAcc = obj.closeAcc;  this.KType = obj.KType; 
-        this.EType = obj.EType; this.EVal = obj.EVal;  this.ECrurrency = obj.ECrurrency;  this.EBuy = obj.EBuy;  this.EisPart = obj.EisPart; 
+        this.EType = obj.EType; this.EVal = obj.EVal;  this.ECurrency = obj.ECurrency;  this.EBuy = obj.EBuy;  this.EisPart = obj.EisPart; 
         this.hideInSearch = obj.hideInSearch;  this.CCisReq = obj.CCisReq;  this.CCTitle = obj.CCTitle; 
         this.TOFL_income = obj.TOFL_income; this.TOFL_ownership = obj.TOFL_ownership; this.TOFL_finCenter = obj.TOFL_finCenter; this.TOFL_cashFlow = obj.TOFL_cashFlow; this.TOFL_clasDet = obj.TOFL_clasDet; 
     }

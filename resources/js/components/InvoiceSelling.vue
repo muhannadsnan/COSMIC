@@ -347,6 +347,7 @@ export default {
                 if(data.currency != null){ 
                     var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
                     this.invoice.currency_id = currency.id 
+                    this.invoice.currencyBuy = +currency.buy
                     console.log("selected.currency",currency.id)
                 }
                 if(data.client != null){ 

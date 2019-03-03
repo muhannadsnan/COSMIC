@@ -26,7 +26,7 @@ class CreateAccountsTable extends Migration
 
             $table->string('EType')->nullable();
             $table->string('EVal')->nullable();
-            $table->unsignedInteger('ECrurrency')->nullable();
+            $table->unsignedInteger('ECurrency')->nullable();
             $table->float('EBuy')->nullable();
             $table->boolean('EisPart')->default(0);
             

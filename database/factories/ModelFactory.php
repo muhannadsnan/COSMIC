@@ -41,7 +41,10 @@ $factory->define(App\Account::class, function (Faker $faker) {
         'NType' => $faker->randomElement(['N', 'C', 'A', 'D']),
         'KType' => $faker->randomElement(['M', 'D', 'MD']),  
         'profile_id' => $faker->randomElement($profiles),
-        'currency_id' => $faker->randomElement($currencies), 
+        //'currency_id' => $faker->randomElement($currencies), 
+        'ECurrency' => $faker->randomElement($currencies), 
+        'EVal' => $faker->ean13,
+        'EisPart' => $faker->randomElement([0,1]),
     ];
 });
 $factory->define(App\Warehouse::class, function (Faker $faker) {

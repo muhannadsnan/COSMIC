@@ -35,23 +35,23 @@
                             <div class="d-sm-flex justify-content-center mb-0">
                                 <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == 'M'}" @click="changeEBudget('M')">مدينة</button>
                                 <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == 'D'}" @click="changeEBudget('D')">دائنة</button>
-                                <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == 'MD'}" @click="changeEBudget('MD')">بدون</button>
+                                <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == null}" @click="changeEBudget('MD')">بدون</button>
                             </div>
                             <div class="d-sm-flex mt-2">
                                 <label class="col-sm-2 d-sm-flex">القيمة</label> 
-                                <input type="number" v-model="account.EVal" id="" class="form-control col-sm-8" placeholder="">
+                                <input type="number" v-model.number="account.EVal" id="" class="form-control col-sm-8" placeholder="">
                             </div>
                             <div class="d-sm-flex mt-1">
                                 <label class="col-sm-2 d-sm-flex">العملة</label> 
                                 <div class="Select2 col-sm-8 px-0">
-                                    <select2 v-model="account.ECrurrency" :options="options.currency" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                    <select2 v-model="selected.currency" :options="currencies" track-by="id" label="title" :show-labels="false" placeholder="..." 
                                         :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
                                         :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                                 </div>
                             </div>
                             <div class="d-sm-flex mt-1">
                                 <label class="col-sm-2 d-sm-flex">التعادل</label> 
-                                <input type="number" v-model="account.EBuy" id="" class="form-control col-sm-8" placeholder="">
+                                <input type="number" v-model.number="account.EBuy" id="" class="form-control col-sm-8" placeholder="">
                             </div>
                             <div class="d-sm-flex mt-1" :disabled="true" @click="account.EisPart = !account.EisPart">
                                 <input type="checkbox" checked v-model="account.EisPart"> <label >اعتبار الاوراق التجارية المستحقة جزءاً من الموازنة</label>
@@ -176,7 +176,7 @@
                         <div class="input-group-prepend order-3">
                             <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('down')" :disabled="!canDecreaseSerial">-</button>
                         </div>
-                        <input type="number" v-model="account.serial" class="form-control order-2" :placeholder="loading.serial ? 'loading': '...'" @keyup.enter="readInvoice()" :disabled="false">
+                        <input type="number" v-model="account.serial" class="form-control order-2" :placeholder="loading.serial ? 'loading': '...'" @keyup.enter="readAccount()" :disabled="false">
                         <div class="input-group-append order-1">
                             <button class="btn btn-outline-primary" type="button" id="button-addon1" @click="changeSerial('up')" :disabled="!canIncreaseSerial">+</button>
                         </div>
@@ -189,7 +189,7 @@
                 <div class="d-sm-flex mb-1">
                     <label class="col-sm-4 d-sm-flex">نوع الحساب</label>
                     <div class="Select2 col-sm-8 px-0">
-                        <select2 v-model="selected.payment" :options="options.NType" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                        <select2 v-model="selected.NType" :options="options.NType" track-by="id" label="title" :show-labels="false" placeholder="..." 
                                 :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false"
                                 :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                     </div>
@@ -220,16 +220,15 @@
 import Account from '../models/Account.class';
 
 export default {
-    props: ["profile"], // placeholders: array from PHP with labels and placeholders
+    props: ["profile", "currencies"], // placeholders: array from PHP with labels and placeholders
     data() {
         return {
             originalObj: {},
-            account: new Account(/* this.profile */),
+            account: new Account(),
             currBal: {}, 
-            selected: {currBal: {}, serial: null, test: {}},
-            settings: {canSave: false, canEdit: false, editMode: false, saved: false, accountReady: false, 
-                        rtl: true, hasRecords: false, valid: false},
-            options: {currency: [], NType: [], serials: [], parentAcc: [], test: []},    
+            selected: {serial: null, test: {}, currency: null, NType: null},
+            settings: {canSave: false, canEdit: false, editMode: false, accountReady: false, rtl: true, valid: false},
+            options: {NType: [], serials: [], parentAcc: [], test: []},    
             loading: {page: false, serial: false, parentAcc: false},   
         }
     },
@@ -262,32 +261,37 @@ export default {
             this.accountReady(false)
             if (data == null) { // reset all
                 this.settings.editMode = false 
-                this.account = new Account(/* this.profile */) 
-                this.account.NType = 'N'; 
-                this.account.KType = 'M'; 
-                this.account.EType = 'M'; 
+                this.account = new Account() 
+                this.account.NType = 'N'
+                this.account.KType = 'M'
+                this.account.EType = 'M'
+                this.currBal = {}
                 this.selected.serial = null
-                //this.options.warehouses = this.profile._warehouses
+                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
+                this.options.NType = [{id: 'N', title: 'عادي'}, {id: 'C', title: 'ختامي'}, {id: 'A', title: 'تجميعي'}, {id: 'D', title: 'توزيعي'}]
+                this.selected.NType = this.options.NType[0]
                 this.selected.test = null
                 this.getSerials(() => this.accountReady() )                 
             } 
             else { // fill acc
                 this.settings.editMode = true     
-                var acc = new Account(/* this.profile */)
+                var acc = new Account()
                 acc.fill(data); console.log("acc.fill", acc)
-                this.account = acc ;  console.log("account", this.account)  
+                this.account = acc;
                 this.selected.serial = this.options.serials.indexOf(data.serial) 
+                this.selected.NType = this.options.NType.find(el => el.id == data.NType) 
+                this.selected.currency = this.currencies.find(el => el.id == data.ECurrency) 
             }
             callback();
         }, 
         readAccount() { // after reading, settings.editMode mode will become active        
             if ( !this.settings.canSave || confirm("هل تريد قراءة الحساب؟ سوف تخسر البيانات غير المحفوظة") ) {
                 this.loadingPage()
-                axios.get(`/api/accounts/${this.profile.id}/findBySerial?serial=${this.account.serial}&NType=${this.account.NType}`) //?ser='+this.account.serial
+                axios.get(`/api/accounts/${this.profile.id}/findBySerial?serial=${this.account.serial}`) //&NType=${this.account.NType}
                     .then(resp => { //console.log("readAccount: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                         switch (resp.status) {
                             case 200:
-                                var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Account(/* this.profile */))
+                                var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Account())
                                 this.init(result) 
                                 // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                                 break
@@ -360,7 +364,7 @@ export default {
         }, 
         getSerials(callback){ // and set the max serial
             this.loading.serial = true
-            axios.get(`/api/accounts/${this.profile.id}/getSerials/${this.account.NType}`)
+            axios.get(`/api/accounts/${this.profile.id}/getSerials/0`) //${this.account.NType}
                 .then(resp => { console.log("getSerials", resp); 
                     switch (resp.status) {
                         case 200:
@@ -431,7 +435,17 @@ export default {
             handler: function(newValue) { 
                 var data = JSON.parse(JSON.stringify( newValue )) 
                 // console.log("selected",data)
-
+                if(data.NType != null){ 
+                    var NType = this.options.NType.find(function(el) { return el.id == data.NType })
+                    this.account.NType = NType 
+                    console.log("selected.NType",NType)
+                }
+                if(data.currency != null){ 
+                    var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
+                    this.account.ECurrency = currency.id 
+                    this.account.EBuy = +currency.buy
+                    console.log("selected.currency",currency.id)
+                }                
                 if(data.serial != null){
                     this.account.serial = +this.options.serials[data.serial]
                     console.log("selected.serial= "+this.selected.serial+ " - this.account.serial= "+this.account.serial) 

@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <account :profile = "{{request('profile')}}"/>
+    <account :profile="{{request('profile')}}" :currencies="{{\App\Currency::all()}}"/>
 @endsection
 
 @section('styles')

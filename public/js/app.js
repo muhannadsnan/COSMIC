@@ -49830,6 +49830,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                         return el.id == data.currency.id;
                     });
                     this.invoice.currency_id = currency.id;
+                    this.invoice.currencyBuy = +currency.buy;
                     console.log("selected.currency", currency.id);
                 }
                 if (data.client != null) {
@@ -50915,16 +50916,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ["profile"], // placeholders: array from PHP with labels and placeholders
+    props: ["profile", "currencies"], // placeholders: array from PHP with labels and placeholders
     data: function data() {
         return {
             originalObj: {},
             account: new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](),
             currBal: {},
-            selected: { currBal: {}, serial: null, test: {} },
-            settings: { canSave: false, canEdit: false, editMode: false, saved: false, accountReady: false,
-                rtl: true, hasRecords: false, valid: false },
-            options: { currency: [], NType: [], serials: [], parentAcc: [], test: [] },
+            selected: { serial: null, test: {}, currency: null, NType: null },
+            settings: { canSave: false, canEdit: false, editMode: false, accountReady: false, rtl: true, valid: false },
+            options: { NType: [], serials: [], parentAcc: [], test: [] },
             loading: { page: false, serial: false, parentAcc: false }
         };
     },
@@ -50971,8 +50971,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.account.NType = 'N';
                 this.account.KType = 'M';
                 this.account.EType = 'M';
+                this.currBal = {};
                 this.selected.serial = null;
-                //this.options.warehouses = this.profile._warehouses
+                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0];
+                this.options.NType = [{ id: 'N', title: 'عادي' }, { id: 'C', title: 'ختامي' }, { id: 'A', title: 'تجميعي' }, { id: 'D', title: 'توزيعي' }];
+                this.selected.NType = this.options.NType[0];
                 this.selected.test = null;
                 this.getSerials(function () {
                     return _this2.accountReady();
@@ -50982,8 +50985,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.settings.editMode = true;
                 var acc = new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
                 acc.fill(data);console.log("acc.fill", acc);
-                this.account = acc;console.log("account", this.account);
+                this.account = acc;
                 this.selected.serial = this.options.serials.indexOf(data.serial);
+                this.selected.NType = this.options.NType.find(function (el) {
+                    return el.id == data.NType;
+                });
+                this.selected.currency = this.currencies.find(function (el) {
+                    return el.id == data.ECurrency;
+                });
             }
             callback();
         },
@@ -50993,7 +51002,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // after reading, settings.editMode mode will become active        
             if (!this.settings.canSave || confirm("هل تريد قراءة الحساب؟ سوف تخسر البيانات غير المحفوظة")) {
                 this.loadingPage();
-                axios.get("/api/accounts/" + this.profile.id + "/findBySerial?serial=" + this.account.serial + "&NType=" + this.account.NType) //?ser='+this.account.serial
+                axios.get("/api/accounts/" + this.profile.id + "/findBySerial?serial=" + this.account.serial) //&NType=${this.account.NType}
                 .then(function (resp) {
                     //console.log("readAccount: resp", resp);            console.log("resp.data.data[0]", resp.data.data[0])
                     switch (resp.status) {
@@ -51081,7 +51090,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // and set the max serial
             this.loading.serial = true;
-            axios.get("/api/accounts/" + this.profile.id + "/getSerials/" + this.account.NType).then(function (resp) {
+            axios.get("/api/accounts/" + this.profile.id + "/getSerials/0") //${this.account.NType}
+            .then(function (resp) {
                 console.log("getSerials", resp);
                 switch (resp.status) {
                     case 200:
@@ -51147,7 +51157,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             handler: function handler(newValue) {
                 var data = JSON.parse(JSON.stringify(newValue));
                 // console.log("selected",data)
-
+                if (data.NType != null) {
+                    var NType = this.options.NType.find(function (el) {
+                        return el.id == data.NType;
+                    });
+                    this.account.NType = NType;
+                    console.log("selected.NType", NType);
+                }
+                if (data.currency != null) {
+                    var currency = this.currencies.find(function (el) {
+                        return el.id == data.currency.id;
+                    });
+                    this.account.ECurrency = currency.id;
+                    this.account.EBuy = +currency.buy;
+                    console.log("selected.currency", currency.id);
+                }
                 if (data.serial != null) {
                     this.account.serial = +this.options.serials[data.serial];
                     console.log("selected.serial= " + this.selected.serial + " - this.account.serial= " + this.account.serial);
@@ -51200,7 +51224,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Account = function () {
     function Account() {
         var code = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { ar: '', en: '', tr: '' };
         var desc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
         var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
         var NType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
@@ -51209,7 +51233,7 @@ var Account = function () {
         var KType = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 0;
         var EType = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
         var EVal = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 0;
-        var ECrurrency = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : 0;
+        var ECurrency = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : 0;
         var EBuy = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : 0;
         var EisPart = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : false;
         var hideInSearch = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : false;
@@ -51235,7 +51259,7 @@ var Account = function () {
 
         this.EType = EType; // Evaluation Budgeting
         this.EVal = EVal;
-        this.ECrurrency = ECrurrency;
+        this.ECurrency = ECurrency;
         this.EBuy = EBuy;
         this.EisPart = EisPart;
 
@@ -51251,12 +51275,12 @@ var Account = function () {
     }
 
     _createClass(Account, [{
-        key: "fill",
+        key: 'fill',
         value: function fill(obj) {
             console.log('fill', obj);
-            this.code = obj.code;this.title = obj.title;this.desc = obj.desc;this.serial = obj.serial;this.NType = obj.NType;
+            this.code = obj.code;this.title.ar = obj.title;this.desc = obj.desc;this.serial = obj.serial;this.NType = obj.NType;
             this.parentAcc = obj.parentAcc;this.closeAcc = obj.closeAcc;this.KType = obj.KType;
-            this.EType = obj.EType;this.EVal = obj.EVal;this.ECrurrency = obj.ECrurrency;this.EBuy = obj.EBuy;this.EisPart = obj.EisPart;
+            this.EType = obj.EType;this.EVal = obj.EVal;this.ECurrency = obj.ECurrency;this.EBuy = obj.EBuy;this.EisPart = obj.EisPart;
             this.hideInSearch = obj.hideInSearch;this.CCisReq = obj.CCisReq;this.CCTitle = obj.CCTitle;
             this.TOFL_income = obj.TOFL_income;this.TOFL_ownership = obj.TOFL_ownership;this.TOFL_finCenter = obj.TOFL_finCenter;this.TOFL_cashFlow = obj.TOFL_cashFlow;this.TOFL_clasDet = obj.TOFL_clasDet;
         }
@@ -51480,7 +51504,7 @@ var render = function() {
                             staticClass: "btn btn-outline-secondary col-3 mx-1",
                             class: {
                               "bg-secondary text-white":
-                                _vm.account.EType == "MD"
+                                _vm.account.EType == null
                             },
                             on: {
                               click: function($event) {
@@ -51502,9 +51526,10 @@ var render = function() {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
+                            rawName: "v-model.number",
                             value: _vm.account.EVal,
-                            expression: "account.EVal"
+                            expression: "account.EVal",
+                            modifiers: { number: true }
                           }
                         ],
                         staticClass: "form-control col-sm-8",
@@ -51515,7 +51540,14 @@ var render = function() {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.account, "EVal", $event.target.value)
+                            _vm.$set(
+                              _vm.account,
+                              "EVal",
+                              _vm._n($event.target.value)
+                            )
+                          },
+                          blur: function($event) {
+                            _vm.$forceUpdate()
                           }
                         }
                       })
@@ -51532,7 +51564,7 @@ var render = function() {
                         [
                           _c("select2", {
                             attrs: {
-                              options: _vm.options.currency,
+                              options: _vm.currencies,
                               "track-by": "id",
                               label: "title",
                               "show-labels": false,
@@ -51549,11 +51581,11 @@ var render = function() {
                               max: null
                             },
                             model: {
-                              value: _vm.account.ECrurrency,
+                              value: _vm.selected.currency,
                               callback: function($$v) {
-                                _vm.$set(_vm.account, "ECrurrency", $$v)
+                                _vm.$set(_vm.selected, "currency", $$v)
                               },
-                              expression: "account.ECrurrency"
+                              expression: "selected.currency"
                             }
                           })
                         ],
@@ -51570,9 +51602,10 @@ var render = function() {
                         directives: [
                           {
                             name: "model",
-                            rawName: "v-model",
+                            rawName: "v-model.number",
                             value: _vm.account.EBuy,
-                            expression: "account.EBuy"
+                            expression: "account.EBuy",
+                            modifiers: { number: true }
                           }
                         ],
                         staticClass: "form-control col-sm-8",
@@ -51583,7 +51616,14 @@ var render = function() {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.account, "EBuy", $event.target.value)
+                            _vm.$set(
+                              _vm.account,
+                              "EBuy",
+                              _vm._n($event.target.value)
+                            )
+                          },
+                          blur: function($event) {
+                            _vm.$forceUpdate()
                           }
                         }
                       })
@@ -52349,7 +52389,7 @@ var render = function() {
                       ) {
                         return null
                       }
-                      _vm.readInvoice()
+                      _vm.readAccount()
                     },
                     input: function($event) {
                       if ($event.target.composing) {
@@ -52439,11 +52479,11 @@ var render = function() {
                     max: null
                   },
                   model: {
-                    value: _vm.selected.payment,
+                    value: _vm.selected.NType,
                     callback: function($$v) {
-                      _vm.$set(_vm.selected, "payment", $$v)
+                      _vm.$set(_vm.selected, "NType", $$v)
                     },
-                    expression: "selected.payment"
+                    expression: "selected.NType"
                   }
                 })
               ],

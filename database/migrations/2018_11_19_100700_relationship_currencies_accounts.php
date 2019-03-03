@@ -14,8 +14,8 @@ class RelationshipCurrenciesAccounts extends Migration
     public function up()
     {
         Schema::table('accounts', function (Blueprint $table){
-            $table->unsignedInteger('currency_id')->after('id');
-            $table->foreign('currency_id')
+            // $table->unsignedInteger('currency_id')->after('id');
+            $table->foreign('ECurrency')
                     ->references('id')
                     ->on('currencies');
         });
@@ -29,7 +29,7 @@ class RelationshipCurrenciesAccounts extends Migration
     public function down()
     {
         Schema::table('accounts', function (Blueprint $table){
-            $table->dropForeign(['currency_id']);
+            $table->dropForeign(['ECurrency']);
         });
     }
 }
