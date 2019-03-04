@@ -370,8 +370,8 @@ export default {
             deep: true
         },
         invoice: {
-            handler: function(invoice) {   
-                if(this.invoice.client_id && this.invoice.client_acc && this.invoice.records.length != 0 && this.invoice.warehouse_id){
+            handler: function(inv) {   
+                if(inv.client_id && inv.client_acc && inv.records.length != 0 && inv.warehouse_id && inv.serial){
                     this.settings.valid = true
                 }
                 else {

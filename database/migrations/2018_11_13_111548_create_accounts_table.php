@@ -17,14 +17,14 @@ class CreateAccountsTable extends Migration
             $table->increments('id');
             $table->integer('serial');
             $table->string('code');
-            $table->string('title');
+            $table->string('title_ar')->nullable();
             $table->text('desc')->nullable();
             $table->string('NType')->default("N"); // Normal, Closing, Aggregative, Distributive
             
             $table->unsignedInteger('closeAcc')->nullable();
             $table->string('KType')->default("M"); // M, D, MD
 
-            $table->string('EType')->nullable();
+            $table->string('EType')->nullable(); // M, D, null
             $table->string('EVal')->nullable();
             $table->unsignedInteger('ECurrency')->nullable();
             $table->float('EBuy')->nullable();

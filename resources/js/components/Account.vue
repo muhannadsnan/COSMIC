@@ -35,7 +35,7 @@
                             <div class="d-sm-flex justify-content-center mb-0">
                                 <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == 'M'}" @click="changeEBudget('M')">مدينة</button>
                                 <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == 'D'}" @click="changeEBudget('D')">دائنة</button>
-                                <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == null}" @click="changeEBudget('MD')">بدون</button>
+                                <button class="btn btn-outline-secondary col-3 mx-1" :class="{'bg-secondary text-white': account.EType == null}" @click="changeEBudget(null)">بدون</button>
                             </div>
                             <div class="d-sm-flex mt-2">
                                 <label class="col-sm-2 d-sm-flex">القيمة</label> 
@@ -261,14 +261,13 @@ export default {
             this.accountReady(false)
             if (data == null) { // reset all
                 this.settings.editMode = false 
-                this.account = new Account() 
-                this.account.NType = 'N'
+                this.account = new Account()  
                 this.account.KType = 'M'
                 this.account.EType = 'M'
                 this.currBal = {}
+                this.options.NType = [{id: 'N', title: 'عادي'}, {id: 'C', title: 'ختامي'}, {id: 'A', title: 'تجميعي'}, {id: 'D', title: 'توزيعي'}]
                 this.selected.serial = null
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
-                this.options.NType = [{id: 'N', title: 'عادي'}, {id: 'C', title: 'ختامي'}, {id: 'A', title: 'تجميعي'}, {id: 'D', title: 'توزيعي'}]
                 this.selected.NType = this.options.NType[0]
                 this.selected.test = null
                 this.getSerials(() => this.accountReady() )                 
@@ -280,7 +279,7 @@ export default {
                 this.account = acc;
                 this.selected.serial = this.options.serials.indexOf(data.serial) 
                 this.selected.NType = this.options.NType.find(el => el.id == data.NType) 
-                this.selected.currency = this.currencies.find(el => el.id == data.ECurrency) 
+                this.selected.currency = this.currencies.find(el => el.id == data.ECurrency) // this will change the selected EBuy
             }
             callback();
         }, 
@@ -436,15 +435,15 @@ export default {
                 var data = JSON.parse(JSON.stringify( newValue )) 
                 // console.log("selected",data)
                 if(data.NType != null){ 
-                    var NType = this.options.NType.find(function(el) { return el.id == data.NType })
-                    this.account.NType = NType 
-                    console.log("selected.NType",NType)
+                    var type = this.options.NType.find(function(el) { return el.id == data.NType.id })
+                    this.account.NType = type.id
+                    console.log("selected.NType",type.id)
                 }
                 if(data.currency != null){ 
                     var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
                     this.account.ECurrency = currency.id 
                     this.account.EBuy = +currency.buy
-                    console.log("selected.currency",currency.id)
+                    console.log("selected.currency="+currency.id+" , EBuy="+currency.buy)
                 }                
                 if(data.serial != null){
                     this.account.serial = +this.options.serials[data.serial]
@@ -454,13 +453,13 @@ export default {
             deep: true
         },
         account: {
-            handler: function(account) {   
-            //     if(this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id){
-            //         this.settings.valid = true
-            //     }
-            //     else {
-            //         this.settings.valid = false
-            //     }
+            handler: function(acc) {   
+                if(acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar||acc.title.en||acc.title.tr)){
+                    this.settings.valid = true
+                }
+                else {
+                    this.settings.valid = false
+                }
             },
             deep: true
         },

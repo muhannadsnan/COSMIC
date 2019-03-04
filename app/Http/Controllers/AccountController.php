@@ -20,12 +20,27 @@ class AccountController extends Controller
         if(!($acc = Account::searchBySerial($request, $profile->id)))
             return response()->json(['msg' => 'حدث خطأ أثناء البحث'], 500); 
         if(count($acc) == 0)
-            return response()->json(['msg' => 'لا يوجد فاتورة تطابق هذا الرقم التسلسلي'], 204); // No Response 204 
-        return response()->json(['data' => $acc, 'msg' => 'تم ايجاد الفاتورة'], 200);
+            return response()->json(['msg' => 'لا يوجد حساب تطابق هذا الرقم التسلسلي'], 204); // No Response 204 
+        return response()->json(['data' => $acc, 'msg' => 'تم ايجاد الحساب'], 200);
     }
+
     public function getSerials(Request $request, Profile $profile, $NType=1)
     {
         return Account::getSerials($profile->id, $NType);
+    }
+    
+    public function apiStore(Request $request, Profile $profile)
+    { 
+        if(!$newAccount = Account::insert($request, $profile->id))
+            return response()->json(['msg' => 'خطأ أثناء إضافة الحساب'], 404);        
+        return response()->json(['data' => $newAccount, 'msg' => 'تم إضافة الحساب بنجاح'], 200);
+    }
+
+    public function apiUpdate(Request $request, Profile $profile)
+    { 
+        if(!$newAccount = Account::edit($request))
+            return response()->json(['msg' => 'خطأ أثناء تعديل الحساب'], 404);        
+        return response()->json(['data' => $newAccount, 'msg' => 'تم تعديل الحساب بنجاح'], 200);
     }
 
 /********************************************/

@@ -49859,8 +49859,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             deep: true
         },
         invoice: {
-            handler: function handler(invoice) {
-                if (this.invoice.client_id && this.invoice.client_acc && this.invoice.records.length != 0 && this.invoice.warehouse_id) {
+            handler: function handler(inv) {
+                if (inv.client_id && inv.client_acc && inv.records.length != 0 && inv.warehouse_id && inv.serial) {
                     this.settings.valid = true;
                 } else {
                     this.settings.valid = false;
@@ -50968,13 +50968,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // reset all
                 this.settings.editMode = false;
                 this.account = new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
-                this.account.NType = 'N';
                 this.account.KType = 'M';
                 this.account.EType = 'M';
                 this.currBal = {};
+                this.options.NType = [{ id: 'N', title: 'عادي' }, { id: 'C', title: 'ختامي' }, { id: 'A', title: 'تجميعي' }, { id: 'D', title: 'توزيعي' }];
                 this.selected.serial = null;
                 this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0];
-                this.options.NType = [{ id: 'N', title: 'عادي' }, { id: 'C', title: 'ختامي' }, { id: 'A', title: 'تجميعي' }, { id: 'D', title: 'توزيعي' }];
                 this.selected.NType = this.options.NType[0];
                 this.selected.test = null;
                 this.getSerials(function () {
@@ -50992,7 +50991,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 this.selected.currency = this.currencies.find(function (el) {
                     return el.id == data.ECurrency;
-                });
+                }); // this will change the selected EBuy
             }
             callback();
         },
@@ -51158,11 +51157,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = JSON.parse(JSON.stringify(newValue));
                 // console.log("selected",data)
                 if (data.NType != null) {
-                    var NType = this.options.NType.find(function (el) {
-                        return el.id == data.NType;
+                    var type = this.options.NType.find(function (el) {
+                        return el.id == data.NType.id;
                     });
-                    this.account.NType = NType;
-                    console.log("selected.NType", NType);
+                    this.account.NType = type.id;
+                    console.log("selected.NType", type.id);
                 }
                 if (data.currency != null) {
                     var currency = this.currencies.find(function (el) {
@@ -51170,7 +51169,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                     this.account.ECurrency = currency.id;
                     this.account.EBuy = +currency.buy;
-                    console.log("selected.currency", currency.id);
+                    console.log("selected.currency=" + currency.id + " , EBuy=" + currency.buy);
                 }
                 if (data.serial != null) {
                     this.account.serial = +this.options.serials[data.serial];
@@ -51180,13 +51179,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             deep: true
         },
         account: {
-            handler: function handler(account) {
-                //     if(this.account.client_id && this.account.client_acc && this.account.records.length != 0 && this.account.warehouse_id){
-                //         this.settings.valid = true
-                //     }
-                //     else {
-                //         this.settings.valid = false
-                //     }
+            handler: function handler(acc) {
+                if (acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar || acc.title.en || acc.title.tr)) {
+                    this.settings.valid = true;
+                } else {
+                    this.settings.valid = false;
+                }
             },
             deep: true
         },
@@ -51278,7 +51276,7 @@ var Account = function () {
         key: 'fill',
         value: function fill(obj) {
             console.log('fill', obj);
-            this.code = obj.code;this.title.ar = obj.title;this.desc = obj.desc;this.serial = obj.serial;this.NType = obj.NType;
+            this.code = obj.code;this.title.ar = obj.title_ar;this.desc = obj.desc;this.serial = obj.serial;this.NType = obj.NType;
             this.parentAcc = obj.parentAcc;this.closeAcc = obj.closeAcc;this.KType = obj.KType;
             this.EType = obj.EType;this.EVal = obj.EVal;this.ECurrency = obj.ECurrency;this.EBuy = obj.EBuy;this.EisPart = obj.EisPart;
             this.hideInSearch = obj.hideInSearch;this.CCisReq = obj.CCisReq;this.CCTitle = obj.CCTitle;
@@ -51508,7 +51506,7 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
-                                _vm.changeEBudget("MD")
+                                _vm.changeEBudget(null)
                               }
                             }
                           },

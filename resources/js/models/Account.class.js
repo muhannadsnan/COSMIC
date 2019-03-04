@@ -29,7 +29,7 @@ export default class Account {
     }
 
     fill(obj) { console.log('fill', obj);
-        this.code = obj.code; this.title.ar = obj.title; this.desc = obj.desc;  this.serial = obj.serial;  this.NType = obj.NType; 
+        this.code = obj.code; this.title.ar = obj.title_ar; this.desc = obj.desc;  this.serial = obj.serial;  this.NType = obj.NType; 
         this.parentAcc = obj.parentAcc;  this.closeAcc = obj.closeAcc;  this.KType = obj.KType; 
         this.EType = obj.EType; this.EVal = obj.EVal;  this.ECurrency = obj.ECurrency;  this.EBuy = obj.EBuy;  this.EisPart = obj.EisPart; 
         this.hideInSearch = obj.hideInSearch;  this.CCisReq = obj.CCisReq;  this.CCTitle = obj.CCTitle; 

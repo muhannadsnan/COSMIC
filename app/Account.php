@@ -22,6 +22,32 @@ class Account extends _Model
         return $res;
     }
 
+    public static function insert($request, $profile_id){  
+        return Account::create([ 
+            'profile_id' => $profile_id,
+            'serial' => $request->serial,
+            'code' => $request->code,
+            'title_ar' => $request->title['ar'],
+            'desc' => $request->desc,
+            'NType' => $request->NType,
+            'closeAcc' => $request->closeAcc,
+            'KType' => $request->KType,
+            'EType' => $request->EType,
+            'EVal' => $request->EVal,
+            'ECurrency' => $request->ECurrency,
+            'EBuy' => $request->EBuy,
+            'EisPart' => $request->EisPart,
+            'hideInSearch' => $request->hideInSearch,
+            'CCisReq' => $request->CCisReq,
+            'CCTitle' => $request->CCTitle,
+            'TOFL_income' => $request->TOFL_income,
+            'TOFL_ownership' => $request->TOFL_ownership,
+            'TOFL_finCenter' => $request->TOFL_finCenter,
+            'TOFL_cashFlow' => $request->TOFL_cashFlow,
+            'TOFL_clasDet' => $request->TOFL_clasDet,  
+        ]);
+    }
+
     /********************   RELATIIONSHIPS   *********************/
 
     public function _users()
@@ -54,9 +80,9 @@ class Account extends _Model
         return $this->hasMany(Client::class);
     }
 
-    public function _invoices() 
+    public function _Accounts() 
     {
-        return $this->belongsToMany(Invoice::class, 'invoice_account', 'account_id', 'invoice_id');
+        return $this->belongsToMany(Account::class, 'Account_account', 'account_id', 'Account_id');
     }
 
     public function _entries() 
