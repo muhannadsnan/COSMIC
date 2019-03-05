@@ -4,171 +4,171 @@ use Faker\Generator as Faker;
 use App\Account;
  
 $root = Account::create([
-    'title' => 'الموجودات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'الموجودات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
 ]);
 $sub1 = Account::create([
-    'title' => 'الموجودات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'الموجودات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
 ]); $sub1->_parents()->sync([$root->id]);
     $sub2 = Account::create([
-        'title' => 'أراضي', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'أراضي', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
     $sub2 = Account::create([
-        'title' => 'عقارات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'عقارات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
     $sub2 = Account::create([
-        'title' => 'أثاث', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'أثاث', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
     $sub2 = Account::create([
-        'title' => 'سيارات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'سيارات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
 $sub1 = Account::create([
-    'title' => 'الموجودات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'الموجودات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub1->_parents()->sync([$root->id]);
 $sub1 = Account::create([
-    'title' => 'الزبائن', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'الزبائن', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub1->_parents()->sync([$root->id]);
     $sub2 = Account::create([
-        'title' => 'زبون', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'زبون', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
     $sub2 = Account::create([
-        'title' => 'مدينون', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'مدينون', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
 $sub1 = Account::create([
-    'title' => 'مسحوبات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'مسحوبات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub1->_parents()->sync([$root->id]);
     $sub2 = Account::create([
-        'title' => 'مسحوبات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'مسحوبات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
 $sub1 = Account::create([
-    'title' => 'المخزون', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'المخزون', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub1->_parents()->sync([$root->id]);
     $sub2 = Account::create([
-        'title' => 'مخزون', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'مخزون', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
 $sub1 = Account::create([
-    'title' => 'الأموال', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'الأموال', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub1->_parents()->sync([$root->id]);
     $sub2 = Account::create([
-        'title' => 'الصندوق', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'الصندوق', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
     $sub2 = Account::create([
-        'title' => 'المصروف', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-    ]); $sub2->_parents()->sync([$sub1->id]);
-////////////////////////////////////////////////
-$root = Account::create([
-    'title' => 'المطاليب', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]);
-$sub1 = Account::create([
-    'title' => 'المطاليب الثابتة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'رأس المال', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-    $sub2 = Account::create([
-        'title' => 'رأس مال الشريك', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-    ]); $sub2->_parents()->sync([$sub1->id]);
-    $sub2 = Account::create([
-        'title' => 'القروض', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-    ]); $sub2->_parents()->sync([$sub1->id]);
-$sub1 = Account::create([
-    'title' => 'المطاليب المتداولة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'الموردون', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-    $sub2 = Account::create([
-        'title' => 'موردون رقم 1', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-    ]); $sub2->_parents()->sync([$sub1->id]);
-    $sub2 = Account::create([
-        'title' => 'دائنون مختلفون', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'المصروف', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);
 ////////////////////////////////////////////////
 $root = Account::create([
-    'title' => 'صافي المشتريات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'المطاليب', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
 ]);
 $sub1 = Account::create([
-    'title' => 'المشتريات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'المطاليب الثابتة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
 ]); $sub1->_parents()->sync([$root->id]);
 $sub1 = Account::create([
-    'title' => 'مرتجع المشتريات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'مصاريف نقل المشتريات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'الحسم المكتسب', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-////////////////////////////////////////////////
-$root = Account::create([
-    'title' => 'صافي المبيعات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]);
-$sub1 = Account::create([
-    'title' => 'المبيعات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'مرتجع المبيعات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'الحسم الممنوح', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-////////////////////////////////////////////////
-$root = Account::create([
-    'title' => 'المصاريف', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]);
-$sub1 = Account::create([
-    'title' => 'رواتب واجور', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'كهرباء وماء', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'هاتف وفاكس وانترنت', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'إكراميات وهدايا', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'نقل وانتقال', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'وقود ومحروقات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'صيانة وقطع غيار', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'قرطاسية ومطبوعات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'زيوت وشحوم', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'مصاريف متفرقة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-////////////////////////////////////////////////
-$root = Account::create([
-    'title' => 'الإيرادات', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]);
-$sub1 = Account::create([
-    'title' => 'إيرادات مختلفة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-////////////////////////////////////////////////
-$root = Account::create([
-    'title' => 'البضاعة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]);
-$sub1 = Account::create([
-    'title' => 'بضاغة أول المدة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-$sub1 = Account::create([
-    'title' => 'بضاعة آخر المدة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]); $sub1->_parents()->sync([$root->id]);
-////////////////////////////////////////////////
-$root = Account::create([
-    'title' => 'الميزانية', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
-]);
-$sub1 = Account::create([
-    'title' => 'الأرباح والخسائر', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+    'title_ar' => 'رأس المال', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
 ]); $sub1->_parents()->sync([$root->id]);
     $sub2 = Account::create([
-        'title' => 'المتاجرة', 'serial' => 999, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null, 'currency_id' => 1
+        'title_ar' => 'رأس مال الشريك', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+    ]); $sub2->_parents()->sync([$sub1->id]);
+    $sub2 = Account::create([
+        'title_ar' => 'القروض', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+    ]); $sub2->_parents()->sync([$sub1->id]);
+$sub1 = Account::create([
+    'title_ar' => 'المطاليب المتداولة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'الموردون', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+    $sub2 = Account::create([
+        'title_ar' => 'موردون رقم 1', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+    ]); $sub2->_parents()->sync([$sub1->id]);
+    $sub2 = Account::create([
+        'title_ar' => 'دائنون مختلفون', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+    ]); $sub2->_parents()->sync([$sub1->id]);
+////////////////////////////////////////////////
+$root = Account::create([
+    'title_ar' => 'صافي المشتريات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]);
+$sub1 = Account::create([
+    'title_ar' => 'المشتريات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'مرتجع المشتريات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'مصاريف نقل المشتريات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'الحسم المكتسب', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+////////////////////////////////////////////////
+$root = Account::create([
+    'title_ar' => 'صافي المبيعات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]);
+$sub1 = Account::create([
+    'title_ar' => 'المبيعات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'مرتجع المبيعات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'الحسم الممنوح', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+////////////////////////////////////////////////
+$root = Account::create([
+    'title_ar' => 'المصاريف', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]);
+$sub1 = Account::create([
+    'title_ar' => 'رواتب واجور', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'كهرباء وماء', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'هاتف وفاكس وانترنت', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'إكراميات وهدايا', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'نقل وانتقال', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'وقود ومحروقات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'صيانة وقطع غيار', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'قرطاسية ومطبوعات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'زيوت وشحوم', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'مصاريف متفرقة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+////////////////////////////////////////////////
+$root = Account::create([
+    'title_ar' => 'الإيرادات', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]);
+$sub1 = Account::create([
+    'title_ar' => 'إيرادات مختلفة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+////////////////////////////////////////////////
+$root = Account::create([
+    'title_ar' => 'البضاعة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]);
+$sub1 = Account::create([
+    'title_ar' => 'بضاغة أول المدة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+$sub1 = Account::create([
+    'title_ar' => 'بضاعة آخر المدة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+////////////////////////////////////////////////
+$root = Account::create([
+    'title_ar' => 'الميزانية', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]);
+$sub1 = Account::create([
+    'title_ar' => 'الأرباح والخسائر', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
+]); $sub1->_parents()->sync([$root->id]);
+    $sub2 = Account::create([
+        'title_ar' => 'المتاجرة', 'serial' => 0, 'code' => 'abc', 'desc' => 'abc', 'nType' => 'abc', 'profile_id' => null,
     ]); $sub2->_parents()->sync([$sub1->id]);

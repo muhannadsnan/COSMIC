@@ -36,7 +36,7 @@ $factory->define(App\Account::class, function (Faker $faker) {
     return [               
         'serial' => $faker->randomDigit,
         'code' => $faker->ean13,
-        'title' => $faker->name,
+        'title_ar' => $faker->name,
         'desc' => $faker->text, 
         'NType' => $faker->randomElement(['N', 'C', 'A', 'D']),
         'KType' => $faker->randomElement(['M', 'D', 'MD']),  

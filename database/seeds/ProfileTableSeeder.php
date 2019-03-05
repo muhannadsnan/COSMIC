@@ -7,7 +7,10 @@ class ProfileTableSeeder extends Seeder
 { 
     public function run()
     {
-        factory(Profile::class, 10)->create();   
+        factory(Profile::class, 10)->create(); 
+        Profile::create([
+            'base_id' => 11, 'title' => '2018 Profile first part', 'code' => 'abc', 'startPeriodDate' => '2019-03-06', 'endPeriodDate' => '2019-03-07'
+        ]);
 
         $pro = Profile::find(1);
         $pro->_currencies()->sync([1,3]);

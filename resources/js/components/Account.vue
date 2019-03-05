@@ -19,7 +19,7 @@
                             <div class="Select2 col-sm-9 px-0"> 
                                 <select2 v-model="selected.test" :options="options.parentAcc" track-by="id" label="name" :show-labels="false" placeholder="..."  
                                         :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
-                                        @search-change="onSearchClient" :loading="loading.parentAcc" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
+                                        @search-change="onSearch" :loading="loading.parentAcc" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
                         <div class="d-sm-flex mt-1">
@@ -27,7 +27,7 @@
                             <div class="Select2 col-sm-9 px-0"> 
                                 <select2 v-model="selected.test" :options="options.parentAcc" track-by="id" label="name" :show-labels="false" placeholder="..."  
                                         :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
-                                        @search-change="onSearchClient" :loading="loading.parentAcc" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
+                                        @search-change="onSearch" :loading="loading.parentAcc" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                             </div>
                         </div>
                         <fieldset class="mt-3 px-2">
@@ -44,7 +44,7 @@
                             <div class="d-sm-flex mt-1">
                                 <label class="col-sm-2 d-sm-flex">العملة</label> 
                                 <div class="Select2 col-sm-8 px-0">
-                                    <select2 v-model="selected.currency" :options="currencies" track-by="id" label="title" :show-labels="false" placeholder="..." 
+                                    <select2 v-model="selected.ECurrency" :options="currencies" track-by="id" label="title" :show-labels="false" placeholder="..." 
                                         :allow-empty="false" :preselect-first="true" :preserveSearch="false" :internalSearch="false" :searchable="false" 
                                         :loading="false" :showNoResults="false" :multiple="false" :taggable="false" :max="null"></select2>
                                 </div>
@@ -96,7 +96,7 @@
                                 <div class="Select2 col-sm-7 px-0" :disabled="true"> 
                                     <select2 v-model="selected.test" :options="options.test" track-by="id" label="name" :show-labels="false" placeholder="..."  
                                             :allow-empty="false" :preselect-first="false" :limit="5" :preserveSearch="true" :internalSearch="true"
-                                            @search-change="onSearchClient" :loading="loading.test" :showNoResults="false" :multiple="false" :taggable="false" :max="null" :disabled="true"></select2>
+                                            @search-change="onSearch" :loading="loading.test" :showNoResults="false" :multiple="false" :taggable="false" :max="null" :disabled="true"></select2>
                                 </div>
                             </div>
                         </fieldset>
@@ -226,8 +226,8 @@ export default {
             originalObj: {},
             account: new Account(),
             currBal: {}, 
-            selected: {serial: null, test: {}, currency: null, NType: null},
-            settings: {canSave: false, canEdit: false, editMode: false, accountReady: false, rtl: true, valid: false},
+            selected: {serial: null, test: {}, ECurrency: null, NType: null},
+            settings: {canSave: false, canEdit: false, editMode: false, accountReady: false, rtl: true, valid: false, EBuy: null},
             options: {NType: [], serials: [], parentAcc: [], test: []},    
             loading: {page: false, serial: false, parentAcc: false},   
         }
@@ -258,7 +258,7 @@ export default {
                 .then(() => this.loadingPage(false))
         },
         init(data = null, callback = function(){}) { 
-            this.accountReady(false)
+            this.accountReady(false) 
             if (data == null) { // reset all
                 this.settings.editMode = false 
                 this.account = new Account()  
@@ -267,9 +267,10 @@ export default {
                 this.currBal = {}
                 this.options.NType = [{id: 'N', title: 'عادي'}, {id: 'C', title: 'ختامي'}, {id: 'A', title: 'تجميعي'}, {id: 'D', title: 'توزيعي'}]
                 this.selected.serial = null
-                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0]
+                this.selected.ECurrency = this.currencies.length == 0 ? null : this.currencies[0]
                 this.selected.NType = this.options.NType[0]
                 this.selected.test = null
+                // this.settings.hasEBuy = false
                 this.getSerials(() => this.accountReady() )                 
             } 
             else { // fill acc
@@ -277,9 +278,12 @@ export default {
                 var acc = new Account()
                 acc.fill(data); console.log("acc.fill", acc)
                 this.account = acc;
+                // if(acc.EBuy != null)
+                //     this.settings.hasEBuy = true // to allow keep EBuy from acc and not from ECurrency.buy
                 this.selected.serial = this.options.serials.indexOf(data.serial) 
                 this.selected.NType = this.options.NType.find(el => el.id == data.NType) 
-                this.selected.currency = this.currencies.find(el => el.id == data.ECurrency) // this will change the selected EBuy
+                this.selected.ECurrency = this.currencies.find(el => el.id == data.ECurrency) // this will change the selected EBuy
+                this.settings.EBuy = data.EBuy
             }
             callback();
         }, 
@@ -291,7 +295,8 @@ export default {
                         switch (resp.status) {
                             case 200:
                                 var result = Array.isArray(resp.data.data) ? resp.data.data[0] : (resp.data.data != null ? resp.data.data : new Account())
-                                this.init(result) 
+                                console.log("result",result)
+                                this.init(result)
                                 // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                                 break
                             case 204:
@@ -306,7 +311,10 @@ export default {
                         this.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الحساب" })
                         console.log("error", error)
                     })
-                    .then(() => this.loadingPage(false))
+                    .then(() => {
+                        this.loadingPage(false)
+                        this.account.EBuy = this.settings.EBuy
+                    })
             }
         },
         readAccountDebounce: _.debounce(function(){ this.readAccount() }, 200),
@@ -355,7 +363,7 @@ export default {
                 
             }, 300),
         
-        onSearchClient(data){ // fetch data
+        onSearch(data){ // fetch data
             if(this.options.clients.length == 0 && data != ''){
                 this.search('getClientsList', 'clients')
                 this.settings.canEdit = false
@@ -410,6 +418,14 @@ export default {
         }, 
         accountReady(val=true){
             this.settings.accountReady = val 
+        },
+        validate(acc){
+            if(acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar||acc.title.en||acc.title.tr)){
+                this.settings.valid = true
+            }
+            else {
+                this.settings.valid = false
+            }
         }
     },
     computed: {
@@ -439,27 +455,23 @@ export default {
                     this.account.NType = type.id
                     console.log("selected.NType",type.id)
                 }
-                if(data.currency != null){ 
-                    var currency = this.currencies.find(function(el) { return el.id == data.currency.id })
+                if(data.ECurrency != null){ 
+                    var currency = this.currencies.find(function(el) { return el.id == data.ECurrency.id })
                     this.account.ECurrency = currency.id 
-                    this.account.EBuy = +currency.buy
+                    this.account.EBuy = +currency.buy 
                     console.log("selected.currency="+currency.id+" , EBuy="+currency.buy)
-                }                
+                }           
                 if(data.serial != null){
                     this.account.serial = +this.options.serials[data.serial]
-                    console.log("selected.serial= "+this.selected.serial+ " - this.account.serial= "+this.account.serial) 
+                    console.log("selected.serial="+this.selected.serial+ ", this.account.serial="+this.account.serial) 
                 }       
             },
             deep: true
         },
         account: {
-            handler: function(acc) {   
-                if(acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar||acc.title.en||acc.title.tr)){
-                    this.settings.valid = true
-                }
-                else {
-                    this.settings.valid = false
-                }
+            handler: function(acc) {  
+                this.validate(acc)
+                // if(this.EBuy) 
             },
             deep: true
         },
@@ -481,7 +493,7 @@ export default {
     },
     mounted() {         
         console.log("Component <account> mounted.")
-        this.init()      
+        this.init()    
     },
 }
 </script>

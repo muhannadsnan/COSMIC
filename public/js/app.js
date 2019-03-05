@@ -50922,8 +50922,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             originalObj: {},
             account: new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */](),
             currBal: {},
-            selected: { serial: null, test: {}, currency: null, NType: null },
-            settings: { canSave: false, canEdit: false, editMode: false, accountReady: false, rtl: true, valid: false },
+            selected: { serial: null, test: {}, ECurrency: null, NType: null },
+            settings: { canSave: false, canEdit: false, editMode: false, accountReady: false, rtl: true, valid: false, EBuy: null },
             options: { NType: [], serials: [], parentAcc: [], test: [] },
             loading: { page: false, serial: false, parentAcc: false }
         };
@@ -50973,9 +50973,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.currBal = {};
                 this.options.NType = [{ id: 'N', title: 'عادي' }, { id: 'C', title: 'ختامي' }, { id: 'A', title: 'تجميعي' }, { id: 'D', title: 'توزيعي' }];
                 this.selected.serial = null;
-                this.selected.currency = this.currencies.length == 0 ? null : this.currencies[0];
+                this.selected.ECurrency = this.currencies.length == 0 ? null : this.currencies[0];
                 this.selected.NType = this.options.NType[0];
                 this.selected.test = null;
+                // this.settings.hasEBuy = false
                 this.getSerials(function () {
                     return _this2.accountReady();
                 });
@@ -50985,13 +50986,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var acc = new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
                 acc.fill(data);console.log("acc.fill", acc);
                 this.account = acc;
+                // if(acc.EBuy != null)
+                //     this.settings.hasEBuy = true // to allow keep EBuy from acc and not from ECurrency.buy
                 this.selected.serial = this.options.serials.indexOf(data.serial);
                 this.selected.NType = this.options.NType.find(function (el) {
                     return el.id == data.NType;
                 });
-                this.selected.currency = this.currencies.find(function (el) {
+                this.selected.ECurrency = this.currencies.find(function (el) {
                     return el.id == data.ECurrency;
                 }); // this will change the selected EBuy
+                this.settings.EBuy = data.EBuy;
             }
             callback();
         },
@@ -51007,6 +51011,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     switch (resp.status) {
                         case 200:
                             var result = Array.isArray(resp.data.data) ? resp.data.data[0] : resp.data.data != null ? resp.data.data : new __WEBPACK_IMPORTED_MODULE_0__models_Account_class__["a" /* default */]();
+                            console.log("result", result);
                             _this3.init(result);
                             // this.$toast.success({title: "نجاح الطلب", message: resp.data.msg})
                             break;
@@ -51021,7 +51026,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this3.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الحساب" });
                     console.log("error", error);
                 }).then(function () {
-                    return _this3.loadingPage(false);
+                    _this3.loadingPage(false);
+                    _this3.account.EBuy = _this3.settings.EBuy;
                 });
             }
         },
@@ -51077,7 +51083,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(callback);
         }, 300),
 
-        onSearchClient: function onSearchClient(data) {
+        onSearch: function onSearch(data) {
             // fetch data
             if (this.options.clients.length == 0 && data != '') {
                 this.search('getClientsList', 'clients');
@@ -51135,6 +51141,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
             this.settings.accountReady = val;
+        },
+        validate: function validate(acc) {
+            if (acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar || acc.title.en || acc.title.tr)) {
+                this.settings.valid = true;
+            } else {
+                this.settings.valid = false;
+            }
         }
     },
     computed: {
@@ -51163,9 +51176,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     this.account.NType = type.id;
                     console.log("selected.NType", type.id);
                 }
-                if (data.currency != null) {
+                if (data.ECurrency != null) {
                     var currency = this.currencies.find(function (el) {
-                        return el.id == data.currency.id;
+                        return el.id == data.ECurrency.id;
                     });
                     this.account.ECurrency = currency.id;
                     this.account.EBuy = +currency.buy;
@@ -51173,18 +51186,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
                 if (data.serial != null) {
                     this.account.serial = +this.options.serials[data.serial];
-                    console.log("selected.serial= " + this.selected.serial + " - this.account.serial= " + this.account.serial);
+                    console.log("selected.serial=" + this.selected.serial + ", this.account.serial=" + this.account.serial);
                 }
             },
             deep: true
         },
         account: {
             handler: function handler(acc) {
-                if (acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar || acc.title.en || acc.title.tr)) {
-                    this.settings.valid = true;
-                } else {
-                    this.settings.valid = false;
-                }
+                this.validate(acc);
+                // if(this.EBuy) 
             },
             deep: true
         },
@@ -51232,7 +51242,7 @@ var Account = function () {
         var EType = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
         var EVal = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 0;
         var ECurrency = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : 0;
-        var EBuy = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : 0;
+        var EBuy = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : null;
         var EisPart = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : false;
         var hideInSearch = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : false;
         var CCisReq = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : false;
@@ -51400,7 +51410,7 @@ var render = function() {
                             taggable: false,
                             max: null
                           },
-                          on: { "search-change": _vm.onSearchClient },
+                          on: { "search-change": _vm.onSearch },
                           model: {
                             value: _vm.selected.test,
                             callback: function($$v) {
@@ -51441,7 +51451,7 @@ var render = function() {
                             taggable: false,
                             max: null
                           },
-                          on: { "search-change": _vm.onSearchClient },
+                          on: { "search-change": _vm.onSearch },
                           model: {
                             value: _vm.selected.test,
                             callback: function($$v) {
@@ -51579,11 +51589,11 @@ var render = function() {
                               max: null
                             },
                             model: {
-                              value: _vm.selected.currency,
+                              value: _vm.selected.ECurrency,
                               callback: function($$v) {
-                                _vm.$set(_vm.selected, "currency", $$v)
+                                _vm.$set(_vm.selected, "ECurrency", $$v)
                               },
-                              expression: "selected.currency"
+                              expression: "selected.ECurrency"
                             }
                           })
                         ],
@@ -51905,7 +51915,7 @@ var render = function() {
                               max: null,
                               disabled: true
                             },
-                            on: { "search-change": _vm.onSearchClient },
+                            on: { "search-change": _vm.onSearch },
                             model: {
                               value: _vm.selected.test,
                               callback: function($$v) {

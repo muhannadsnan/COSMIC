@@ -47,10 +47,10 @@
             accounts.forEach(function(item){
                 if(item._parents.length > 0){
                     item._parents.forEach(function(parent){
-                        tree.push({id: item.id, text: item.title/* +"--"+item.id */, parent: parent.id})                    
+                        tree.push({id: item.id, text: item.title_ar/* +"--"+item.id */, parent: parent.id})                    
                     });
                 }else{
-                    tree.push({id: item.id, text: item.title/* +"--"+item.id */, parent: 0}) 
+                    tree.push({id: item.id, text: item.title_ar/* +"--"+item.id */, parent: 0}) 
                 }
             });     console.log("tree",tree);  
 

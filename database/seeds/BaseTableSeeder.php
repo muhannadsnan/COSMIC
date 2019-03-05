@@ -13,6 +13,9 @@ class BaseTableSeeder extends Seeder
     public function run()
     {
         factory(Base::class, 10)->create();
+        Base::create([
+            'user_id' => 1, 'title' => "M's Base", 'accGuide' => 1
+        ]);
 
         // $cur = Base::find(1);
         // $cur->_profiles()->sync([1,2,3,4]);
