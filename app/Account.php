@@ -48,6 +48,40 @@ class Account extends _Model
         ]);
     }
 
+    public static function editFull($request, $profile_id){
+        if( !$updAccount = Account::edit($request, $profile_id)) return false;        
+        // $updAccount->_clients()->sync([ $request->client_id ]); 
+        return $updAccount;
+    }
+
+    public static function edit($request, $profile_id){ 
+        $acc = Account::findOrFail($request->id);  
+        $acc->profile_id = $profile_id;
+        $acc->serial = $request->serial;
+        $acc->code = $request->code;
+        $acc->title_ar = $request->title['ar'] == ''? 'TEST': $request->title['ar'];
+        $acc->desc = $request->desc;
+        $acc->NType = $request->NType;
+        $acc->closeAcc = $request->closeAcc;
+        $acc->KType = $request->KType;
+        $acc->EType = $request->EType;
+        $acc->EVal = $request->EVal;
+        $acc->ECurrency = $request->ECurrency;
+        $acc->EBuy = $request->EBuy;
+        $acc->EisPart = $request->EisPart; 
+        $acc->hideInSearch = $request->hideInSearch; 
+        $acc->CCisReq = $request->CCisReq; 
+        $acc->CCTitle = $request->CCTitle; 
+        $acc->TOFL_income = $request->TOFL_income; 
+        $acc->TOFL_ownership = $request->TOFL_ownership; 
+        $acc->TOFL_finCenter = $request->TOFL_finCenter; 
+        $acc->TOFL_cashFlow = $request->TOFL_cashFlow; 
+        $acc->TOFL_clasDet = $request->TOFL_clasDet;  
+        if(!$acc->save())
+            return false;
+        return $acc;
+    }
+
     /********************   RELATIIONSHIPS   *********************/
 
     public function _users()

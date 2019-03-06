@@ -51002,7 +51002,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         readAccount: function readAccount() {
             var _this3 = this;
 
-            // after reading, settings.editMode mode will become active        
+            // after reading, settings.editMode mode will become active
             if (!this.settings.canSave || confirm("هل تريد قراءة الحساب؟ سوف تخسر البيانات غير المحفوظة")) {
                 this.loadingPage();
                 axios.get("/api/accounts/" + this.profile.id + "/findBySerial?serial=" + this.account.serial) //&NType=${this.account.NType}
@@ -51143,7 +51143,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.settings.accountReady = val;
         },
         validate: function validate(acc) {
-            if (acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar || acc.title.en || acc.title.tr)) {
+            if (acc.serial && acc.code && acc.NType && acc.KType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar || acc.title.en || acc.title.tr)) {
                 this.settings.valid = true;
             } else {
                 this.settings.valid = false;
@@ -51231,30 +51231,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Account = function () {
     function Account() {
-        var code = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-        var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { ar: '', en: '', tr: '' };
-        var desc = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
-        var serial = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-        var NType = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
-        var parentAcc = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
-        var closeAcc = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
-        var KType = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 0;
-        var EType = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
-        var EVal = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 0;
-        var ECurrency = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : 0;
-        var EBuy = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : null;
-        var EisPart = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : false;
-        var hideInSearch = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : false;
-        var CCisReq = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : false;
-        var CCTitle = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : "";
-        var TOFL_income = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : 0;
-        var TOFL_ownership = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : 0;
-        var TOFL_finCenter = arguments.length > 18 && arguments[18] !== undefined ? arguments[18] : 0;
-        var TOFL_cashFlow = arguments.length > 19 && arguments[19] !== undefined ? arguments[19] : 0;
-        var TOFL_clasDet = arguments.length > 20 && arguments[20] !== undefined ? arguments[20] : 0;
+        var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        var code = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+        var title = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : { ar: '', en: '', tr: '' };
+        var desc = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "";
+        var serial = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0;
+        var NType = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+        var parentAcc = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 0;
+        var closeAcc = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : 0;
+        var KType = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : 0;
+        var EType = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : 0;
+        var EVal = arguments.length > 10 && arguments[10] !== undefined ? arguments[10] : 0;
+        var ECurrency = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : 0;
+        var EBuy = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : null;
+        var EisPart = arguments.length > 13 && arguments[13] !== undefined ? arguments[13] : false;
+        var hideInSearch = arguments.length > 14 && arguments[14] !== undefined ? arguments[14] : false;
+        var CCisReq = arguments.length > 15 && arguments[15] !== undefined ? arguments[15] : false;
+        var CCTitle = arguments.length > 16 && arguments[16] !== undefined ? arguments[16] : "";
+        var TOFL_income = arguments.length > 17 && arguments[17] !== undefined ? arguments[17] : 0;
+        var TOFL_ownership = arguments.length > 18 && arguments[18] !== undefined ? arguments[18] : 0;
+        var TOFL_finCenter = arguments.length > 19 && arguments[19] !== undefined ? arguments[19] : 0;
+        var TOFL_cashFlow = arguments.length > 20 && arguments[20] !== undefined ? arguments[20] : 0;
+        var TOFL_clasDet = arguments.length > 21 && arguments[21] !== undefined ? arguments[21] : 0;
 
         _classCallCheck(this, Account);
 
+        this.id = id;
         this.code = code;
         this.title = title; // {ar: '', en: '', tr: ''}
         this.desc = desc;
@@ -51286,7 +51288,7 @@ var Account = function () {
         key: 'fill',
         value: function fill(obj) {
             console.log('fill', obj);
-            this.code = obj.code;this.title.ar = obj.title_ar;this.desc = obj.desc;this.serial = obj.serial;this.NType = obj.NType;
+            this.id = obj.id;this.code = obj.code;this.title.ar = obj.title_ar;this.desc = obj.desc;this.serial = obj.serial;this.NType = obj.NType;
             this.parentAcc = obj.parentAcc;this.closeAcc = obj.closeAcc;this.KType = obj.KType;
             this.EType = obj.EType;this.EVal = obj.EVal;this.ECurrency = obj.ECurrency;this.EBuy = obj.EBuy;this.EisPart = obj.EisPart;
             this.hideInSearch = obj.hideInSearch;this.CCisReq = obj.CCisReq;this.CCTitle = obj.CCTitle;

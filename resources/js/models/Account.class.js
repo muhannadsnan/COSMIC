@@ -1,6 +1,7 @@
 export default class Account {
-    constructor(code="", title={ar: '', en: '', tr: ''}, desc="", serial=0, NType=0, parentAcc=0, closeAcc=0, KType=0, EType=0, EVal=0, ECurrency=0, EBuy=null, EisPart=false, 
+    constructor(id=0, code="", title={ar: '', en: '', tr: ''}, desc="", serial=0, NType=0, parentAcc=0, closeAcc=0, KType=0, EType=0, EVal=0, ECurrency=0, EBuy=null, EisPart=false, 
                 hideInSearch=false, CCisReq=false, CCTitle="", TOFL_income=0, TOFL_ownership=0, TOFL_finCenter=0, TOFL_cashFlow=0, TOFL_clasDet=0) {
+        this.id = id;
         this.code = code; 
         this.title = title; // {ar: '', en: '', tr: ''}
         this.desc = desc; 
@@ -29,7 +30,7 @@ export default class Account {
     }
 
     fill(obj) { console.log('fill', obj);
-        this.code = obj.code; this.title.ar = obj.title_ar; this.desc = obj.desc;  this.serial = obj.serial;  this.NType = obj.NType; 
+        this.id = obj.id; this.code = obj.code; this.title.ar = obj.title_ar; this.desc = obj.desc;  this.serial = obj.serial;  this.NType = obj.NType; 
         this.parentAcc = obj.parentAcc;  this.closeAcc = obj.closeAcc;  this.KType = obj.KType; 
         this.EType = obj.EType; this.EVal = obj.EVal;  this.ECurrency = obj.ECurrency;  this.EBuy = obj.EBuy;  this.EisPart = obj.EisPart; 
         this.hideInSearch = obj.hideInSearch;  this.CCisReq = obj.CCisReq;  this.CCTitle = obj.CCTitle; 

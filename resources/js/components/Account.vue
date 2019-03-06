@@ -287,7 +287,7 @@ export default {
             }
             callback();
         }, 
-        readAccount() { // after reading, settings.editMode mode will become active        
+        readAccount() { // after reading, settings.editMode mode will become active
             if ( !this.settings.canSave || confirm("هل تريد قراءة الحساب؟ سوف تخسر البيانات غير المحفوظة") ) {
                 this.loadingPage()
                 axios.get(`/api/accounts/${this.profile.id}/findBySerial?serial=${this.account.serial}`) //&NType=${this.account.NType}
@@ -420,7 +420,7 @@ export default {
             this.settings.accountReady = val 
         },
         validate(acc){
-            if(acc.serial && acc.code && acc.NType && acc.KType && acc.EType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar||acc.title.en||acc.title.tr)){
+            if(acc.serial && acc.code && acc.NType && acc.KType && acc.EVal && acc.ECurrency && acc.EBuy && (acc.title.ar||acc.title.en||acc.title.tr)){
                 this.settings.valid = true
             }
             else {

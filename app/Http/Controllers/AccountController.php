@@ -38,7 +38,7 @@ class AccountController extends Controller
 
     public function apiUpdate(Request $request, Profile $profile)
     { 
-        if(!$newAccount = Account::edit($request))
+        if(!$newAccount = Account::editFull($request, $profile->id))
             return response()->json(['msg' => 'خطأ أثناء تعديل الحساب'], 404);        
         return response()->json(['data' => $newAccount, 'msg' => 'تم تعديل الحساب بنجاح'], 200);
     }
