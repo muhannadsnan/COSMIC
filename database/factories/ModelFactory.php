@@ -43,7 +43,7 @@ $factory->define(App\Account::class, function (Faker $faker) {
         'profile_id' => $faker->randomElement($profiles),
         //'currency_id' => $faker->randomElement($currencies), 
         'ECurrency' => $faker->randomElement($currencies), 
-        'EVal' => $faker->ean13,
+        'EVal' => $faker->randomFloat(null, 0, 10000),
         'EisPart' => $faker->randomElement([0,1]),
     ];
 });
@@ -52,7 +52,7 @@ $factory->define(App\Warehouse::class, function (Faker $faker) {
     return [               
         'title' => $faker->name,
         'desc' => $faker->text,
-        'profile_id' => $faker->randomElement($profiles),
+        'profile_id' => $faker->randomElement([3,4,6,7,20,18,11,11,11,11]),
     ];
 });
 $factory->define(App\Group::class, function (Faker $faker) {
@@ -87,7 +87,7 @@ $factory->define(App\Client::class, function (Faker $faker) {
         'tax_num' => $faker->ean8,
         'tax_dept' => $faker->randomElement(['dept#1', 'dept#2', 'dept#3', 'dept#4']),
         'account_id' => $faker->randomElement($accounts),
-        'profile_id' => $faker->randomElement($profiles),
+        'profile_id' => $faker->randomElement([2,5,8,11]),
     ];
 });
 $factory->define(App\Invoice::class, function (Faker $faker) { 

@@ -25,6 +25,7 @@ class CreateInvoicesTable extends Migration
             $table->string('int_num');
             $table->float('sum');
             $table->float('remaining');
+            $table->float('currencyBuy')->nullable();
             $table->timestamps();
         });
     }

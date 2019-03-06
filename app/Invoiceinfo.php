@@ -31,7 +31,7 @@ class Invoiceinfo extends _Model
     }
 
     public static function edit($request, $invID=1){ //dd($request['invoice_id']);
-        $info = Invoiceinfo::updateOrCreate(['id' => $request['id']], [
+        $info = Invoiceinfo::updateOrCreate(['id' => @$request['id']], [
             'mat' => (int)$request['mat'],
             'qty' => (float)$request['qty'],
             'single' => (float)$request['single'],

@@ -23,12 +23,12 @@ class UserTableSeeder extends Seeder
         $usr->_warehouses()->sync([1,2,5]);
         $usr->_entries()->sync([1,2,5]);
         // $usr->_currencies()->sync([4]);
-        $usr = User::find(5);
-        $usr->_accounts()->sync([2,3,6]);
-        $usr->_groups()->sync([2,3,4,5]);
-        $usr->_clients()->sync([7,8,9]);
-        $usr->_warehouses()->sync([1,2,4,5,6]);
-        $usr->_entries()->sync([1,4,6,7]);
-        // $usr->_currencies()->sync([2]);
+        // $usr = User::find(5);
+        // $usr->_accounts()->sync([2,3,6]);
+        // $usr->_groups()->sync([2,3,4,5]);
+        // $usr->_clients()->sync([7,8,9]);
+        // $usr->_warehouses()->sync([1,2,4,5,6]);
+        // $usr->_entries()->sync([1,4,6,7]);
+        // // $usr->_currencies()->sync([2]);
     }
 }

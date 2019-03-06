@@ -49579,7 +49579,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             invoice: new __WEBPACK_IMPORTED_MODULE_0__models_Invoice_class__["a" /* default */](this.profile),
             selected: { currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null },
             settings: { canSave: false, canEdit: false, editMode: false, saved: false, invoiceReady: false,
-                rtl: true, hasRecords: false, valid: false },
+                rtl: true, hasRecords: false, valid: false, currencyBuy: null },
             options: { clients: [], warehouses: [], serials: [] },
             loading: { page: false, clients: false, serial: false }
         };
@@ -49652,6 +49652,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     return el.id == data._payment.id;
                 });
                 this.selected.serial = this.options.serials.indexOf(data.serial);
+                this.settings.currencyBuy = data.currencyBuy;
                 if (this.options.clients.length == 0) {
                     this.search('getClientsList', 'clients', '', function () {
                         _this2.selected.client = typeof data._clients[0] != 'undefined' ? data._clients[0] : null;
@@ -49690,7 +49691,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     _this3.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الفاتورة" });
                     console.log("error", error);
                 }).then(function () {
-                    return _this3.loadingPage(false);
+                    _this3.loadingPage(false);
+                    _this3.invoice.currencyBuy = _this3.settings.currencyBuy;
                 });
             }
         },
@@ -49803,6 +49805,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
             this.settings.invoiceReady = val;
+        },
+        validate: function validate(inv) {
+            if (inv.client_id && inv.client_acc && inv.records.length != 0 && inv.warehouse_id && inv.serial) {
+                this.settings.valid = true;
+            } else {
+                this.settings.valid = false;
+            }
         }
     },
     computed: {
@@ -49860,11 +49869,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         invoice: {
             handler: function handler(inv) {
-                if (inv.client_id && inv.client_acc && inv.records.length != 0 && inv.warehouse_id && inv.serial) {
-                    this.settings.valid = true;
-                } else {
-                    this.settings.valid = false;
-                }
+                this.validate(inv);
             },
             deep: true
         },
@@ -49980,12 +49985,12 @@ var render = function() {
                 {
                   staticClass: "nav-link col-4 col-md-3 btn btn-success",
                   attrs: {
-                    id: "accountSave",
+                    id: "invoiceSave",
                     disabled: !_vm.changed || !_vm.settings.valid
                   },
                   on: {
                     click: function($event) {
-                      _vm.submitAccount()
+                      _vm.submitInvoice()
                     }
                   }
                 },
@@ -50000,12 +50005,12 @@ var render = function() {
                   staticClass:
                     "nav-link col-4 col-md-3 btn btn-info text-white",
                   attrs: {
-                    id: "accountsettings.editMode",
+                    id: "invoicesettings.editMode",
                     disabled: !_vm.changed || !_vm.settings.valid
                   },
                   on: {
                     click: function($event) {
-                      _vm.editAccount()
+                      _vm.editInvoice()
                     }
                   }
                 },
@@ -50018,12 +50023,12 @@ var render = function() {
             {
               staticClass: "nav-link col-4 col-md-3 btn btn-dark",
               attrs: {
-                id: "accountClear",
+                id: "invoiceClear",
                 disabled: !_vm.changed && _vm.selected.serial == null
               },
               on: {
                 click: function($event) {
-                  _vm.clearAccount()
+                  _vm.clearInvoice()
                 }
               }
             },

@@ -37,6 +37,7 @@ class Invoice extends _Model
             'int_num' => $request->int_num == ''? 'TEST': $request->int_num,
             'sum' => $request->sum,
             'remaining' => $request->remaining,
+            'currencyBuy' => $request->currencyBuy,
         ]);
     }
 
@@ -69,6 +70,7 @@ class Invoice extends _Model
         $inv->int_num = $request->int_num == ''? 'TEST': $request->int_num;
         $inv->sum = $request->sum;
         $inv->remaining = $request->remaining;
+        $inv->currencyBuy = $request->currencyBuy;
         if(!$inv->save())
             return false;
         return $inv;

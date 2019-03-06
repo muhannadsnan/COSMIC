@@ -1,12 +1,12 @@
 <template>
     <div class="InvoiceSelling d-flex flex-column-reverse">
         <div class="buttons d-sm-flex justify-content-between mt-4"> 
-            <button v-if="!settings.editMode" @click="submitAccount()" class="nav-link col-4 col-md-3 btn btn-success" 
-                    id="accountSave" :disabled="!changed || !settings.valid">حفظ</button>
-            <button v-if="settings.editMode" @click="editAccount()" class="nav-link col-4 col-md-3 btn btn-info text-white" 
-                    id="accountsettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
-            <button @click="clearAccount()" class="nav-link col-4 col-md-3 btn btn-dark" 
-                    id="accountClear" :disabled="!changed && selected.serial == null">جديد</button>
+            <button v-if="!settings.editMode" @click="submitInvoice()" class="nav-link col-4 col-md-3 btn btn-success" 
+                    id="invoiceSave" :disabled="!changed || !settings.valid">حفظ</button>
+            <button v-if="settings.editMode" @click="editInvoice()" class="nav-link col-4 col-md-3 btn btn-info text-white" 
+                    id="invoicesettings.editMode" :disabled="!changed || !settings.valid">تعديل</button>
+            <button @click="clearInvoice()" class="nav-link col-4 col-md-3 btn btn-dark" 
+                    id="invoiceClear" :disabled="!changed && selected.serial == null">جديد</button>
         </div>
 
         <div class="tab-content" id="v-pills-tabContent">
@@ -123,7 +123,7 @@ export default {
             invoice: new Invoice(this.profile),
             selected: {currency: { buy: "" }, client: null, payment: null, warehouse: null, serial: null},
             settings: {canSave: false, canEdit: false, editMode: false, saved: false, invoiceReady: false, 
-                        rtl: true, hasRecords: false, valid: false},
+                        rtl: true, hasRecords: false, valid: false, currencyBuy: null},
             options: {clients: [] , warehouses: [], serials: []},    
             loading: {page: false, clients: false, serial: false}, 
         }
@@ -180,6 +180,7 @@ export default {
                 this.selected.currency = this.currencies.find(el => el.id == data._currency.id)              
                 this.selected.payment = this.pay.find(el => el.id == data._payment.id)      
                 this.selected.serial = this.options.serials.indexOf(data.serial) 
+                this.settings.currencyBuy = data.currencyBuy
                 if(this.options.clients.length == 0){
                     this.search('getClientsList', 'clients', '', () => { 
                         this.selected.client = typeof data._clients[0] != 'undefined'? data._clients[0] : null
@@ -215,7 +216,10 @@ export default {
                         this.$toast.error({ title: "حدث خطأ!!!", message: "حدث خطأ أثناء البحث عن الفاتورة" })
                         console.log("error", error)
                     })
-                    .then(() => this.loadingPage(false))
+                    .then(() => {
+                        this.loadingPage(false)
+                        this.invoice.currencyBuy = this.settings.currencyBuy
+                    })
             }
         },
         readInvoiceDebounce: _.debounce(function(){ this.readInvoice() }, 200),
@@ -319,6 +323,14 @@ export default {
         },
         invoiceReady(val=true){
             this.settings.invoiceReady = val 
+        },
+        validate(inv){
+            if(inv.client_id && inv.client_acc && inv.records.length != 0 && inv.warehouse_id && inv.serial){
+                this.settings.valid = true
+            }
+            else {
+                this.settings.valid = false
+            }
         }
     },
     computed: {
@@ -371,12 +383,7 @@ export default {
         },
         invoice: {
             handler: function(inv) {   
-                if(inv.client_id && inv.client_acc && inv.records.length != 0 && inv.warehouse_id && inv.serial){
-                    this.settings.valid = true
-                }
-                else {
-                    this.settings.valid = false
-                }
+                this.validate(inv)
             },
             deep: true
         },
